@@ -4,7 +4,7 @@ function App () {
   return(
     <Catalog />
   );
-};
+}
 
 export { App } ;
 
