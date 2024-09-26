@@ -1,16 +1,22 @@
 import { useState, useEffect } from 'react';
 import { api } from '../api/api';
-import { TCamera } from '../types/types';
+import { TCamera, TPromo } from '../types/types';
 import { ReqRoutes } from '../const/const';
 import { Header } from '../components/header/header';
+import { Banner } from '../components/banner/banner';
 
 function Catalog() {
   const [cameras, setCameras] = useState<TCamera[] | null>([]);
+  const [promos, setPromos] = useState<TPromo[] | null>([]);
 
   useEffect(() => {
     api
       .get<TCamera[]>(`${ReqRoutes.Cameras}`)
       .then((response) => setCameras(response.data));
+
+    api
+      .get<TCamera[]>(`${ReqRoutes.Promo}`)
+      .then((response) => setPromos(response.data));
   }, []);
 
 
@@ -18,33 +24,9 @@ function Catalog() {
     <div className="wrapper">
       <Header />
       <main>
-        <div className="banner">
-          <picture>
-            <source
-              type="image/webp"
-              srcSet="img/content/banner-bg.webp, img/content/banner-bg@2x.webp 2x"
-            />
-            <img
-              src="img/content/banner-bg.jpg"
-              srcSet="img/content/banner-bg@2x.jpg 2x"
-              width={1280}
-              height={280}
-              alt="баннер"
-            />
-          </picture>
-          <p className="banner__info">
-            <span className="banner__message">Новинка!</span>
-            <span className="title title--h1">
-              Cannonball&nbsp;Pro&nbsp;MX&nbsp;8i
-            </span>
-            <span className="banner__text">
-              Профессиональная камера от&nbsp;известного производителя
-            </span>
-            <a className="btn" href="#">
-              Подробнее
-            </a>
-          </p>
-        </div>
+        {promos && promos
+          .map((promo) => <Banner key={promo.id} camera={promo} />)
+        }
         <div className="page-content">
           <div className="breadcrumbs">
             <div className="container">
