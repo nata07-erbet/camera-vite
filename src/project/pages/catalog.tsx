@@ -4,7 +4,7 @@ import { TCamera, TPromo } from '../types/types';
 import { ReqRoutes } from '../const/const';
 import { Header } from '../components/header/header';
 import { Banner } from '../components/banner/banner';
-import { ProductCard } from '../components/product-card/product-card';
+import { ProductsList } from '../components/products-list/products-list'
 
 function Catalog() {
   const [cameras, setCameras] = useState<TCamera[] | null>([]);
@@ -167,24 +167,7 @@ function Catalog() {
                 </div>
               </form>
             </div>*/}
-                  <div className="cards catalog__cards">
-                    <ProductCard camera={{
-                      id: 0,
-                      name: '',
-                      vendorCode: '',
-                      type: 'Коллекционная',
-                      category: 'Видеокамера',
-                      description: '',
-                      level: 'Нулевой',
-                      price: 0,
-                      rating: 0,
-                      reviewCount: 0,
-                      previewImg: '',
-                      previewImg2x: '',
-                      previewImgWebp: '',
-                      previewImgWebp2x: ''
-                    }}/>
-                  </div>
+                {cameras &&   <ProductsList cameras ={cameras} />}
                   {/*<div class="pagination">
               <ul class="pagination__list">
                 <li class="pagination__item"><a class="pagination__link pagination__link&#45;&#45;active" href="1">1</a>
