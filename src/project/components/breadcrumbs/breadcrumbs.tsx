@@ -20,7 +20,6 @@ function Breadcrumbs() {
             </div>
           </div>
   );
-
 }
 
 export { Breadcrumbs };

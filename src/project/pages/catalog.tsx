@@ -6,6 +6,7 @@ import { Header } from '../components/header/header';
 import { Banner } from '../components/banner/banner';
 import { ProductsList } from '../components/products-list/products-list';
 import { Breadcrumbs } from '../components/breadcrumbs/breadcrumbs';
+import { Footer } from '../components/footer/footer';
 
 function Catalog() {
   const [cameras, setCameras] = useState<TCamera[] | null>([]);
@@ -169,123 +170,8 @@ function Catalog() {
           </section>
         </div>
       </main>
-      <footer className="footer">
-        <div className="container">
-          <div className="footer__info">
-            <a
-              className="footer__logo"
-              href="index.html"
-              aria-label="Переход на главную"
-            >
-              <svg width={100} height={36} aria-hidden="true">
-                <use xlinkHref="#icon-logo-mono" />
-              </svg>
-            </a>
-            <p className="footer__description">
-              Интернет-магазин фото- и видеотехники
-            </p>
-            <ul className="social">
-              <li className="social__item">
-                <a
-                  className="link"
-                  href="#"
-                  aria-label="Переход на страницу вконтатке"
-                >
-                  <svg width={20} height={20} aria-hidden="true">
-                    <use xlinkHref="#icon-vk" />
-                  </svg>
-                </a>
-              </li>
-              <li className="social__item">
-                <a
-                  className="link"
-                  href="#"
-                  aria-label="Переход на страницу pinterest"
-                >
-                  <svg width={20} height={20} aria-hidden="true">
-                    <use xlinkHref="#icon-pinterest" />
-                  </svg>
-                </a>
-              </li>
-              <li className="social__item">
-                <a
-                  className="link"
-                  href="#"
-                  aria-label="Переход на страницу reddit"
-                >
-                  <svg width={20} height={20} aria-hidden="true">
-                    <use xlinkHref="#icon-reddit" />
-                  </svg>
-                </a>
-              </li>
-            </ul>
-          </div>
-          <ul className="footer__nav">
-            <li className="footer__nav-item">
-              <p className="footer__title">Навигация</p>
-              <ul className="footer__list">
-                <li className="footer__item">
-                  <a className="link" href="#">
-                    Каталог
-                  </a>
-                </li>
-                <li className="footer__item">
-                  <a className="link" href="#">
-                    Гарантии
-                  </a>
-                </li>
-                <li className="footer__item">
-                  <a className="link" href="#">
-                    Доставка
-                  </a>
-                </li>
-                <li className="footer__item">
-                  <a className="link" href="#">
-                    О компании
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li className="footer__nav-item">
-              <p className="footer__title">Ресурсы</p>
-              <ul className="footer__list">
-                <li className="footer__item">
-                  <a className="link" href="#">
-                    Курсы операторов
-                  </a>
-                </li>
-                <li className="footer__item">
-                  <a className="link" href="#">
-                    Блог
-                  </a>
-                </li>
-                <li className="footer__item">
-                  <a className="link" href="#">
-                    Сообщество
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li className="footer__nav-item">
-              <p className="footer__title">Поддержка</p>
-              <ul className="footer__list">
-                <li className="footer__item">
-                  <a className="link" href="#">
-                    FAQ
-                  </a>
-                </li>
-                <li className="footer__item">
-                  <a className="link" href="#">
-                    Задать вопрос
-                  </a>
-                </li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-      </footer>
+     <Footer />
     </div>
-
   );
 }
 
