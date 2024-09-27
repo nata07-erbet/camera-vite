@@ -10,7 +10,8 @@ function ProductsList({ cameras }: ProductsListProps) {
       {cameras.map((camera) => (
         <ProductCard
           camera={camera}
-          key={camera.id}/>
+          key={camera.id}
+        />
       ))}
     </div>
   );

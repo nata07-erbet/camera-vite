@@ -28,8 +28,7 @@ function Catalog() {
       <Header />
       <main>
         {promos && promos
-          .map((promo) => <Banner key={promo.id} camera={promo} />)
-        }
+          .map((promo) => <Banner key={promo.id} camera={promo} />)}
         <div className="page-content">
           <Breadcrumbs />
           <section className="catalog">
@@ -151,8 +150,8 @@ function Catalog() {
                 </div>
               </form>
             </div>*/}
-                {cameras &&   <ProductsList cameras ={cameras} />}
-                  {/*<div class="pagination">
+                  {cameras && <ProductsList cameras={cameras} />}
+                    {/*<div class="pagination">
               <ul class="pagination__list">
                 <li class="pagination__item"><a class="pagination__link pagination__link&#45;&#45;active" href="1">1</a>
                 </li>
@@ -170,7 +169,7 @@ function Catalog() {
           </section>
         </div>
       </main>
-     <Footer />
+      <Footer />
     </div>
   );
 }
