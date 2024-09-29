@@ -151,7 +151,7 @@ function Catalog() {
               </form>
             </div>*/}
                   {cameras && <ProductsList cameras={cameras} />}
-                    {/*<div class="pagination">
+                  {/*<div class="pagination">
               <ul class="pagination__list">
                 <li class="pagination__item"><a class="pagination__link pagination__link&#45;&#45;active" href="1">1</a>
                 </li>
