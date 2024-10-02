@@ -3,14 +3,17 @@ import { ProductCard } from '../product-card/product-card';
 
 type ProductsListProps = {
   cameras: TCamera[];
-}
-function ProductsList({ cameras }: ProductsListProps) {
+  onOpen?: () => void;
+};
+
+function ProductsList({onOpen, cameras }: ProductsListProps) {
   return(
     <div className="cards catalog__cards">
       {cameras.map((camera) => (
         <ProductCard
           camera={camera}
           key={camera.id}
+          onOpen={onOpen}
         />
       ))}
     </div>

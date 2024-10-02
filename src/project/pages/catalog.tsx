@@ -6,11 +6,22 @@ import { Header } from '../components/header/header';
 import { Banner } from '../components/banner/banner';
 import { ProductsList } from '../components/products-list/products-list';
 import { Breadcrumbs } from '../components/breadcrumbs/breadcrumbs';
+import { PopUpContact } from '../components/pop-up/pop-up-contact';
 import { Footer } from '../components/footer/footer';
 
 function Catalog() {
   const [cameras, setCameras] = useState<TCamera[] | null>([]);
   const [promos, setPromos] = useState<TPromo[] | null>([]);
+
+  const [isShowPopUp, setIsShowPopUp] = useState(false);
+
+  const handleClosePopUp = () => {
+    setIsShowPopUp(false);
+  };
+
+  const handleOpenPopUp = () => {
+    setIsShowPopUp(true);
+  };
 
   useEffect(() => {
     api
@@ -150,7 +161,11 @@ function Catalog() {
                 </div>
               </form>
             </div>*/}
-                  {cameras && <ProductsList cameras={cameras} />}
+                  {cameras &&
+                    <ProductsList
+                      cameras={cameras}
+                      onOpen={handleOpenPopUp}
+                    />}
                   {/*<div class="pagination">
               <ul class="pagination__list">
                 <li class="pagination__item"><a class="pagination__link pagination__link&#45;&#45;active" href="1">1</a>
@@ -169,6 +184,27 @@ function Catalog() {
           </section>
         </div>
       </main>
+      <PopUpContact
+        isActive={isShowPopUp}
+        cameraByBasket={{
+          id: 0,
+          name: '',
+          vendorCode: '',
+          type: 'Коллекционная',
+          category: 'Видеокамера',
+          description: '',
+          level: 'Нулевой',
+          price: 0,
+          rating: 0,
+          reviewCount: 0,
+          previewImg: '',
+          previewImg2x: '',
+          previewImgWebp: '',
+          previewImgWebp2x: ''
+        }}
+        onClose={handleClosePopUp}
+      />
+
       <Footer />
     </div>
   );

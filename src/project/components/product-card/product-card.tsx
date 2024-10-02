@@ -2,9 +2,15 @@ import { TCamera } from '../../types/types';
 
 type ProductCardProps = {
   camera: TCamera;
+  onOpen? : () => void;
 };
 
-function ProductCard({ camera }: ProductCardProps) {
+function ProductCard({onOpen, camera }: ProductCardProps) {
+
+  const handleClickButton = () => {
+    onOpen?.();
+  };
+
   return (
     <div className="product-card">
       <div className="product-card__img">
@@ -55,6 +61,7 @@ function ProductCard({ camera }: ProductCardProps) {
         <button
           className="btn btn--purple product-card__btn"
           type="button"
+          onClick={handleClickButton}
         >
           Купить
         </button>

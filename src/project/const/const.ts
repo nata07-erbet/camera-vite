@@ -5,7 +5,8 @@ const ReqRoutes = {
   Cameras: 'cameras',
   Similar: '/cameras/:cameraId/similar',
   Promo: '/promo',
-  Reviews: '/cameras/cameraId/reviews'
+  Reviews: '/cameras/cameraId/reviews',
+  Orders: '/orders',
 };
 
 const AppRoutes = {

@@ -1,5 +1,7 @@
-import { PropsWithChildren } from 'react';
+import { useCallback, useEffect, } from 'react';
 import classnames from 'classnames';
+import { PropsWithChildren } from 'react';
+
 
 type PopUpMainProps = PropsWithChildren<{
   isActive: boolean;
@@ -9,17 +11,40 @@ type PopUpMainProps = PropsWithChildren<{
 
 function PopUpMain({ isActive, onClose, children }: PopUpMainProps) {
 
-  const handleEscDownClick = (evt: KeyboardEvent) => {
-    if (evt.key === 'Escape') {
-      onClose?.();
-    }
-  };
-
-  document.addEventListener('keydown', handleEscDownClick);
+  const handleEscDownClick = useCallback(
+    (evt: KeyboardEvent) => {
+      if (evt.key === 'Escape') {
+        onClose?.();
+      }
+    }, []
+  );
 
   const handleCloseButtonClick = () => {
     onClose?.();
   };
+
+  const handleOverLayClick = () => {
+    onClose?.();
+  };
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleEscDownClick);
+
+    return (() => document.removeEventListener('keydown', handleEscDownClick));
+  }, [handleEscDownClick]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    if (isActive && isMounted) {
+      document.body.classList.add('scroll-lock');
+    }
+
+    return(() => {
+      document.body.classList.remove('scroll-lock');
+      isMounted = false;
+    });
+  }, [isActive]);
 
   return (
     <div className={classnames(
@@ -28,7 +53,10 @@ function PopUpMain({ isActive, onClose, children }: PopUpMainProps) {
     )}
     >
       <div className="modal__wrapper">
-        <div className="modal__overlay" />
+        <div
+          className="modal__overlay"
+          onClick={handleOverLayClick}
+        />
         <div className="modal__content">
           {children}
           <button
@@ -45,7 +73,7 @@ function PopUpMain({ isActive, onClose, children }: PopUpMainProps) {
       </div>
     </div>
   );
-
 }
 
+export type { PopUpMainProps };
 export { PopUpMain };
