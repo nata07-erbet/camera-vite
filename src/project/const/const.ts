@@ -1,4 +1,5 @@
 const BASE_URL = 'https://camera-shop.accelerator.htmlacademy.pro/';
+const ALL_STARS = 5;
 
 const ReqRoutes = {
   Main: '/',
@@ -11,7 +12,7 @@ const ReqRoutes = {
 
 const AppRoutes = {
   Main: '/',
-  Camera: 'camera/:id'
+  Camera: '/camera'
 };
 
 const NavMap = {
@@ -21,4 +22,4 @@ const NavMap = {
   About: 'O компании'
 } as const;
 
-export { BASE_URL, ReqRoutes, AppRoutes, NavMap};
+export { BASE_URL, ReqRoutes, AppRoutes, NavMap, ALL_STARS};

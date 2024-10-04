@@ -10,14 +10,12 @@ import { Product } from '../../pages/product';
 
 const router = createBrowserRouter([
   {
-    path: `${AppRoutes.Main}`,
+    path: AppRoutes.Main,
     element: <Catalog />,
-    children: [
-      {
-        path: `${AppRoutes.Camera}`,
-        element: <Product />
-      }
-    ]
+  },
+  {
+    path: '/camera',
+    element: <Product />
   }
 ]);
 
