@@ -1,14 +1,24 @@
 import { TCamera } from '../../types/types';
+import { Link , generatePath } from 'react-router-dom';
 
 type ProductCardProps = {
   camera: TCamera;
   onOpen? : () => void;
+  onClick?: (id: TCamera['id']) => void;
 };
 
-function ProductCard({onOpen, camera }: ProductCardProps) {
+function ProductCard({onOpen, onClick, camera }: ProductCardProps) {
+  const href = generatePath('/camera/:id',{
+    id: (camera.id).toString()
+  }
+  );
 
-  const handleClickButton = () => {
+  const handleClickButtonBuy = () => {
     onOpen?.();
+  };
+
+  const handleClickButtonAbout = (id: TCamera['id']) => {
+    onClick?.(id);
   };
 
   return (
@@ -61,13 +71,17 @@ function ProductCard({onOpen, camera }: ProductCardProps) {
         <button
           className="btn btn--purple product-card__btn"
           type="button"
-          onClick={handleClickButton}
+          onClick={handleClickButtonBuy}
         >
           Купить
         </button>
-        <a className="btn btn--transparent" href="#">
-          Подробнее
-        </a>
+        <Link
+          className="btn btn--transparent"
+          to={href}
+          onClick={handleClickButtonAbout}
+        >
+            Подробнее
+        </Link>
       </div>
     </div>
   );

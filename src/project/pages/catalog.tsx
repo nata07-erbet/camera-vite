@@ -41,7 +41,7 @@ function Catalog() {
         {promos && promos
           .map((promo) => <Banner key={promo.id} camera={promo} />)}
         <div className="page-content">
-          <Breadcrumbs />
+          <Breadcrumbs/>
           <section className="catalog">
             <div className="container">
               <h1 className="title title--h2">Каталог фото- и видеотехники</h1>

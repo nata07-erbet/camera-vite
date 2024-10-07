@@ -14,7 +14,7 @@ const router = createBrowserRouter([
     element: <Catalog />,
   },
   {
-    path: '/camera',
+    path: AppRoutes.Camera,
     element: <Product />
   }
 ]);

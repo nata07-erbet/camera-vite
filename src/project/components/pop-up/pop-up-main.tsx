@@ -16,7 +16,7 @@ function PopUpMain({ isActive, onClose, children }: PopUpMainProps) {
       if (evt.key === 'Escape') {
         onClose?.();
       }
-    }, []
+    }, [onClose]
   );
 
   const handleCloseButtonClick = () => {

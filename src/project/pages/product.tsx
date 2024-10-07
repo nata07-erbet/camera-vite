@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { api } from '../api/api';
 import { ReqRoutes } from '../const/const';
 import { TCamera } from '../types/types';
@@ -12,14 +13,16 @@ import { Footer } from '../components/footer/footer';
 function Product() {
 
   const [cameras, setCameras] = useState<TCamera[]>([]);
+  const params = useParams();
+  const cameraId = Number(params.id);
+
+  const currentCamera = cameras.find((camera) => camera.id === cameraId);
 
   useEffect(() => {
     api
       .get<TCamera[]>(`${ReqRoutes.Cameras}`)
       .then((response) => setCameras(response.data));
   }, []);
-
-  const currentCamera = cameras.find((camera) => camera.id === 13);
 
   return (
     <div className="wrapper">
@@ -80,7 +83,9 @@ function Product() {
       <main>
         {currentCamera && (
           <div className="page-content">
-            <Breadcrumbs />
+            <Breadcrumbs
+              camera={currentCamera}
+            />
             <div className="page-content__section">
               <section className="product">
                 <div className="container">
@@ -88,7 +93,7 @@ function Product() {
                     <picture>
                       <source
                         type="image/webp"
-                        srcSet={currentCamera.previewImgWebp}
+                        srcSet={`/${currentCamera.previewImgWebp}`}
                       />
                       <img
                         src={`/${currentCamera.previewImg}`}
@@ -101,11 +106,7 @@ function Product() {
                   </div>
                   <div className="product__content">
                     <h1 className="title title--h3">{currentCamera.name}</h1>
-                    <Rate rate={currentCamera.rating} />
-                    <p className="visually-hidden">Рейтинг: {currentCamera.rating}</p>
-                    <p className="rate__count">
-                      <span className="visually-hidden">Всего оценок:</span>{currentCamera.reviewCount}
-                    </p>
+                    <Rate camera={currentCamera} />
                     <p className="product__price">
                       <span className="visually-hidden">Цена:</span>{currentCamera.price} ₽
                     </p>
@@ -410,9 +411,9 @@ function Product() {
          </div>
        </section>
      </div>*/
-     }
+            }
             <div className="page-content__section">
-            <Reviews />
+              <Reviews />
             </div>
           </div>
         )}
