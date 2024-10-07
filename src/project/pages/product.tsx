@@ -1,8 +1,9 @@
+import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { api } from '../api/api';
-import { ReqRoutes } from '../const/const';
-import { TCamera } from '../types/types';
+import { ReqRoutes, TABS, TabsMap, DEFAULT_TAB } from '../const/const';
+import { TCamera, TTab } from '../types/types';
 import { Logo } from '../components/logo/logo';
 import { Breadcrumbs } from '../components/breadcrumbs/breadcrumbs';
 import { Rate } from '../components/rate/rate';
@@ -10,13 +11,31 @@ import { UpBtn } from '../components/up-btn/up-btn';
 import { Reviews } from '../components/reviews-list/reviews-list';
 import { Footer } from '../components/footer/footer';
 
-function Product() {
 
+function Product() {
   const [cameras, setCameras] = useState<TCamera[]>([]);
+  const [currentTab, setCurrentTab] = useState<TTab>(DEFAULT_TAB);
+
+  const isActive = currentTab === DEFAULT_TAB;
+
+  const classIsActiveTab = classNames('tabs__element', {
+    'is-active': isActive,
+    disabled: !isActive
+  });
+
+  const classNonActiveTab = classNames('tabs__element', {
+    'is-active': !isActive,
+    disabled: !isActive
+  });
+
+
   const params = useParams();
   const cameraId = Number(params.id);
-
   const currentCamera = cameras.find((camera) => camera.id === cameraId);
+
+  const handleTabClick = (tab: TTab) => {
+    setCurrentTab(tab);
+  };
 
   useEffect(() => {
     api
@@ -116,17 +135,24 @@ function Product() {
                       </svg>
                       Добавить в корзину
                     </button>
+
                     <div className="tabs product__tabs">
                       <div className="tabs__controls product__tabs-controls">
-                        <button className="tabs__control" type="button">
-                          Характеристики
-                        </button>
-                        <button className="tabs__control is-active" type="button">
-                          Описание
-                        </button>
+                        {TABS.map((tab) => (
+                          <button
+                            key={tab}
+                            className="tabs__control"
+                            type="button"
+                            onClick={() => handleTabClick(tab)}
+                          >
+                            {TabsMap[tab]}
+                          </button>
+                        )
+
+                        )}
                       </div>
                       <div className="tabs__content">
-                        <div className="tabs__element">
+                        <div className={classNonActiveTab}>
                           <ul className="product__tabs-list">
                             <li className="item-list">
                               <span className="item-list__title">Артикул:</span>
@@ -134,31 +160,23 @@ function Product() {
                             </li>
                             <li className="item-list">
                               <span className="item-list__title">Категория:</span>
-                              <p className="item-list__text">Видеокамера</p>
+                              <p className="item-list__text">{currentCamera.category}</p>
                             </li>
                             <li className="item-list">
                               <span className="item-list__title">Тип камеры:</span>
-                              <p className="item-list__text">Коллекционная</p>
+                              <p className="item-list__text">{currentCamera.type}</p>
                             </li>
                             <li className="item-list">
                               <span className="item-list__title">Уровень:</span>
-                              <p className="item-list__text">Любительский</p>
+                              <p className="item-list__text">{currentCamera.level}</p>
                             </li>
                           </ul>
                         </div>
-                        <div className="tabs__element is-active">
+
+                        <div className={classIsActiveTab}>
                           <div className="product__tabs-text">
                             <p>
-                              Немецкий концерн BRW разработал видеокамеру Das Auge IV
-                              в&nbsp;начале 80-х годов, однако она до&nbsp;сих пор
-                              пользуется популярностью среди коллекционеров
-                              и&nbsp;яростных почитателей старинной техники.
-                            </p>
-                            <p>
-                              Вы&nbsp;тоже можете прикоснуться к&nbsp;волшебству
-                              аналоговой съёмки, заказав этот чудо-аппарат. Кто знает,
-                              может с&nbsp;Das Auge IV&nbsp;начнётся ваш путь
-                              к&nbsp;наградам всех престижных кинофестивалей.
+                              {currentCamera.description}
                             </p>
                           </div>
                         </div>

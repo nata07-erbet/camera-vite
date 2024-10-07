@@ -1,10 +1,16 @@
+import { Link, generatePath } from 'react-router-dom';
 import { TPromo } from '../../types/types';
+
 
 type BannerProps = {
   camera: TPromo;
 }
 
 function Banner({ camera }:BannerProps) {
+  const href = generatePath('/camera/:id', {
+    id: (camera.id).toString(),
+  });
+
   return (
     <div className="banner">
       <picture>
@@ -28,9 +34,12 @@ function Banner({ camera }:BannerProps) {
         <span className="banner__text">
           Профессиональная камера от&nbsp;известного производителя
         </span>
-        <a className="btn" href="#">
+        <Link
+          className="btn"
+          to={href}
+        >
           Подробнее
-        </a>
+        </Link>
       </p>
     </div>
   );

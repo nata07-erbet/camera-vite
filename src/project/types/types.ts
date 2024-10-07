@@ -1,3 +1,5 @@
+import { AppRouteTab } from '../const/const';
+
 type TCamera = {
   id: number;
   name: string;
@@ -24,4 +26,6 @@ type TPromo = {
   previewImgWebp2x: string;
 }
 
-export type { TCamera, TPromo };
+type TTab = (typeof AppRouteTab)[keyof typeof AppRouteTab];
+
+export type { TCamera, TPromo, TTab };

@@ -1,3 +1,5 @@
+import { TTab } from '../types/types';
+
 const BASE_URL = 'https://camera-shop.accelerator.htmlacademy.pro/';
 const ALL_STARS = 5;
 
@@ -22,4 +24,17 @@ const NavMap = {
   About: 'O компании'
 } as const;
 
-export { BASE_URL, ReqRoutes, AppRoutes, NavMap, ALL_STARS};
+const AppRouteTab = {
+  Characteristic: 'characteristic',
+  Description: 'description'
+} as const;
+
+const TabsMap = {
+  [AppRouteTab.Characteristic]: 'Характеристики',
+  [AppRouteTab.Description]: 'Описание'
+} as const;
+
+const TABS: TTab[] = ['characteristic', 'description'];
+const DEFAULT_TAB = AppRouteTab.Description;
+
+export { BASE_URL, ReqRoutes, AppRoutes, NavMap, ALL_STARS, TABS, AppRouteTab, TabsMap, DEFAULT_TAB};
