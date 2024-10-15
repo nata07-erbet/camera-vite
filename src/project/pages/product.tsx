@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { api } from '../api/api';
 import { ReqRoutes, TABS, TabsMap, DEFAULT_TAB } from '../const/const';
-import { TCamera, TTab } from '../types/types';
+import { TCamera, TTab, TReview } from '../types/types';
 import { Logo } from '../components/logo/logo';
 import { Breadcrumbs } from '../components/breadcrumbs/breadcrumbs';
 import { Rate } from '../components/rate/rate';
@@ -15,6 +15,7 @@ import { Footer } from '../components/footer/footer';
 function Product() {
   const [cameras, setCameras] = useState<TCamera[]>([]);
   const [currentTab, setCurrentTab] = useState<TTab>(DEFAULT_TAB);
+  const [reviews, setReviews] = useState<TReview[]>([]);
 
   const isActive = currentTab === DEFAULT_TAB;
 
@@ -37,10 +38,23 @@ function Product() {
     setCurrentTab(tab);
   };
 
+  const handleScrollTop = () => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+  };
+
   useEffect(() => {
     api
-      .get<TCamera[]>(`${ReqRoutes.Cameras}`)
+      .get<TCamera[]>(ReqRoutes.Cameras)
       .then((response) => setCameras(response.data));
+
+    api
+      .get<TReview[]>(`${ReqRoutes.Cameras}/${cameraId}/${ReqRoutes.Reviews}`)
+      .then((response) => setReviews(response.data));
+
   }, []);
 
   return (
@@ -127,7 +141,7 @@ function Product() {
                     <h1 className="title title--h3">{currentCamera.name}</h1>
                     <Rate camera={currentCamera} />
                     <p className="product__price">
-                      <span className="visually-hidden">Цена:</span>{currentCamera.price} ₽
+                      <span className="visually-hidden">Цена:</span>{(currentCamera.price).toLocaleString()} ₽
                     </p>
                     <button className="btn btn--purple" type="button">
                       <svg width={24} height={16} aria-hidden="true">
@@ -430,13 +444,15 @@ function Product() {
        </section>
      </div>*/
             }
-            <div className="page-content__section">
-              <Reviews />
-            </div>
+            {Reviews && (
+              <div className="page-content__section">
+                <Reviews reviews={reviews} />
+              </div>
+            )}
           </div>
         )}
       </main>
-      <UpBtn />
+      <UpBtn onScrollTop = { handleScrollTop }/>
       <Footer />
     </div>
   );

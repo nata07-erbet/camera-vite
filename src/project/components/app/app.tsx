@@ -7,6 +7,7 @@ import { AppRoutes } from '../../const/const';
 
 import { Catalog } from '../../pages/catalog';
 import { Product } from '../../pages/product';
+import { NotFoundPage } from '../../pages/404';
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,9 @@ const router = createBrowserRouter([
   {
     path: AppRoutes.Camera,
     element: <Product />
+  }, {
+    path: '/*',
+    element: <NotFoundPage />
   }
 ]);
 

@@ -2,13 +2,16 @@ import { TTab } from '../types/types';
 
 const BASE_URL = 'https://camera-shop.accelerator.htmlacademy.pro/';
 const ALL_STARS = 5;
+const REVIEW_SHOW = 3;
+
+const DATE_FORMAT = 'DD MMMM';
 
 const ReqRoutes = {
   Main: '/',
   Cameras: 'cameras',
-  Similar: '/cameras/:cameraId/similar',
+  Similar: 'similar',
   Promo: '/promo',
-  Reviews: '/cameras/cameraId/reviews',
+  Reviews: 'reviews',
   Orders: '/orders',
 };
 
@@ -37,4 +40,4 @@ const TabsMap = {
 const TABS: TTab[] = ['characteristic', 'description'];
 const DEFAULT_TAB = AppRouteTab.Description;
 
-export { BASE_URL, ReqRoutes, AppRoutes, NavMap, ALL_STARS, TABS, AppRouteTab, TabsMap, DEFAULT_TAB};
+export { BASE_URL, ReqRoutes, AppRoutes, NavMap, ALL_STARS, TABS, AppRouteTab, TabsMap, DEFAULT_TAB, DATE_FORMAT, REVIEW_SHOW };

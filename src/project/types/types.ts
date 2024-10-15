@@ -28,4 +28,15 @@ type TPromo = {
 
 type TTab = (typeof AppRouteTab)[keyof typeof AppRouteTab];
 
-export type { TCamera, TPromo, TTab };
+type TReview = {
+  id: string;
+  createAt: string;
+  cameraId: number;
+  userName: string;
+  advantage: string;
+  disadvantage: string;
+  review: string;
+  rating: number;
+  }
+
+export type { TCamera, TPromo, TTab, TReview };
