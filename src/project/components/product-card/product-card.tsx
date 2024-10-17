@@ -1,23 +1,26 @@
+import { MouseEvent } from 'react';
 import { TCamera } from '../../types/types';
 import { Link , generatePath } from 'react-router-dom';
 
 type ProductCardProps = {
   camera: TCamera;
-  onOpen? : () => void;
-  onClick?: (id: TCamera['id']) => void;
+  onOpen?: (id: TCamera['id']) => void | undefined;
+  onClick?: (id: TCamera['id']) => void | undefined;
 };
 
 function ProductCard({onOpen, onClick, camera }: ProductCardProps) {
+
   const href = generatePath('/camera/:id',{
     id: (camera.id).toString()
   }
   );
 
-  const handleClickButtonBuy = () => {
-    onOpen?.();
+  const handleClickButtonBuy = (id: TCamera['id']) => {
+    onOpen?.(id);
   };
 
-  const handleClickButtonAbout = (id: TCamera['id']) => {
+  const handleClickButtonAbout = (evt: MouseEvent<HTMLAnchorElement>, id: TCamera['id']) => {
+    evt.preventDefault();
     onClick?.(id);
   };
 
@@ -71,7 +74,7 @@ function ProductCard({onOpen, onClick, camera }: ProductCardProps) {
         <button
           className="btn btn--purple product-card__btn"
           type="button"
-          onClick={handleClickButtonBuy}
+          onClick={() => handleClickButtonBuy(camera.id)}
         >
           Купить
         </button>
@@ -80,7 +83,7 @@ function ProductCard({onOpen, onClick, camera }: ProductCardProps) {
           to={href}
           onClick={handleClickButtonAbout}
         >
-            Подробнее
+          Подробнее
         </Link>
       </div>
     </div>

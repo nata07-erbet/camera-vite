@@ -3,24 +3,34 @@ import { api } from '../api/api';
 import { TCamera, TPromo } from '../types/types';
 import { ReqRoutes } from '../const/const';
 import { Header } from '../components/header/header';
-import { Banner } from '../components/banner/banner';
+import { SwiperSliders } from '../components/swiper-sliders/swiper-sliders';
 import { ProductsList } from '../components/products-list/products-list';
 import { Breadcrumbs } from '../components/breadcrumbs/breadcrumbs';
 import { PopUpContact } from '../components/pop-up/pop-up-contact';
 import { Footer } from '../components/footer/footer';
 
+
 function Catalog() {
-  const [cameras, setCameras] = useState<TCamera[] | null>([]);
-  const [promos, setPromos] = useState<TPromo[] | null>([]);
+  const [cameras, setCameras] = useState<TCamera[]>([]);
+  const [promos, setPromos] = useState<TPromo[]>([]);
 
   const [isShowPopUp, setIsShowPopUp] = useState(false);
+  const [cameraId, setCameraId] = useState<TCamera['id']>();
+
+  const cameraByBasket = cameras.find((camera) => camera.id === cameraId);
+
+
+  const handleSubmit = () => {
+
+  };
 
   const handleClosePopUp = () => {
     setIsShowPopUp(false);
   };
 
-  const handleOpenPopUp = () => {
+  const handleOpenPopUp = (id:TCamera['id']) => {
     setIsShowPopUp(true);
+    setCameraId(id);
   };
 
   useEffect(() => {
@@ -38,8 +48,7 @@ function Catalog() {
     <div className="wrapper">
       <Header />
       <main>
-        {promos && promos
-          .map((promo) => <Banner key={promo.id} camera={promo} />)}
+        { promos && <SwiperSliders promos={promos} />};
         <div className="page-content">
           <Breadcrumbs/>
           <section className="catalog">
@@ -164,7 +173,7 @@ function Catalog() {
                   {cameras &&
                     <ProductsList
                       cameras={cameras}
-                      onOpen={handleOpenPopUp}
+                      onOpen={(id) =>handleOpenPopUp(id)}
                     />}
                   {/*<div class="pagination">
               <ul class="pagination__list">
@@ -184,27 +193,13 @@ function Catalog() {
           </section>
         </div>
       </main>
-      <PopUpContact
-        isActive={isShowPopUp}
-        cameraByBasket={{
-          id: 0,
-          name: '',
-          vendorCode: '',
-          type: 'Коллекционная',
-          category: 'Видеокамера',
-          description: '',
-          level: 'Нулевой',
-          price: 0,
-          rating: 0,
-          reviewCount: 0,
-          previewImg: '',
-          previewImg2x: '',
-          previewImgWebp: '',
-          previewImgWebp2x: ''
-        }}
-        onClose={handleClosePopUp}
-      />
-
+      {cameraByBasket &&
+        <PopUpContact
+          onSubmit={handleSubmit}
+          isActive={isShowPopUp}
+          cameraByBasket={cameraByBasket}
+          onClose={handleClosePopUp}
+        />}
       <Footer />
     </div>
   );

@@ -55,7 +55,7 @@ function Product() {
       .get<TReview[]>(`${ReqRoutes.Cameras}/${cameraId}/${ReqRoutes.Reviews}`)
       .then((response) => setReviews(response.data));
 
-  }, []);
+  }, [cameraId]);
 
   return (
     <div className="wrapper">

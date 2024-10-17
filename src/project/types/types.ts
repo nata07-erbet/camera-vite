@@ -39,4 +39,10 @@ type TReview = {
   rating: number;
   }
 
-export type { TCamera, TPromo, TTab, TReview };
+  type TOrder = {
+    camerasIds: [number];
+    coupon?: string;
+    tel: string;
+  }
+
+export type { TCamera, TPromo, TTab, TReview, TOrder };

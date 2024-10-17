@@ -6,26 +6,29 @@ import { ErrorMessage } from '@hookform/error-message';
 
 import { PopUpMain } from '../pop-up/pop-up-main';
 import { PopUpMainProps } from '../pop-up/pop-up-main';
-import { TCamera } from '../../types/types';
+import { TCamera, TOrder } from '../../types/types';
 
 import { api } from '../../api/api';
-import { ReqRoutes } from '../../const/const';
 
 type PopUpContactProps = PopUpMainProps & {
   cameraByBasket: TCamera;
-  onSubmit: () => void;
 };
 
-function PopUpContact({ cameraByBasket, onSubmit, ...props }: PopUpContactProps) {
+function PopUpContact({ cameraByBasket, ...props }: PopUpContactProps) {
   const focusFirst = useRef<HTMLInputElement | null>(null);
 
-  type TFormInput = {
-    tel?: string;
+  const id = cameraByBasket.id;
+
+  type TFormInputs = {
+    camerasIds: number;
+    coupon?: string;
+    tel: string;
   };
 
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors }
   } = useForm({
     mode: 'all',
@@ -33,14 +36,16 @@ function PopUpContact({ cameraByBasket, onSubmit, ...props }: PopUpContactProps)
 
   const registerWithMask = useHookFormMask(register);
 
-  const handleSubmitData: SubmitHandler<TFormInput> = (data) => {
-    const formData = {
+  const handleSubmitData: SubmitHandler<TFormInputs> = (data) => {
+    const formData: TOrder = {
+      camerasIds: [id],
+      coupon: data.coupon,
       tel: data.tel
     };
 
     api
-      .post(`${ReqRoutes.Orders}`, formData)
-      .then(onSubmit);
+      .post('/orders', formData)
+      .catch((err) => setError('root', err))
   };
 
   useEffect(() => {
@@ -97,7 +102,7 @@ function PopUpContact({ cameraByBasket, onSubmit, ...props }: PopUpContactProps)
                 required: true,
                 pattern: {
                   value: /\+7\(\d{3}\)\d{3}-\d{2}-\d{2}/,
-                  message: 'Test'
+                  message: 'Telephone number is invalid'
                 }
               })}
               type="tel"
@@ -117,7 +122,7 @@ function PopUpContact({ cameraByBasket, onSubmit, ...props }: PopUpContactProps)
           <button
             className="btn btn--purple modal__btn modal__btn--fit-width"
             type="button"
-            onClick={handleSubmit(handleSubmitData)}
+            onClick={(evt) => handleSubmit(handleSubmitData)(evt)}
           >
             <svg width={24} height={16} aria-hidden="true">
               <use xlinkHref="#icon-add-basket" />
