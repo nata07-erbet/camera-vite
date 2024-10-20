@@ -12,9 +12,10 @@ import { api } from '../../api/api';
 
 type PopUpContactProps = PopUpMainProps & {
   cameraByBasket: TCamera;
+  onSubmit: () => void;
 };
 
-function PopUpContact({ cameraByBasket, ...props }: PopUpContactProps) {
+function PopUpContact({ cameraByBasket, onSubmit, ...props }: PopUpContactProps) {
   const focusFirst = useRef<HTMLInputElement | null>(null);
 
   const id = cameraByBasket.id;
@@ -45,7 +46,8 @@ function PopUpContact({ cameraByBasket, ...props }: PopUpContactProps) {
 
     api
       .post('/orders', formData)
-      .catch((err) => setError('root', err))
+      .then(onSubmit)
+      .catch((err) => setError('root', err));
   };
 
   useEffect(() => {
@@ -122,7 +124,7 @@ function PopUpContact({ cameraByBasket, ...props }: PopUpContactProps) {
           <button
             className="btn btn--purple modal__btn modal__btn--fit-width"
             type="button"
-            onClick={(evt) => handleSubmit(handleSubmitData)(evt)}
+            onClick={handleSubmit(handleSubmitData)}
           >
             <svg width={24} height={16} aria-hidden="true">
               <use xlinkHref="#icon-add-basket" />

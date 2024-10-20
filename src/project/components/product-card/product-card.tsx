@@ -1,14 +1,12 @@
-import { MouseEvent } from 'react';
 import { TCamera } from '../../types/types';
 import { Link , generatePath } from 'react-router-dom';
 
 type ProductCardProps = {
   camera: TCamera;
   onOpen?: (id: TCamera['id']) => void | undefined;
-  onClick?: (id: TCamera['id']) => void | undefined;
 };
 
-function ProductCard({onOpen, onClick, camera }: ProductCardProps) {
+function ProductCard({onOpen, camera }: ProductCardProps) {
 
   const href = generatePath('/camera/:id',{
     id: (camera.id).toString()
@@ -19,10 +17,6 @@ function ProductCard({onOpen, onClick, camera }: ProductCardProps) {
     onOpen?.(id);
   };
 
-  const handleClickButtonAbout = (evt: MouseEvent<HTMLAnchorElement>, id: TCamera['id']) => {
-    evt.preventDefault();
-    onClick?.(id);
-  };
 
   return (
     <div className="product-card">
@@ -81,7 +75,6 @@ function ProductCard({onOpen, onClick, camera }: ProductCardProps) {
         <Link
           className="btn btn--transparent"
           to={href}
-          onClick={handleClickButtonAbout}
         >
           Подробнее
         </Link>

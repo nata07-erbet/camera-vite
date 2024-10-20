@@ -1,0 +1,37 @@
+.my-swiper {
+  position: relative;
+}
+
+.my-swiper .swiper-button-prev,
+.my-swiper .swiper-button-next {
+  position: absolute;
+  top: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 25px;
+  height: 25px;
+  margin-right: 16px;
+  padding: 0;
+  background-color: #f4f4fc;
+  border: none;
+  border-radius: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  cursor: pointer;
+  -webkit-transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease;
+}
+
+.my-swiper .swiper-button-prev::after,
+.my-swiper .swiper-button-next::after{
+  color: rgb(117, 117, 226);
+  width: 10px;
+}

@@ -21,7 +21,7 @@ function Catalog() {
 
 
   const handleSubmit = () => {
-
+    setIsShowPopUp(false);
   };
 
   const handleClosePopUp = () => {
