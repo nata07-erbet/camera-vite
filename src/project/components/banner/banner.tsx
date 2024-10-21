@@ -26,7 +26,7 @@ function Banner({ camera }:BannerProps) {
           alt="баннер"
         />
       </picture>
-      <p className="banner__info">
+      <p className="banner__info" data-testid ='banner-offer'>
         <span className="banner__message">Новинка!</span>
         <span className="title title--h1">
           {camera.name}

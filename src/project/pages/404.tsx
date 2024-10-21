@@ -23,7 +23,7 @@ function NotFoundPage() {
 
 
   return (
-    <Body>
+    <Body data-testid='error-page'>
       <Wrapper>
         <Page>This page not found</Page>
         <Link style={{margin: 'auto'}} to={AppRoutes.Main}>Go to main page</Link>

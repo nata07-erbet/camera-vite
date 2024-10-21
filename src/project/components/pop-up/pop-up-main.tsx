@@ -47,10 +47,12 @@ function PopUpMain({ isActive, onClose, children }: PopUpMainProps) {
   }, [isActive]);
 
   return (
-    <div className={classnames(
-      'modal',
-      { 'is-active': isActive }
-    )}
+    <div
+      className={classnames(
+        'modal',
+        { 'is-active': isActive }
+      )}
+      data-testid= 'modal-window'
     >
       <div className="modal__wrapper">
         <div

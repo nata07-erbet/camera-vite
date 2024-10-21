@@ -7,6 +7,7 @@ function Logo() {
       className="header__logo"
       to={AppRoutes.Main}
       aria-label="Переход на главную"
+      data-testid='logotype'
     >
       <svg width={100} height={36} aria-hidden="true">
         <use xlinkHref="#icon-logo" />

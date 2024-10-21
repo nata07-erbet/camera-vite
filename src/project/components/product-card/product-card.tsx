@@ -19,7 +19,7 @@ function ProductCard({onOpen, camera }: ProductCardProps) {
 
 
   return (
-    <div className="product-card">
+    <div className="product-card" data-testid="camera">
       <div className="product-card__img">
         <picture>
           <source

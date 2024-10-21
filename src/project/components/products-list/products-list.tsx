@@ -13,7 +13,7 @@ function ProductsList({onOpen, cameras }: ProductsListProps) {
   };
 
   return(
-    <div className="cards catalog__cards">
+    <div className="cards catalog__cards" data-testid="product-container">
       {cameras.map((camera) => (
         <ProductCard
           camera={camera}

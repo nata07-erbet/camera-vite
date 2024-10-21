@@ -20,6 +20,7 @@ function SwiperSliders({ promos }: SwiperSlidersProps) {
       modules={[ Autoplay, Pagination, Navigation ]}
       navigation={true}
       className='my-swiper'
+      data-testid="swiper"
     >
       {promos
         .map((promo) => (

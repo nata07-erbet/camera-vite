@@ -11,7 +11,7 @@ function Stars({ rating }: StarsProps) {
   return(
     <>
       {Array.from({ length: iconStarFull }, () => (
-        <svg key={rating} width={17} height={16} aria-hidden="true">
+        <svg key={rating} width={17} height={16} aria-hidden="true" data-testid="star">
           <use xlinkHref="#icon-full-star" />
         </svg>
       ))}

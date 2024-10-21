@@ -10,8 +10,6 @@ type ReviewsProps = {
 }
 
 function Reviews({ reviews }: ReviewsProps) {
-  console.log(reviews.length);
-
   const [ reviewShowCount, setReviewShowCount ] = useState<number>(REVIEW_SHOW);
 
   const classButtonHidden = classNames('btn', 'btn--purple', {
@@ -20,7 +18,6 @@ function Reviews({ reviews }: ReviewsProps) {
 
   const handleClickShowReviews = () => {
     setReviewShowCount((prevState) => prevState + REVIEW_SHOW);
-    console.log(reviewShowCount);
   };
 
   return (

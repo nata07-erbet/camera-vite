@@ -110,6 +110,7 @@ function PopUpContact({ cameraByBasket, onSubmit, ...props }: PopUpContactProps)
               type="tel"
               placeholder="Введите ваш номер"
               ref={focusFirst}
+              data-testid="telElement"
 
             />
             <ErrorMessage

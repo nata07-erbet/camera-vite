@@ -9,7 +9,7 @@ function Rate({ camera }: RateProps) {
   const { rating, reviewCount } = camera;
 
   return (
-    <div className="rate product__rate">
+    <div className="rate product__rate" data-testid="rate">
       <Stars rating={rating} />
       <p className="visually-hidden">Рейтинг: {rating}</p>
       <p className="rate__count">

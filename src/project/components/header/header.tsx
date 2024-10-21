@@ -1,20 +1,21 @@
 // import { Link } from 'react-router-dom';
-import { AppRoutes } from '../../const/const';
+import { Link, NavLink } from 'react-router-dom';
 import { NavMap } from '../../const/const';
+import { AppRoutes } from '../../const/const';
 
 function Header() {
   return (
     <header className="header" id="header">
       <div className="container">
-        <a
+        <Link
           className="header__logo"
-          href={AppRoutes.Main}
+          to={AppRoutes.Main}
           aria-label="Переход на главную"
         >
           <svg width={100} height={36} aria-hidden="true">
             <use xlinkHref="#icon-logo" />
           </svg>
-        </a>
+        </Link>
         <nav className="main-nav header__main-nav">
           <ul className="main-nav__list">
             {Object
@@ -24,9 +25,9 @@ function Header() {
                   key={item}
                   className="main-nav__item"
                 >
-                  <a className="main-nav__link" href="#">
+                  <NavLink className="main-nav__link" to="#">
                     {item}
-                  </a>
+                  </NavLink>
                 </li>
               ))}
           </ul>
