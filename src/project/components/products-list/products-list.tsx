@@ -1,5 +1,6 @@
 import { TCamera } from '../../types/types';
 import { ProductCard } from '../product-card/product-card';
+import { CATALOG_SHOW } from '../../const/const';
 
 type ProductsListProps = {
   cameras: TCamera[];
@@ -14,7 +15,9 @@ function ProductsList({onOpen, cameras }: ProductsListProps) {
 
   return(
     <div className="cards catalog__cards" data-testid="product-container">
-      {cameras.map((camera) => (
+      {cameras
+        .slice(0, CATALOG_SHOW)
+        .map((camera) => (
         <ProductCard
           camera={camera}
           key={camera.id}

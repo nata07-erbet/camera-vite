@@ -4,7 +4,7 @@ type TCamera = {
   id: number;
   name: string;
   vendorCode: string;
-  type: 'Коллекционная'|'Моментальная'|'Цифровая'|'Плёночная';
+  type: 'Коллекционная' | 'Моментальная' | 'Цифровая' | 'Плёночная';
   category: 'Видеокамера' | 'Фотоаппарат';
   description: string;
   level: 'Нулевой' | 'Любительский' | 'Профессиональный';
@@ -15,7 +15,7 @@ type TCamera = {
   previewImg2x: string;
   previewImgWebp: string;
   previewImgWebp2x: string;
-}
+};
 
 type TPromo = {
   id: number;
@@ -24,7 +24,7 @@ type TPromo = {
   previewImg2x: string;
   previewImgWebp: string;
   previewImgWebp2x: string;
-}
+};
 
 type TTab = (typeof AppRouteTab)[keyof typeof AppRouteTab];
 
@@ -37,12 +37,12 @@ type TReview = {
   disadvantage: string;
   review: string;
   rating: number;
-  }
+};
 
-  type TOrder = {
-    camerasIds: [number];
-    coupon?: string;
-    tel: string;
-  }
+type TOrder = {
+  camerasIds: [number];
+  coupon: string | null;
+  tel: string;
+};
 
 export type { TCamera, TPromo, TTab, TReview, TOrder };

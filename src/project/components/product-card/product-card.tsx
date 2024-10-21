@@ -1,34 +1,36 @@
+import classNames from 'classnames';
 import { TCamera } from '../../types/types';
-import { Link , generatePath } from 'react-router-dom';
+import { Link, generatePath } from 'react-router-dom';
 
 type ProductCardProps = {
   camera: TCamera;
   onOpen?: (id: TCamera['id']) => void | undefined;
+  active?: boolean;
 };
 
-function ProductCard({onOpen, camera }: ProductCardProps) {
-
-  const href = generatePath('/camera/:id',{
-    id: (camera.id).toString()
-  }
-  );
+function ProductCard({ onOpen, camera, active }: ProductCardProps) {
+  const href = generatePath('/camera/:id', {
+    id: camera.id.toString(),
+  });
 
   const handleClickButtonBuy = (id: TCamera['id']) => {
     onOpen?.(id);
   };
 
-
   return (
-    <div className="product-card" data-testid="camera">
+    <div
+      className={classNames('product-card', { 'is-active': active })}
+      data-testid="camera"
+    >
       <div className="product-card__img">
         <picture>
           <source
             type="image/webp"
-            srcSet={camera.previewImg}
+            srcSet={generateImgUrl(camera.previewImg)}
           />
           <img
-            src={camera.previewImg}
-            srcSet={camera.previewImg2x}
+            src={generateImgUrl(camera.previewImg)}
+            srcSet={generateImgUrl(camera.previewImg2x)}
             width={280}
             height={240}
             alt={camera.name}
@@ -57,11 +59,10 @@ function ProductCard({onOpen, camera }: ProductCardProps) {
             <span className="visually-hidden">Всего оценок:</span>23
           </p>
         </div>
-        <p className="product-card__title">
-          {camera.name}
-        </p>
+        <p className="product-card__title">{camera.name}</p>
         <p className="product-card__price">
-          <span className="visually-hidden">Цена:</span>{camera.price} ₽
+          <span className="visually-hidden">Цена:</span>
+          {camera.price} ₽
         </p>
       </div>
       <div className="product-card__buttons">
@@ -72,10 +73,7 @@ function ProductCard({onOpen, camera }: ProductCardProps) {
         >
           Купить
         </button>
-        <Link
-          className="btn btn--transparent"
-          to={href}
-        >
+        <Link className="btn btn--transparent" to={href}>
           Подробнее
         </Link>
       </div>
@@ -83,5 +81,6 @@ function ProductCard({onOpen, camera }: ProductCardProps) {
   );
 }
 
-export { ProductCard };
+const generateImgUrl = (img: string) => `${window.location.origin}/${img}`;
 
+export { ProductCard };

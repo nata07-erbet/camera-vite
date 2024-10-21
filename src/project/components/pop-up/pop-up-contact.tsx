@@ -15,7 +15,11 @@ type PopUpContactProps = PopUpMainProps & {
   onSubmit: () => void;
 };
 
-function PopUpContact({ cameraByBasket, onSubmit, ...props }: PopUpContactProps) {
+function PopUpContact({
+  cameraByBasket,
+  onSubmit,
+  ...props
+}: PopUpContactProps) {
   const focusFirst = useRef<HTMLInputElement | null>(null);
 
   const id = cameraByBasket.id;
@@ -30,18 +34,29 @@ function PopUpContact({ cameraByBasket, onSubmit, ...props }: PopUpContactProps)
     register,
     handleSubmit,
     setError,
-    formState: { errors }
-  } = useForm({
+    formState: { errors },
+  } = useForm<TFormInputs>({
     mode: 'all',
   });
 
   const registerWithMask = useHookFormMask(register);
 
+  const telInput = registerWithMask('tel', ['+7 (999) 999-99-99'], {
+    required: {
+      value: true,
+      message: 'Telephone number is required',
+    },
+    pattern: {
+      value: /\+7\s\(9\d{2}\)\s\d{3}-\d{2}-\d{2}/,
+      message: 'Telephone number is invalid',
+    },
+  });
+
   const handleSubmitData: SubmitHandler<TFormInputs> = (data) => {
     const formData: TOrder = {
       camerasIds: [id],
-      coupon: data.coupon,
-      tel: data.tel
+      coupon: data.coupon || null,
+      tel: postprocessTelValue(data.tel),
     };
 
     api
@@ -52,6 +67,7 @@ function PopUpContact({ cameraByBasket, onSubmit, ...props }: PopUpContactProps)
 
   useEffect(() => {
     if (focusFirst.current) {
+      telInput.ref(focusFirst.current);
       focusFirst.current.focus();
     }
   }, []);
@@ -59,83 +75,84 @@ function PopUpContact({ cameraByBasket, onSubmit, ...props }: PopUpContactProps)
   return (
     <FocusLock>
       <PopUpMain {...props}>
-        <p className="title title--h4">Свяжитесь со мной</p>
-        <div className="basket-item basket-item--short">
-          <div className="basket-item__img">
-            <picture>
-              <source
-                type="image/webp"
-                srcSet={cameraByBasket.previewImgWebp}
-              />
-              <img
-                src={cameraByBasket.previewImg}
-                srcSet={cameraByBasket.previewImg2x}
-                width={140}
-                height={120}
-                alt={cameraByBasket.name}
-              />
-            </picture>
+        <form onSubmit={handleSubmit(handleSubmitData)}>
+          <p className="title title--h4">Свяжитесь со мной</p>
+          <div className="basket-item basket-item--short">
+            <div className="basket-item__img">
+              <picture>
+                <source
+                  type="image/webp"
+                  srcSet={cameraByBasket.previewImgWebp}
+                />
+                <img
+                  src={cameraByBasket.previewImg}
+                  srcSet={cameraByBasket.previewImg2x}
+                  width={140}
+                  height={120}
+                  alt={cameraByBasket.name}
+                />
+              </picture>
+            </div>
+            <div className="basket-item__description">
+              <p className="basket-item__title">{cameraByBasket.name}</p>
+              <ul className="basket-item__list">
+                <li className="basket-item__list-item">
+                  <span className="basket-item__article">Артикул:</span>
+                  {''}
+                  <span className="basket-item__number">
+                    {cameraByBasket.id}
+                  </span>
+                </li>
+                <li className="basket-item__list-item">Плёночная фотокамера</li>
+                <li className="basket-item__list-item">Любительский уровень</li>
+              </ul>
+              <p className="basket-item__price">
+                <span className="visually-hidden">Цена:</span>
+                {cameraByBasket.price}₽
+              </p>
+            </div>
           </div>
-          <div className="basket-item__description">
-            <p className="basket-item__title">{cameraByBasket.name}</p>
-            <ul className="basket-item__list">
-              <li className="basket-item__list-item">
-                <span className="basket-item__article">Артикул:</span>{''}
-                <span className="basket-item__number">{cameraByBasket.id}</span>
-              </li>
-              <li className="basket-item__list-item">Плёночная фотокамера</li>
-              <li className="basket-item__list-item">Любительский уровень</li>
-            </ul>
-            <p className="basket-item__price">
-              <span className="visually-hidden">Цена:</span>{cameraByBasket.price}₽
-            </p>
+          <div className="custom-input form-review__item">
+            <label>
+              <span className="custom-input__label">
+                Телефон
+                <svg width={9} height={9} aria-hidden="true">
+                  <use xlinkHref="#icon-snowflake" />
+                </svg>
+              </span>
+              <input
+                {...telInput}
+                placeholder="Введите ваш номер"
+                data-testid="telElement"
+              />
+              {errors.tel && (
+                <ErrorMessage
+                  name="tel"
+                  errors={errors}
+                  render={({ message }) => <p>{message}</p>}
+                />
+              )}
+            </label>
+            <p className="custom-input__error">Нужно указать номер</p>
           </div>
-        </div>
-        <div className="custom-input form-review__item">
-          <label>
-            <span className="custom-input__label">
-              Телефон
-              <svg width={9} height={9} aria-hidden="true">
-                <use xlinkHref="#icon-snowflake" />
+          <div className="modal__buttons">
+            <button
+              className="btn btn--purple modal__btn modal__btn--fit-width"
+              type="submit"
+            >
+              <svg width={24} height={16} aria-hidden="true">
+                <use xlinkHref="#icon-add-basket" />
               </svg>
-            </span>
-            <input
-              {...registerWithMask('tel', ['99 9999-9999', '99999-9999'], {
-                required: true,
-                pattern: {
-                  value: /\+7\(\d{3}\)\d{3}-\d{2}-\d{2}/,
-                  message: 'Telephone number is invalid'
-                }
-              })}
-              type="tel"
-              placeholder="Введите ваш номер"
-              ref={focusFirst}
-              data-testid="telElement"
-
-            />
-            <ErrorMessage
-              name='tel_invalid'
-              errors={errors}
-              render={({ message }) => <p>{message}</p>}
-            />
-          </label>
-          <p className="custom-input__error">Нужно указать номер</p>
-        </div>
-        <div className="modal__buttons">
-          <button
-            className="btn btn--purple modal__btn modal__btn--fit-width"
-            type="button"
-            onClick={handleSubmit(handleSubmitData)}
-          >
-            <svg width={24} height={16} aria-hidden="true">
-              <use xlinkHref="#icon-add-basket" />
-            </svg>
-            Заказать
-          </button>
-        </div>
+              Заказать
+            </button>
+          </div>
+        </form>
       </PopUpMain>
     </FocusLock>
   );
 }
+
+const postprocessTelValue = (value: string) =>
+  value.replace(/([^+0123456789])/g, '');
 
 export { PopUpContact };

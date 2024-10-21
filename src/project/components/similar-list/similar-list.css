@@ -1,0 +1,8 @@
+.similar-list .swiper-slide {
+  width: calc(33.3% - 16px);
+}
+
+.similar-list .swiper-slide .product-card {
+  width: 90%;
+  margin: 0;
+}
