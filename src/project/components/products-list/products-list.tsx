@@ -18,12 +18,12 @@ function ProductsList({onOpen, cameras }: ProductsListProps) {
       {cameras
         .slice(0, CATALOG_SHOW)
         .map((camera) => (
-        <ProductCard
-          camera={camera}
-          key={camera.id}
-          onOpen={(id) => handleOpenPopUp(id)}
-        />
-      ))}
+          <ProductCard
+            camera={camera}
+            key={camera.id}
+            onOpen={(id) => handleOpenPopUp(id)}
+          />
+        ))}
     </div>
   );
 }

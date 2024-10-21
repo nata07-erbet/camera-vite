@@ -9,6 +9,8 @@ type ProductCardProps = {
 };
 
 function ProductCard({ onOpen, camera, active }: ProductCardProps) {
+  const generateImgUrl = (img: string) => `${window.location.origin}/${img}`;
+
   const href = generatePath('/camera/:id', {
     id: camera.id.toString(),
   });
@@ -80,7 +82,5 @@ function ProductCard({ onOpen, camera, active }: ProductCardProps) {
     </div>
   );
 }
-
-const generateImgUrl = (img: string) => `${window.location.origin}/${img}`;
 
 export { ProductCard };

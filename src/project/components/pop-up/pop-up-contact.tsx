@@ -24,6 +24,9 @@ function PopUpContact({
 
   const id = cameraByBasket.id;
 
+  const postprocessTelValue = (value: string) =>
+    value.replace(/([^+0123456789])/g, '');
+
   type TFormInputs = {
     camerasIds: number;
     coupon?: string;
@@ -70,7 +73,7 @@ function PopUpContact({
       telInput.ref(focusFirst.current);
       focusFirst.current.focus();
     }
-  }, []);
+  }, [telInput]);
 
   return (
     <FocusLock>
@@ -151,8 +154,5 @@ function PopUpContact({
     </FocusLock>
   );
 }
-
-const postprocessTelValue = (value: string) =>
-  value.replace(/([^+0123456789])/g, '');
 
 export { PopUpContact };

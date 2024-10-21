@@ -58,7 +58,7 @@ function Product() {
       .then((response) => setReviews(response.data));
 
     api
-      .get(`${ReqRoutes.Cameras}/${cameraId}/${ReqRoutes.Similar}`)
+      .get<TCamera[]>(`${ReqRoutes.Cameras}/${cameraId}/${ReqRoutes.Similar}`)
       .then((response) => setSimilars(response.data));
 
   }, [cameraId]);
