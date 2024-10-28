@@ -20,18 +20,16 @@ function PopUpContact({
   onSubmit,
   ...props
 }: PopUpContactProps) {
-  const focusFirst = useRef<HTMLInputElement | null>(null);
-
-  const id = cameraByBasket.id;
-
-  const postprocessTelValue = (value: string) =>
-    value.replace(/([^+0123456789])/g, '');
 
   type TFormInputs = {
     camerasIds: number;
     coupon?: string;
     tel: string;
   };
+
+  const inputRef = useRef<HTMLInputElement | null>(null);
+
+  const id = cameraByBasket.id;
 
   const {
     register,
@@ -54,11 +52,14 @@ function PopUpContact({
       message: 'Telephone number is invalid',
     },
   });
+  const postprocessTelValue = (value: string) =>
+    value.replace(/([^+0123456789])/g, '');
 
   const handleSubmitData: SubmitHandler<TFormInputs> = (data) => {
+
     const formData: TOrder = {
       camerasIds: [id],
-      coupon: data.coupon || null,
+      coupon: data.coupon,
       tel: postprocessTelValue(data.tel),
     };
 
@@ -67,13 +68,12 @@ function PopUpContact({
       .then(onSubmit)
       .catch((err) => setError('root', err));
   };
-
   useEffect(() => {
-    if (focusFirst.current) {
-      telInput.ref(focusFirst.current);
-      focusFirst.current.focus();
+    if(inputRef.current) {
+      telInput.ref(inputRef.current);
+      inputRef.current.focus();
     }
-  }, [telInput]);
+  },[telInput]);
 
   return (
     <FocusLock>
@@ -154,5 +154,4 @@ function PopUpContact({
     </FocusLock>
   );
 }
-
 export { PopUpContact };

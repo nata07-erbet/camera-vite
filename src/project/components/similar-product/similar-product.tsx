@@ -1,12 +1,13 @@
-import { ProductCard } from '../product-card/product-card';
-import { TCamera } from '../../types/types';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import './similar-product.css';
 
-type SimilarProductProps = {
+import { TCamera } from '../../types/types';
+import { ProductCard } from '../product-card/product-card';
+
+type SimilarProductProps ={
   similars: TCamera[];
 };
 
@@ -21,18 +22,20 @@ function SimilarProduct({ similars }: SimilarProductProps) {
               modules={[Navigation]}
               navigation={{
                 enabled: true,
-                prevEl: '.slider-controls--prev',
-                nextEl: '.slider-controls--next',
+                prevEl:'.slider-controls--prev',
+                nextEl: '.slider-controls--next'
               }}
-              className="product-similar__slider-list"
-              slideActiveClass="is-active"
               slidesPerView={3}
               slidesPerGroup={3}
-              data-testid="similar-products-list"
+              slideActiveClass='is-active'
+              autoplay={{
+                delay: 5000,
+              }}
+              className='product-similar__slider-list'
             >
               {similars.map((similar) => (
                 <SwiperSlide key={similar.id}>
-                  <ProductCard camera={similar} />
+                  <ProductCard camera={similar}/>
                 </SwiperSlide>
               ))}
             </Swiper>
@@ -59,7 +62,9 @@ function SimilarProduct({ similars }: SimilarProductProps) {
         </div>
       </section>
     </div>
+
   );
 }
 
 export { SimilarProduct };
+

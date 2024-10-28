@@ -41,4 +41,4 @@ const TabsMap = {
 const TABS: TTab[] = ['characteristic', 'description'];
 const DEFAULT_TAB = AppRouteTab.Description;
 
-export { BASE_URL, ReqRoutes, AppRoutes, NavMap, ALL_STARS, TABS, AppRouteTab, TabsMap, DEFAULT_TAB, DATE_FORMAT, REVIEW_SHOW, CATALOG_SHOW };
+export { BASE_URL, ReqRoutes, AppRoutes, NavMap, ALL_STARS, TABS, AppRouteTab, TabsMap, DEFAULT_TAB, DATE_FORMAT, REVIEW_SHOW, CATALOG_SHOW};

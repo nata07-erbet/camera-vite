@@ -1,5 +1,4 @@
 .my-swiper {
-  --swiper-pagination-bullet-horizontal-gap: 6px;
   position: relative;
 }
 
@@ -32,26 +31,7 @@
 }
 
 .my-swiper .swiper-button-prev::after,
-.my-swiper .swiper-button-next::after {
+.my-swiper .swiper-button-next::after{
   color: rgb(117, 117, 226);
   width: 10px;
-}
-
-.my-swiper .swiper-pagination-bullet {
-  width: 16px;
-  height: 16px;
-  background-color: rgba(244, 244, 252, 1);
-  opacity: 1;
-}
-.my-swiper .swiper-pagination {
-  position: absolute;
-  bottom: 22px;
-  right: 40px;
-  left: auto;
-  display: inline-flex;
-  width: auto;
-}
-.my-swiper .swiper-pagination-bullet-active {
-  background-color: rgba(117, 117, 226, 1);
-  opacity: 1;
 }

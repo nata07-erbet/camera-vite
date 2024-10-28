@@ -5,10 +5,10 @@ import { Link, generatePath } from 'react-router-dom';
 type ProductCardProps = {
   camera: TCamera;
   onOpen?: (id: TCamera['id']) => void | undefined;
-  active?: boolean;
+  isActive?: boolean;
 };
 
-function ProductCard({ onOpen, camera, active }: ProductCardProps) {
+function ProductCard({ onOpen, camera, isActive }: ProductCardProps) {
   const generateImgUrl = (img: string) => `${window.location.origin}/${img}`;
 
   const href = generatePath('/camera/:id', {
@@ -21,7 +21,7 @@ function ProductCard({ onOpen, camera, active }: ProductCardProps) {
 
   return (
     <div
-      className={classNames('product-card', { 'is-active': active })}
+      className={classNames('product-card', { 'is-active': isActive })}
       data-testid="camera"
     >
       <div className="product-card__img">
@@ -84,3 +84,4 @@ function ProductCard({ onOpen, camera, active }: ProductCardProps) {
 }
 
 export { ProductCard };
+

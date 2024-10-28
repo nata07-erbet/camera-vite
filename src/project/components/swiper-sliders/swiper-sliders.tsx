@@ -23,6 +23,7 @@ function SwiperSliders({ promos }: SwiperSlidersProps) {
       data-testid="swiper"
     >
       {promos.map((promo) => (
+
         <SwiperSlide key={promo.id}>
           <Banner camera={promo} />
         </SwiperSlide>
@@ -32,3 +33,4 @@ function SwiperSliders({ promos }: SwiperSlidersProps) {
 }
 
 export { SwiperSliders };
+
