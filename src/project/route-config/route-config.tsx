@@ -2,6 +2,7 @@ import { AppRoutes } from '../const/const';
 
 import { Catalog } from '../pages/catalog';
 import { Product } from '../pages/product';
+import { Basket } from '../pages/basket';
 import { NotFoundPage } from '../pages/404';
 
 const routeConfig = [
@@ -12,6 +13,10 @@ const routeConfig = [
   {
     path: AppRoutes.Camera,
     element: <Product />
+  },
+  {
+    path: AppRoutes.Basket,
+    element: <Basket />
   },
   {
     path: '*',

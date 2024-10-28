@@ -10,6 +10,7 @@ import { Rate } from '../components/rate/rate';
 import { SimilarProduct } from '../components/similar-product/similar-product';
 import { UpBtn } from '../components/up-btn/up-btn';
 import { Reviews } from '../components/reviews-list/reviews-list';
+import { PopUpAddToBasket } from '../components/pop-up/pop-up-add-to-basket';
 import { Footer } from '../components/footer/footer';
 
 
@@ -18,6 +19,8 @@ function Product() {
   const [ currentTab, setCurrentTab ] = useState<TTab>(DEFAULT_TAB);
   const [ reviews, setReviews ] = useState<TReview[]>([]);
   const [ similars, setSimilars ] = useState<TCamera[]>([]);
+  const [ isShowPopUpAddBasket, setIsShowPopUpAddBasket ] = useState(false);
+
 
   const isActive = currentTab === DEFAULT_TAB;
 
@@ -48,6 +51,13 @@ function Product() {
     });
   };
 
+  const handleButtonClick = () => {
+    setIsShowPopUpAddBasket((prevState) => !prevState);
+  };
+
+  const handlePopUpClose = () => {
+    setIsShowPopUpAddBasket(false);
+  }
   useEffect(() => {
     api
       .get<TCamera[]>(ReqRoutes.Cameras)
@@ -96,7 +106,11 @@ function Product() {
                     <p className='product__price'>
                       <span className='visually-hidden'>Цена:</span>{(currentCamera.price).toLocaleString()} ₽
                     </p>
-                    <button className='btn btn--purple' type='button'>
+                    <button
+                      className='btn btn--purple'
+                      type='button'
+                      onClick={handleButtonClick}
+                    >
                       <svg width={24} height={16} aria-hidden='true'>
                         <use xlinkHref='#icon-add-basket' />
                       </svg>
@@ -162,6 +176,12 @@ function Product() {
           </div>
         )}
       </main>
+      {currentCamera &&
+        <PopUpAddToBasket
+          camera={currentCamera}
+          isActive={isShowPopUpAddBasket}
+          onClose={handlePopUpClose}
+        />}
       <UpBtn onScrollTop = { handleScrollTop }/>
       <Footer />
     </div>
