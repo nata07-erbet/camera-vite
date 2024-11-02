@@ -57,7 +57,8 @@ function Product() {
 
   const handlePopUpClose = () => {
     setIsShowPopUpAddBasket(false);
-  }
+  };
+
   useEffect(() => {
     api
       .get<TCamera[]>(ReqRoutes.Cameras)

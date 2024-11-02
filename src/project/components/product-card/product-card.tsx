@@ -21,7 +21,7 @@ function ProductCard({ onOpen, camera, isActive }: ProductCardProps) {
 
   return (
     <div
-      className={classNames('product-card', { 'is-active': isActive })}
+      className={classNames('product-card', { 'is-active': isActive})}
       data-testid="camera"
     >
       <div className="product-card__img">
