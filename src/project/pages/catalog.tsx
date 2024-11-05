@@ -1,4 +1,4 @@
-import { useState, useEffect, ChangeEvent } from 'react';
+import { useState, useEffect } from 'react';
 import { api } from '../api/api';
 import { TCamera, TPromo } from '../types/types';
 import { ReqRoutes } from '../const/const';
@@ -18,12 +18,7 @@ function Catalog() {
 
   const [isShowPopUp, setIsShowPopUp] = useState(false);
   const [cameraId, setCameraId] = useState<TCamera['id']>();
-
-  const [ inputItems, setInputItems ] = useState('');
-
   const cameraByBasket = cameras.find((camera) => camera.id === cameraId);
-
-  const sortedCameras = inputItems.length >= 3 ? cameras.filter(({ name }) => name.toLocaleLowerCase().includes(inputItems.toLocaleLowerCase())) : [];
 
   const handleSubmit = () => {
     setIsShowPopUp(false);
@@ -36,14 +31,6 @@ function Catalog() {
   const handleOpenPopUp = (id:TCamera['id']) => {
     setIsShowPopUp(true);
     setCameraId(id);
-  };
-
-  const handleChangeInput = (evt: ChangeEvent<HTMLInputElement>) => {
-    setInputItems(evt.target.value);
-  };
-
-  const handleResetInput = () => {
-    setInputItems('');
   };
 
   useEffect(() => {
@@ -59,13 +46,7 @@ function Catalog() {
 
   return (
     <div className="wrapper">
-      {sortedCameras &&
-        <Header
-          inputItems={inputItems}
-          cameras={sortedCameras}
-          onChange={handleChangeInput}
-          onReset={handleResetInput}
-        />}
+      <Header cameras={cameras}/>
       <main>
         { promos && <SwiperSliders promos={promos} />};
         <div className="page-content">

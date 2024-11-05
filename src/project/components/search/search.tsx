@@ -1,28 +1,50 @@
+import { ChangeEvent, useEffect, useState } from 'react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { SearchList } from '../search-list/search-list';
 import { TCamera } from '../../types/types';
-import { ChangeEvent } from 'react';
 
 type SearchProps = {
-  inputItems: string;
-  cameras: TCamera[];
-  onChange: (evt: ChangeEvent<HTMLInputElement>) => void;
-  onReset: () => void;
+cameras: TCamera[];
 };
 
-function Search({ inputItems, cameras, onChange, onReset }: SearchProps) {
+function Search({ cameras }: SearchProps) {
+  const [ inputItems, setInputItems ] = useState('');
+  const [ listCameras, setListCameras ] =useState<TCamera[]>([]);
+
   const isOpened = inputItems && inputItems.length >= 1 ? true : false;
 
   const classOpened = classNames('form-search', {'list-opened': isOpened});
 
   const handleInput = (evt: ChangeEvent<HTMLInputElement>) => {
-    onChange(evt);
+    setInputItems(evt.target.value);
   };
 
   const handleResetClick = () => {
-    onReset();
+    setInputItems('');
   };
+
+  const filterCameras = (inputValue:string,  products:TCamera[]) => {
+    if(!inputValue) {
+      return [];
+    }
+
+    const camerasList = products.filter((product) => product.name.toLocaleLowerCase().includes(inputValue.toLocaleLowerCase()));
+
+    return camerasList;
+  };
+
+  useEffect(() => {
+    let isMounted = true;
+    if(isMounted) {
+      const sortedCameras = filterCameras(inputItems, cameras);
+      setListCameras(sortedCameras);
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  },[inputItems,cameras]);
 
   return(
     <>
@@ -46,7 +68,7 @@ function Search({ inputItems, cameras, onChange, onReset }: SearchProps) {
               onChange={handleInput}
             />
           </label>
-          {cameras && <SearchList cameras={cameras}/>}
+          {cameras && <SearchList cameras={listCameras}/>}
         </form>
         <button
           className="form-search__reset"

@@ -4,16 +4,12 @@ import { NavMap } from '../../const/const';
 import { AppRoutes } from '../../const/const';
 import { Search } from '../search/search';
 import { TCamera } from '../../types/types';
-import { ChangeEvent } from 'react';
 
 type HeaderProps = {
-  inputItems: string;
   cameras: TCamera[];
-  onChange: (evt: ChangeEvent<HTMLInputElement>) => void;
-  onReset: () => void;
 };
 
-function Header({ inputItems, cameras, onChange, onReset }: HeaderProps) {
+function Header({ cameras }: HeaderProps) {
   return (
     <header className="header" id="header">
       <div className="container">
@@ -42,12 +38,7 @@ function Header({ inputItems, cameras, onChange, onReset }: HeaderProps) {
               ))}
           </ul>
         </nav>
-        <Search
-          inputItems={inputItems}
-          cameras={cameras}
-          onChange={onChange}
-          onReset={onReset}
-        />
+        <Search cameras={cameras}/>
       </div>
     </header>
   );

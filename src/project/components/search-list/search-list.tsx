@@ -1,21 +1,26 @@
 import { SearchItem } from '../search-item/search-item';
 import { TCamera } from '../../types/types';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 type SearchListProps = {
   cameras: TCamera[];
 };
 
 function SearchList({ cameras }: SearchListProps) {
+  const listRef = useRef<HTMLUListElement>(null);
+
   const onScroll = useCallback(() => window.scrollY, []);
 
 
   useEffect(() => {
-    window.addEventListener('scroll', onScroll);
+    const { current } = listRef;
 
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-    };
+    if(current) {
+      current.addEventListener('scroll', onScroll);
+      return () => {
+        current.removeEventListener('scroll', onScroll);
+      };
+    }
   },[onScroll]);
 
   return(
@@ -23,8 +28,8 @@ function SearchList({ cameras }: SearchListProps) {
       style={{overflow: 'auto'}}
       className='form-search__select-list'
       onScroll={onScroll}
+      ref={listRef}
     >
-      {scroll}
       {cameras .map((camera) =>
         <SearchItem
           camera={camera}
