@@ -10,9 +10,10 @@ type HeaderProps = {
   inputItems: string;
   cameras: TCamera[];
   onChange: (evt: ChangeEvent<HTMLInputElement>) => void;
+  onReset: () => void;
 };
 
-function Header({ inputItems, cameras, onChange }: HeaderProps) {
+function Header({ inputItems, cameras, onChange, onReset }: HeaderProps) {
   return (
     <header className="header" id="header">
       <div className="container">
@@ -45,6 +46,7 @@ function Header({ inputItems, cameras, onChange }: HeaderProps) {
           inputItems={inputItems}
           cameras={cameras}
           onChange={onChange}
+          onReset={onReset}
         />
       </div>
     </header>

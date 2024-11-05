@@ -11,7 +11,6 @@ import { Filter } from '../components/filter/filter';
 import { Pagination } from '../components/pagination/pagination';
 import { PopUpContact } from '../components/pop-up/pop-up-contact';
 import { Footer } from '../components/footer/footer';
-import { cameraMocks } from '../mocks/camera-mocks';
 
 function Catalog() {
   const [cameras, setCameras] = useState<TCamera[]>([]);
@@ -23,7 +22,8 @@ function Catalog() {
   const [ inputItems, setInputItems ] = useState('');
 
   const cameraByBasket = cameras.find((camera) => camera.id === cameraId);
-  const sortedCameras = cameraMocks;
+
+  const sortedCameras = inputItems.length >= 3 ? cameras.filter(({ name }) => name.toLocaleLowerCase().includes(inputItems.toLocaleLowerCase())) : [];
 
   const handleSubmit = () => {
     setIsShowPopUp(false);
@@ -42,6 +42,10 @@ function Catalog() {
     setInputItems(evt.target.value);
   };
 
+  const handleResetInput = () => {
+    setInputItems('');
+  };
+
   useEffect(() => {
     api
       .get<TCamera[]>(`${ReqRoutes.Cameras}`)
@@ -55,11 +59,13 @@ function Catalog() {
 
   return (
     <div className="wrapper">
-      <Header
-        inputItems={inputItems}
-        cameras={sortedCameras}
-        onChange={handleChangeInput}
-      />
+      {sortedCameras &&
+        <Header
+          inputItems={inputItems}
+          cameras={sortedCameras}
+          onChange={handleChangeInput}
+          onReset={handleResetInput}
+        />}
       <main>
         { promos && <SwiperSliders promos={promos} />};
         <div className="page-content">
