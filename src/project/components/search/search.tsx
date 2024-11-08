@@ -10,7 +10,7 @@ cameras: TCamera[];
 
 function Search({ cameras }: SearchProps) {
   const [ inputItems, setInputItems ] = useState('');
-  const [ listCameras, setListCameras ] =useState<TCamera[]>([]);
+  const [ listCameras, setListCameras ] = useState<TCamera[]>([]);
 
   const isOpened = inputItems && inputItems.length >= 1 ? true : false;
 
@@ -24,7 +24,7 @@ function Search({ cameras }: SearchProps) {
     setInputItems('');
   };
 
-  const filterCameras = (inputValue:string,  products:TCamera[]) => {
+  const filterCameras = (inputValue:string, products:TCamera[]) => {
     if(!inputValue) {
       return [];
     }
@@ -45,6 +45,7 @@ function Search({ cameras }: SearchProps) {
       isMounted = false;
     };
   },[inputItems,cameras]);
+
 
   return(
     <>

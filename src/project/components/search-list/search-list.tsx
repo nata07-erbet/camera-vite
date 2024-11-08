@@ -9,32 +9,32 @@ type SearchListProps = {
 function SearchList({ cameras }: SearchListProps) {
   const listRef = useRef<HTMLUListElement>(null);
 
-  const onScroll = useCallback(() => window.scrollY, []);
-
+  const handleScroll = useCallback(() => window.scrollY, []);
 
   useEffect(() => {
     const { current } = listRef;
 
     if(current) {
-      current.addEventListener('scroll', onScroll);
+      current.addEventListener('scroll', handleScroll);
       return () => {
-        current.removeEventListener('scroll', onScroll);
+        current.removeEventListener('scroll', handleScroll);
       };
     }
-  },[onScroll]);
+  },[handleScroll]);
+
 
   return(
     <ul
       style={{overflow: 'auto'}}
       className='form-search__select-list'
-      onScroll={onScroll}
+      onScroll={handleScroll}
       ref={listRef}
     >
-      {cameras .map((camera) =>
+      {cameras .map((camera) => (
         <SearchItem
           camera={camera}
           key={camera.id}
-        />
+        />)
       )}
     </ul>
   );
