@@ -1,4 +1,4 @@
-import { TTab } from '../types/types';
+import { TTab, TSortInner, TSortOrder } from '../types/types';
 
 const BASE_URL = 'https://camera-shop.accelerator.htmlacademy.pro/';
 const ALL_STARS = 5;
@@ -42,4 +42,31 @@ const TabsMap = {
 const TABS: TTab[] = ['characteristic', 'description'];
 const DEFAULT_TAB = AppRouteTab.Description;
 
-export { BASE_URL, ReqRoutes, AppRoutes, NavMap, ALL_STARS, TABS, AppRouteTab, TabsMap, DEFAULT_TAB, DATE_FORMAT, REVIEW_SHOW, CATALOG_SHOW};
+const SortTabInner = {
+  Price: 'price',
+  Popular: 'popular'
+} as const;
+
+const SortInnerMap = {
+  [SortTabInner.Price]: 'по цене',
+  [SortTabInner.Popular]: 'по популярности',
+} as const ;
+
+const SORT_INNER: TSortInner[] = ['price', 'popular'];
+const DEFAULT_TAB_SORT = SortTabInner.Price;
+
+const SortTabOrder = {
+  Up: 'up',
+  Down: 'down',
+} as const;
+
+const SortOrderMap = {
+  [SortTabOrder.Up]: 'По возрастанию',
+  [SortTabOrder.Down]: 'По убыванию'
+} as const;
+
+const DEFAULT_TAB_SORT_ORDER = SortTabOrder.Up;
+const SORT_ORDER: TSortOrder[] = ['up', 'down'];
+
+
+export { BASE_URL, ReqRoutes, AppRoutes, NavMap, ALL_STARS, TABS, AppRouteTab, TabsMap, DEFAULT_TAB, DATE_FORMAT, REVIEW_SHOW, CATALOG_SHOW, SortTabInner, SortInnerMap, SORT_INNER, DEFAULT_TAB_SORT, SortTabOrder, SORT_ORDER, SortOrderMap, DEFAULT_TAB_SORT_ORDER };

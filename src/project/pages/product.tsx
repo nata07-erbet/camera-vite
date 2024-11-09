@@ -13,7 +13,6 @@ import { Reviews } from '../components/reviews-list/reviews-list';
 import { PopUpAddToBasket } from '../components/pop-up/pop-up-add-to-basket';
 import { Footer } from '../components/footer/footer';
 
-
 function Product() {
   const [ cameras, setCameras ] = useState<TCamera[]>([]);
   const [ currentTab, setCurrentTab ] = useState<TTab>(DEFAULT_TAB);
@@ -76,7 +75,7 @@ function Product() {
 
   return (
     <div className='wrapper' data-testid ='product-page'>
-      <Header />
+      <Header cameras={cameras} />
       <main>
         {currentCamera && (
           <div className='page-content'>

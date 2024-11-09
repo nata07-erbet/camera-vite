@@ -1,4 +1,4 @@
-import { AppRouteTab } from '../const/const';
+import { AppRouteTab, SortTabInner, SortTabOrder } from '../const/const';
 
 type TCamera = {
   id: number;
@@ -45,4 +45,7 @@ type TReview = {
     tel: string;
   }
 
-export type { TCamera, TPromo, TTab, TReview, TOrder };
+  type TSortInner = (typeof SortTabInner)[keyof typeof SortTabInner];
+  type TSortOrder = (typeof SortTabOrder)[keyof typeof SortTabOrder];
+
+export type { TCamera, TPromo, TTab, TReview, TOrder, TSortInner, TSortOrder };
