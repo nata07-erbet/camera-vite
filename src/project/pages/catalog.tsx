@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { api } from '../api/api';
-import { TCamera, TPromo } from '../types/types';
-import { ReqRoutes } from '../const/const';
+import { TCamera, TPromo, TSortType, TSortDirection } from '../types/types';
+import { ReqRoutes, DEFAULT_SORT_TYPE, DEFAULT_SORT_DIRECTION  } from '../const/const';
 import { Header } from '../components/header/header';
 import { SwiperSliders } from '../components/swiper-sliders/swiper-sliders';
 import { ProductsList } from '../components/products-list/products-list';
@@ -11,6 +11,7 @@ import { Filter } from '../components/filter/filter';
 import { Pagination } from '../components/pagination/pagination';
 import { PopUpContact } from '../components/pop-up/pop-up-contact';
 import { Footer } from '../components/footer/footer';
+import { compare } from '../utils/utils';
 
 function Catalog() {
   const [cameras, setCameras] = useState<TCamera[]>([]);
@@ -19,6 +20,15 @@ function Catalog() {
   const [isShowPopUp, setIsShowPopUp] = useState(false);
   const [cameraId, setCameraId] = useState<TCamera['id']>();
   const cameraByBasket = cameras.find((camera) => camera.id === cameraId);
+
+  const [ sortType, setSortType ] =useState<TSortType>(DEFAULT_SORT_TYPE);
+  const [ sortDirection, setSortDirection ] =useState<TSortDirection>(DEFAULT_SORT_DIRECTION);
+
+  const sortKey = `${sortType}-${sortDirection}`;
+
+  const sortedCameras = compare(sortKey, cameras);
+
+  console.log(sortedCameras);
 
   const handleSubmit = () => {
     setIsShowPopUp(false);
@@ -32,6 +42,15 @@ function Catalog() {
     setIsShowPopUp(true);
     setCameraId(id);
   };
+
+  const handleClickType = (type: TSortType) => {
+    setSortType(type)
+  };
+
+  const handleClickDirection = (direction : TSortDirection) => {
+    setSortDirection(direction);
+  };
+
 
   useEffect(() => {
     api
@@ -60,10 +79,13 @@ function Catalog() {
                   <Filter />
                 </div>
                 <div className="catalog__content">
-                  <Sort />
-                  {cameras &&
+                  <Sort
+                    onClickType = {handleClickType}
+                    onClickDirection ={handleClickDirection}
+                  />
+                  {sortedCameras &&
                     <ProductsList
-                      cameras={cameras}
+                      cameras={sortedCameras}
                       onOpen={(id) =>handleOpenPopUp(id)}
                     />}
                   <Pagination cameras={cameras}/>

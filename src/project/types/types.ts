@@ -45,7 +45,8 @@ type TReview = {
     tel: string;
   }
 
-  type TSortInner = (typeof SortTabInner)[keyof typeof SortTabInner];
-  type TSortOrder = (typeof SortTabOrder)[keyof typeof SortTabOrder];
+  type TSortType = (typeof SortTabInner)[keyof typeof SortTabInner];
+  type TSortDirection = (typeof SortTabOrder)[keyof typeof SortTabOrder];
 
-export type { TCamera, TPromo, TTab, TReview, TOrder, TSortInner, TSortOrder };
+
+export type { TCamera, TPromo, TTab, TReview, TOrder,  TSortType, TSortDirection };
