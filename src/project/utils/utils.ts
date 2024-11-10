@@ -13,23 +13,23 @@ const formatDate = (date: string) => dayjs(date).locale('ru').format(DATE_FORMAT
 
 
 const comparePrice = (a: TCamera, b: TCamera) => a.price - b.price;
-const compareRating = (a: TCamera, b: TCamera) => a.rating  -b.rating;
+const compareRating = (a: TCamera, b: TCamera) => a.rating - b.rating;
 
 const compare = (typeofSort: string, camera: TCamera[]) => {
-  let camerasSorted:TCamera[] = camera;
+  const camerasSorted:TCamera[] = camera;
 
   switch (typeofSort) {
     case 'price-up':
       return camera.toSorted(comparePrice);
-    break;
+      break;
 
     case 'price-down':
       return camera.toSorted(comparePrice).reverse();
-    break;
+      break;
 
     case 'popular-up':
       return camera.toSorted(compareRating);
-    break;
+      break;
 
     case 'popular-down':
       return camera.toSorted(compareRating).reverse();

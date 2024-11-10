@@ -3,8 +3,8 @@ import { SORT_INNER, SortInnerMap, SortOrderMap, SORT_ORDER, DEFAULT_SORT_TYPE, 
 import { TSortType, TSortDirection } from '../../types/types';
 
 type SortProps = {
-  onClickType: (type: TSortType) => void,
-  onClickDirection: (direction: TSortDirection) => void,
+  onClickType: (type: TSortType) => void;
+  onClickDirection: (direction: TSortDirection) => void;
 };
 
 function Sort({ onClickType, onClickDirection }: SortProps) {

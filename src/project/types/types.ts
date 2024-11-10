@@ -49,4 +49,4 @@ type TReview = {
   type TSortDirection = (typeof SortTabOrder)[keyof typeof SortTabOrder];
 
 
-export type { TCamera, TPromo, TTab, TReview, TOrder,  TSortType, TSortDirection };
+export type { TCamera, TPromo, TTab, TReview, TOrder, TSortType, TSortDirection };

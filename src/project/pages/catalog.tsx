@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { api } from '../api/api';
 import { TCamera, TPromo, TSortType, TSortDirection } from '../types/types';
-import { ReqRoutes, DEFAULT_SORT_TYPE, DEFAULT_SORT_DIRECTION  } from '../const/const';
+import { ReqRoutes, DEFAULT_SORT_TYPE, DEFAULT_SORT_DIRECTION } from '../const/const';
 import { Header } from '../components/header/header';
 import { SwiperSliders } from '../components/swiper-sliders/swiper-sliders';
 import { ProductsList } from '../components/products-list/products-list';
@@ -21,14 +21,12 @@ function Catalog() {
   const [cameraId, setCameraId] = useState<TCamera['id']>();
   const cameraByBasket = cameras.find((camera) => camera.id === cameraId);
 
-  const [ sortType, setSortType ] =useState<TSortType>(DEFAULT_SORT_TYPE);
-  const [ sortDirection, setSortDirection ] =useState<TSortDirection>(DEFAULT_SORT_DIRECTION);
+  const [ sortType, setSortType ] = useState<TSortType>(DEFAULT_SORT_TYPE);
+  const [ sortDirection, setSortDirection ] = useState<TSortDirection>(DEFAULT_SORT_DIRECTION);
 
   const sortKey = `${sortType}-${sortDirection}`;
 
   const sortedCameras = compare(sortKey, cameras);
-
-  console.log(sortedCameras);
 
   const handleSubmit = () => {
     setIsShowPopUp(false);
@@ -44,7 +42,7 @@ function Catalog() {
   };
 
   const handleClickType = (type: TSortType) => {
-    setSortType(type)
+    setSortType(type);
   };
 
   const handleClickDirection = (direction : TSortDirection) => {
