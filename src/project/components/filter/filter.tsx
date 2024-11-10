@@ -1,4 +1,15 @@
+import { TCategory } from '../../types/types';
+import { CATEGORIES, CategoryMap, DEFAULT_CATEGORY } from '../../const/const';
+import { useState } from 'react';
+
+
 function Filter () {
+  const [ currentCategory, setCurrentCategory ] =  useState('');
+
+  const handleChooseCategory = (category: TCategory) => {
+    setCurrentCategory(category);
+  }
+
   return(
     <div className="catalog-filter">
       <form action="#">
@@ -18,28 +29,26 @@ function Filter () {
             </div>
           </div>
         </fieldset>
+
         <fieldset className="catalog-filter__block">
           <legend className="title title--h5">Категория</legend>
-          <div className="custom-radio catalog-filter__item">
-            <label>
-              <input
-                type="radio"
-                name="category"
-                defaultValue="photocamera"
-                defaultChecked
-              />
-              <span className="custom-radio__icon" />
-              <span className="custom-radio__label">Фотокамера</span>
-            </label>
-          </div>
-          <div className="custom-radio catalog-filter__item">
-            <label>
-              <input type="radio" name="category" defaultValue='videocamera' />
-              <span className="custom-radio__icon" />
-              <span className="custom-radio__label">Видеокамера</span>
-            </label>
-          </div>
+          {CATEGORIES.map((category) => (
+               <div className="custom-radio catalog-filter__item">
+               <label>
+                 <input
+                   type="radio"
+                   name="category"
+                   defaultValue={category}
+                   checked={category === currentCategory}
+                   onClick={() => handleChooseCategory(category)}
+                 />
+                 <span className="custom-radio__icon" />
+                 <span className="custom-radio__label">{CategoryMap[category]}</span>
+               </label>
+             </div>
+          ))}
         </fieldset>
+
         <fieldset className="catalog-filter__block">
           <legend className="title title--h5">Тип камеры</legend>
           <div className="custom-checkbox catalog-filter__item">
@@ -76,6 +85,7 @@ function Filter () {
             </label>
           </div>
         </fieldset>
+
         <fieldset className="catalog-filter__block">
           <legend className="title title--h5">Уровень</legend>
           <div className="custom-checkbox catalog-filter__item">
@@ -100,6 +110,7 @@ function Filter () {
             </label>
           </div>
         </fieldset>
+
         <button className="btn catalog-filter__reset-btn" type="reset">
           Сбросить фильтры
         </button>

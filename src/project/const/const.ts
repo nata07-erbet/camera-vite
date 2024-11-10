@@ -1,4 +1,4 @@
-import { TTab, TSortType, TSortDirection } from '../types/types';
+import { TTab, TSortType, TSortDirection, TCategory } from '../types/types';
 
 const BASE_URL = 'https://camera-shop.accelerator.htmlacademy.pro/';
 const ALL_STARS = 5;
@@ -68,5 +68,18 @@ const SortOrderMap = {
 const DEFAULT_SORT_DIRECTION = SortTabOrder.Up;
 const SORT_ORDER: TSortDirection[] = ['up', 'down'];
 
+const CATEGORIES: TCategory[] = ['photocamera', 'videocamera'];
 
-export { BASE_URL, ReqRoutes, AppRoutes, NavMap, ALL_STARS, TABS, AppRouteTab, TabsMap, DEFAULT_TAB, DATE_FORMAT, REVIEW_SHOW, CATALOG_SHOW, SortTabInner, SortInnerMap, SORT_INNER, DEFAULT_SORT_TYPE, SortTabOrder, SORT_ORDER, SortOrderMap, DEFAULT_SORT_DIRECTION };
+const CategoryList = {
+  Photocamera: 'photocamera',
+  Videocamera: 'videocamera',
+} as const;
+
+const CategoryMap = {
+  [CategoryList.Photocamera]: 'Фотокамера',
+  [CategoryList.Videocamera]: 'Видеокамера'
+} as const;
+
+const DEFAULT_CATEGORY = CategoryList.Photocamera;
+
+export { BASE_URL, ReqRoutes, AppRoutes, NavMap, ALL_STARS, TABS, AppRouteTab, TabsMap, DEFAULT_TAB, DATE_FORMAT, REVIEW_SHOW, CATALOG_SHOW, SortTabInner, SortInnerMap, SORT_INNER, DEFAULT_SORT_TYPE, SortTabOrder, SORT_ORDER, SortOrderMap, DEFAULT_SORT_DIRECTION, CATEGORIES, CategoryList, CategoryMap, DEFAULT_CATEGORY};
