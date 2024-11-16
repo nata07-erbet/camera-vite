@@ -1,4 +1,4 @@
-import { TTab, TSortType, TSortDirection, TCategory } from '../types/types';
+import { TTab, TSortType, TSortDirection, TCategory, TType, TLevel } from '../types/types';
 
 const BASE_URL = 'https://camera-shop.accelerator.htmlacademy.pro/';
 const ALL_STARS = 5;
@@ -82,4 +82,35 @@ const CategoryMap = {
 
 const DEFAULT_CATEGORY = CategoryList.Photocamera;
 
-export { BASE_URL, ReqRoutes, AppRoutes, NavMap, ALL_STARS, TABS, AppRouteTab, TabsMap, DEFAULT_TAB, DATE_FORMAT, REVIEW_SHOW, CATALOG_SHOW, SortTabInner, SortInnerMap, SORT_INNER, DEFAULT_SORT_TYPE, SortTabOrder, SORT_ORDER, SortOrderMap, DEFAULT_SORT_DIRECTION, CATEGORIES, CategoryList, CategoryMap, DEFAULT_CATEGORY};
+const CAMERAS: TType[] = ['digital', 'film', 'snapshot', 'collection'];
+
+const CamerasList = {
+  Digital: 'digital',
+  Film: 'film',
+  Snapshot: 'snapshot',
+  Collection: 'collection',
+} as const;
+
+const CamerasMap = {
+  [CamerasList.Digital]: 'Цифровая',
+  [CamerasList.Film]: 'Плёночная',
+  [CamerasList.Snapshot]: 'Моментальная',
+  [CamerasList.Collection]: 'Коллекционная',
+} as const;
+
+const LEVELS: TLevel[] = ['zero','non-professional','professional'];
+
+const LevelsList = {
+  Zero: 'zero',
+  NonProfessional: 'non-professional',
+  Professional: 'professional'
+} as const;
+
+const LevelMap = {
+  [LevelsList.Zero]: 'Нулевой',
+  [LevelsList.NonProfessional]: 'Любительский',
+  [LevelsList.Professional]: 'Профессиональный',
+} as const;
+
+
+export { BASE_URL, ReqRoutes, AppRoutes, NavMap, ALL_STARS, TABS, AppRouteTab, TabsMap, DEFAULT_TAB, DATE_FORMAT, REVIEW_SHOW, CATALOG_SHOW, SortTabInner, SortInnerMap, SORT_INNER, DEFAULT_SORT_TYPE, SortTabOrder, SORT_ORDER, SortOrderMap, DEFAULT_SORT_DIRECTION, CATEGORIES, CategoryList, CategoryMap, DEFAULT_CATEGORY, CAMERAS, CamerasMap, CamerasList, LEVELS, LevelsList, LevelMap };
