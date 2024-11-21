@@ -1,24 +1,35 @@
-import { TCategory, TType, TFiltersData } from '../../types/types';
-import { CATEGORIES, CategoryMap, CategoryList, CAMERAS, CamerasMap, CamerasList, LEVELS, LevelMap, LevelsList } from '../../const/const';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { TCategory, TType, TFiltersData, TFormInputs } from '../../types/types';
+import { CATEGORIES, CategoryMap, CategoryList, CAMERAS, CamerasMap, CamerasList, LEVELS, LevelMap, LevelsList, INITIAL_FILTERS } from '../../const/const';
 
 type FilterProps = {
   initialFilters: Partial<TFiltersData>;
   onFeaturesChange: (newData: TFiltersData) => void;
+  onReset: () => void;
+  minPrice: number;
+  maxPrice: number;
 };
 
-function Filter ({ initialFilters, onFeaturesChange}: FilterProps) {
-  const INITIAL_FILTERS = {
-    category: null,
-    types: [],
-    levels: [],
-  };
-
+function Filter ({ initialFilters, onFeaturesChange, onReset, minPrice, maxPrice }: FilterProps) {
   const [ filterData, setFilterData ] = useState<TFiltersData>({
     ...INITIAL_FILTERS,
     ...initialFilters,
   });
 
+  const {
+    register,
+    watch,
+    handleSubmit,
+    setValue,
+    reset
+  } = useForm<TFormInputs>({
+    mode: 'all',
+    defaultValues: {
+      priceFrom: minPrice,
+      priceUp: maxPrice
+    },
+  });
 
   const AvailableTypes: Record<TCategory, TType[]> = {
     [CategoryList.Photocamera]: [
@@ -34,10 +45,12 @@ function Filter ({ initialFilters, onFeaturesChange}: FilterProps) {
     ],
   };
 
+  const watchPriceFrom = Number(watch('priceFrom'));
+  const watchPriceUp = Number(watch('priceUp'));
+
   const checkIfTypeAvailable = (category: TCategory, type: TType) => {
     AvailableTypes[category].includes(type);
   }; // вовзвращает void а не boolean
-
 
   const handleChooseCategory = (category: TCategory) => {
     const newData: TFiltersData = {
@@ -65,7 +78,6 @@ function Filter ({ initialFilters, onFeaturesChange}: FilterProps) {
     onFeaturesChange(newData);
   };
 
-
   const handleChooseLevel = (evt: ChangeEvent<HTMLInputElement>) => {
     const { checked , value } = evt.target;
     const level = value as (typeof LevelsList)[keyof typeof LevelsList];
@@ -81,21 +93,77 @@ function Filter ({ initialFilters, onFeaturesChange}: FilterProps) {
     onFeaturesChange(newData);
   };
 
+  const handleChangePriceMin = () => {
+    let value = watchPriceFrom;
+
+    if(watchPriceFrom < minPrice) {
+      value = minPrice;
+    } else {
+      value = watchPriceFrom;
+    }
+
+    setValue('priceFrom', value);
+  };
+
+  const handleChangePriceMax = () => {
+    let value = watchPriceUp;
+
+    if(watchPriceUp > minPrice) {
+      value = maxPrice;
+    } else {
+      value = watchPriceUp;
+    }
+
+    setValue('priceUp', value);
+  };
+
+  const handleClickReset = () => {
+    onReset();
+    reset();
+  };
+
+  const handleFormSubmit = (evt: FormEvent) => {
+    handleSubmit(() => true)(evt); // что пишем в теле?
+  };
+
   return(
     <div className="catalog-filter">
-      <form action="#">
+      <form
+        action="#"
+        onSubmit={handleFormSubmit}
+      >
         <h2 className="visually-hidden">Фильтр</h2>
         <fieldset className="catalog-filter__block">
           <legend className="title title--h5">Цена, ₽</legend>
           <div className="catalog-filter__price-range">
             <div className="custom-input">
               <label>
-                <input type="number" name="price" placeholder="от" />
+                <input
+                  type="number"
+                  placeholder={
+                    Number.isSafeInteger(minPrice)
+                      ? minPrice.toString()
+                      : undefined
+                  }
+                  {...register('priceFrom', {
+                    onChange: handleChangePriceMin,
+                  })}
+                />
               </label>
             </div>
             <div className="custom-input">
               <label>
-                <input type="number" name="priceUp" placeholder="до" />
+                <input
+                  type="number"
+                  placeholder= {
+                    Number.isSafeInteger(maxPrice)
+                      ? maxPrice.toString()
+                      : undefined
+                  }
+                  {...register('priceUp', {
+                    onChange: handleChangePriceMax
+                  })}
+                />
               </label>
             </div>
           </div>
@@ -159,7 +227,11 @@ function Filter ({ initialFilters, onFeaturesChange}: FilterProps) {
           ))}
         </fieldset>
 
-        <button className="btn catalog-filter__reset-btn" type="reset">
+        <button
+          className="btn catalog-filter__reset-btn"
+          type="reset"
+          onClick={handleClickReset}
+        >
           Сбросить фильтры
         </button>
       </form>

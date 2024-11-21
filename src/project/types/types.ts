@@ -1,4 +1,4 @@
-import { AppRouteTab, SortTabInner, SortTabOrder, CategoryList, CamerasList, LevelsList } from '../const/const';
+import { AppRouteTab, SortTabInner, SortTabOrder, CategoryList, CamerasList, CamerasMap, LevelsList, LevelMap, PriceMap } from '../const/const';
 
 type TCamera = {
   id: number;
@@ -53,11 +53,21 @@ type TReview = {
   type TType = (typeof CamerasList)[keyof typeof CamerasList];
   type TLevel = (typeof LevelsList)[keyof typeof LevelsList];
 
+  type TTypeValue = (typeof CamerasMap)[keyof typeof CamerasMap];
+  type TTypeLevel = (typeof LevelMap)[keyof typeof LevelMap];
+
   type TFiltersData = {
     category: TCategory | null;
     types: TType[];
     levels: TLevel[];
   };
+
+  type TPrice = (typeof PriceMap)[keyof typeof PriceMap];
+
+  type TFormInputs = {
+    priceFrom: number;
+    priceUp: number;
+  }
 
 export type {
   TCamera,
@@ -69,6 +79,10 @@ export type {
   TSortDirection,
   TCategory,
   TType,
+  TTypeValue,
   TLevel,
-  TFiltersData
+  TTypeLevel,
+  TFiltersData,
+  TPrice,
+  TFormInputs
 };

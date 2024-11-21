@@ -1,4 +1,4 @@
-import { TTab, TSortType, TSortDirection, TCategory, TType, TLevel } from '../types/types';
+import { TTab, TSortType, TSortDirection, TCategory, TType, TLevel, TPrice } from '../types/types';
 
 const BASE_URL = 'https://camera-shop.accelerator.htmlacademy.pro/';
 const ALL_STARS = 5;
@@ -68,6 +68,12 @@ const SortOrderMap = {
 const DEFAULT_SORT_DIRECTION = SortTabOrder.Up;
 const SORT_ORDER: TSortDirection[] = ['up', 'down'];
 
+const INITIAL_FILTERS = {
+  category: null,
+  types: [],
+  levels: [],
+};
+
 const CATEGORIES: TCategory[] = ['photocamera', 'videocamera'];
 
 const CategoryList = {
@@ -76,7 +82,7 @@ const CategoryList = {
 } as const;
 
 const CategoryMap = {
-  [CategoryList.Photocamera]: 'Фотокамера',
+  [CategoryList.Photocamera]: 'Фотоаппарат',
   [CategoryList.Videocamera]: 'Видеокамера'
 } as const;
 
@@ -112,5 +118,17 @@ const LevelMap = {
   [LevelsList.Professional]: 'Профессиональный',
 } as const;
 
+const PriceList = {
+  Price: 'price',
+  PriceUp: 'priceUp'
+} as const;
 
-export { BASE_URL, ReqRoutes, AppRoutes, NavMap, ALL_STARS, TABS, AppRouteTab, TabsMap, DEFAULT_TAB, DATE_FORMAT, REVIEW_SHOW, CATALOG_SHOW, SortTabInner, SortInnerMap, SORT_INNER, DEFAULT_SORT_TYPE, SortTabOrder, SORT_ORDER, SortOrderMap, DEFAULT_SORT_DIRECTION, CATEGORIES, CategoryList, CategoryMap, DEFAULT_CATEGORY, CAMERAS, CamerasMap, CamerasList, LEVELS, LevelsList, LevelMap };
+const PriceMap = {
+  [PriceList.Price]: 'от',
+  [PriceList.PriceUp]: 'до'
+} as const;
+
+const PRICES: TPrice[] = ['от', 'до'];
+
+
+export { BASE_URL, ReqRoutes, AppRoutes, NavMap, ALL_STARS, TABS, AppRouteTab, TabsMap, DEFAULT_TAB, DATE_FORMAT, REVIEW_SHOW, CATALOG_SHOW, SortTabInner, SortInnerMap, SORT_INNER, DEFAULT_SORT_TYPE, SortTabOrder, SORT_ORDER, SortOrderMap, DEFAULT_SORT_DIRECTION, CATEGORIES, CategoryList, CategoryMap, DEFAULT_CATEGORY, CAMERAS, CamerasMap, CamerasList, LEVELS, LevelsList, LevelMap, INITIAL_FILTERS, PriceList, PriceMap, PRICES };

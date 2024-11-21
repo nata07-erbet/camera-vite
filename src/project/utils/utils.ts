@@ -39,5 +39,5 @@ const compare = (typeofSort: string, camera: TCamera[]) => {
 };
 
 
-export { formatDate, compareDate, compare };
+export { formatDate, compareDate, compare, comparePrice };
 
