@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { TCategory, TType, TFiltersData, TFormInputs } from '../../types/types';
+import { TCategory, TType, TFiltersData, TFormInputs, TFilterPriceRange } from '../../types/types';
 import { CATEGORIES, CategoryMap, CategoryList, CAMERAS, CamerasMap, CamerasList, LEVELS, LevelMap, LevelsList, INITIAL_FILTERS } from '../../const/const';
 
 type FilterProps = {
@@ -9,9 +9,19 @@ type FilterProps = {
   onReset: () => void;
   minPrice: number;
   maxPrice: number;
+  initPriceRange: TFilterPriceRange;
+  onPricesChange: (inputs: TFilterPriceRange) => void;
 };
 
-function Filter ({ initialFilters, onFeaturesChange, onReset, minPrice, maxPrice }: FilterProps) {
+function Filter ({
+  initialFilters,
+  onFeaturesChange,
+  onReset,
+  minPrice,
+  maxPrice,
+  initPriceRange,
+  onPricesChange
+}: FilterProps) {
   const [ filterData, setFilterData ] = useState<TFiltersData>({
     ...INITIAL_FILTERS,
     ...initialFilters,
@@ -26,9 +36,9 @@ function Filter ({ initialFilters, onFeaturesChange, onReset, minPrice, maxPrice
   } = useForm<TFormInputs>({
     mode: 'all',
     defaultValues: {
-      priceFrom: minPrice,
-      priceUp: maxPrice
-    },
+      priceFrom: initPriceRange[0],
+      priceUp: initPriceRange[1]
+    }
   });
 
   const AvailableTypes: Record<TCategory, TType[]> = {
@@ -45,12 +55,9 @@ function Filter ({ initialFilters, onFeaturesChange, onReset, minPrice, maxPrice
     ],
   };
 
-  const watchPriceFrom = Number(watch('priceFrom'));
-  const watchPriceUp = Number(watch('priceUp'));
-
-  const checkIfTypeAvailable = (category: TCategory, type: TType) => {
-    AvailableTypes[category].includes(type);
-  }; // вовзвращает void а не boolean
+  function checkIfTypeAvailable (category: TCategory, type: TType) {
+    return AvailableTypes[category].includes(type);
+  }
 
   const handleChooseCategory = (category: TCategory) => {
     const newData: TFiltersData = {
@@ -93,37 +100,51 @@ function Filter ({ initialFilters, onFeaturesChange, onReset, minPrice, maxPrice
     onFeaturesChange(newData);
   };
 
+  const watchPriceFrom = Number(watch('priceFrom'));
+  const watchPriceUp = Number(watch('priceUp'));
+
   const handleChangePriceMin = () => {
     let value = watchPriceFrom;
 
     if(watchPriceFrom < minPrice) {
       value = minPrice;
-    } else {
+    } else if(
+      watchPriceUp &&
+      watchPriceFrom < watchPriceUp
+    ){
       value = watchPriceFrom;
     }
 
     setValue('priceFrom', value);
+    onPricesChange([value, watchPriceFrom]);
   };
 
   const handleChangePriceMax = () => {
     let value = watchPriceUp;
 
-    if(watchPriceUp > minPrice) {
+    if(watchPriceUp > maxPrice){
       value = maxPrice;
-    } else {
+    } else if (watchPriceFrom &&
+      watchPriceUp > watchPriceFrom
+    ){
       value = watchPriceUp;
+    } else if (watchPriceFrom &&
+      watchPriceUp < watchPriceFrom) {
+      value = maxPrice;
     }
 
     setValue('priceUp', value);
+    onPricesChange([watchPriceUp, value]);
   };
 
   const handleClickReset = () => {
+    setFilterData(INITIAL_FILTERS);
     onReset();
     reset();
   };
 
   const handleFormSubmit = (evt: FormEvent) => {
-    handleSubmit(() => true)(evt); // что пишем в теле?
+    handleSubmit(() => true)(evt);
   };
 
   return(
@@ -146,7 +167,7 @@ function Filter ({ initialFilters, onFeaturesChange, onReset, minPrice, maxPrice
                       : undefined
                   }
                   {...register('priceFrom', {
-                    onChange: handleChangePriceMin,
+                    onBlur: handleChangePriceMin
                   })}
                 />
               </label>
@@ -161,7 +182,7 @@ function Filter ({ initialFilters, onFeaturesChange, onReset, minPrice, maxPrice
                       : undefined
                   }
                   {...register('priceUp', {
-                    onChange: handleChangePriceMax
+                    onBlur: handleChangePriceMax
                   })}
                 />
               </label>
@@ -199,7 +220,7 @@ function Filter ({ initialFilters, onFeaturesChange, onReset, minPrice, maxPrice
                   value={type}
                   checked={filterData.types.includes(type)}
                   onChange={handleChooseType}
-                  disabled={Boolean(filterData.category && checkIfTypeAvailable(filterData.category, type))}
+                  disabled={Boolean(filterData.category && !checkIfTypeAvailable(filterData.category, type))}
                 />
                 <span className="custom-checkbox__icon" />
                 <span className="custom-checkbox__label">{CamerasMap[type]}</span>

@@ -1,6 +1,6 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { api } from '../api/api';
-import { TCamera, TPromo, TSortType, TSortDirection, TFiltersData, TTypeValue, TTypeLevel } from '../types/types';
+import { TCamera, TPromo, TSortType, TSortDirection, TFiltersData, TTypeValue, TTypeLevel, TFilterPriceRange } from '../types/types';
 import { ReqRoutes, DEFAULT_SORT_TYPE, DEFAULT_SORT_DIRECTION, CategoryMap, CamerasMap, LevelMap, INITIAL_FILTERS } from '../const/const';
 import { Header } from '../components/header/header';
 import { SwiperSliders } from '../components/swiper-sliders/swiper-sliders';
@@ -26,6 +26,8 @@ function Catalog() {
   const [ sortDirection, setSortDirection ] = useState<TSortDirection>(DEFAULT_SORT_DIRECTION);
 
   const [ filters, setFilters ] = useState<TFiltersData>();
+
+  const [ priceRange, setPriceRange ] = useState<Partial<TFilterPriceRange>>([1000, 2000]);
 
   const sortKey = `${sortType}-${sortDirection}`;
   const sortedCameras = compare(sortKey, cameras);
@@ -60,6 +62,14 @@ function Catalog() {
     return result;
   }, [cameras, filters]);
 
+  const filterCamerasByPrice = (cameras: TCamera[], [priceFrom, priceTo]: TFilterPriceRange) => {
+    cameras.filter((camera) =>  camera.price >= priceFrom && camera.price <= priceTo);
+  };
+
+  const filteredCamerasByPrice = useMemo(() => {
+    filterCamerasByPrice(filteredCameras, priceRange)
+  },[filteredCameras, priceRange]);
+
   const handleChangeFilters = (newData: TFiltersData) => {
     setFilters(newData);
   };
@@ -84,6 +94,10 @@ function Catalog() {
   const handleClickDirection = (direction : TSortDirection) => {
     setSortDirection(direction);
   };
+
+  const handlePricesChange = useCallback((range: TFilterPriceRange ) => {
+    setPriceRange(range);
+  }, []);
 
   const handleResetFilters = () => {
     setFilters(INITIAL_FILTERS);
@@ -119,6 +133,8 @@ function Catalog() {
                     onReset={handleResetFilters}
                     minPrice={priceMin}
                     maxPrice={priceMax}
+                    initPriceRange={priceRange}
+                    onPricesChange={(inputs: TFilterPriceRange) => handlePricesChange(inputs)}
                   />
                 </div>
                 <div className="catalog__content">

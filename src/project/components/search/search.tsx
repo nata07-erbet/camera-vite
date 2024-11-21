@@ -69,7 +69,7 @@ function Search({ cameras }: SearchProps) {
               onChange={handleInput}
             />
           </label>
-          {cameras && <SearchList cameras={listCameras}/>}
+          {cameras && inputItems.length >= 3 && <SearchList cameras={listCameras}/>}
         </form>
         <button
           className="form-search__reset"

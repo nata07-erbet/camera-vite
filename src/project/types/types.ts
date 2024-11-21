@@ -67,7 +67,9 @@ type TReview = {
   type TFormInputs = {
     priceFrom: number;
     priceUp: number;
-  }
+  };
+
+  type TFilterPriceRange = [number, number];
 
 export type {
   TCamera,
@@ -84,5 +86,6 @@ export type {
   TTypeLevel,
   TFiltersData,
   TPrice,
-  TFormInputs
+  TFormInputs,
+  TFilterPriceRange
 };
