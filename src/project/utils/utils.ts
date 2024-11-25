@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
-import { DATE_FORMAT } from '../const/const';
-import {TCamera, TReview } from '../types/types';
+import { CamerasMap, CategoryMap, DATE_FORMAT, LevelMap } from '../const/const';
+import {TCamera, TFilterPriceRange, TFiltersData, TLevel, TLevelValue, TReview, TSortKey, TType, TTypeValue } from '../types/types';
 
 const compareDate = (a: TReview, b: TReview) => {
   const dateA = new Date(a.createAt);
@@ -15,29 +15,67 @@ const formatDate = (date: string) => dayjs(date).locale('ru').format(DATE_FORMAT
 const comparePrice = (a: TCamera, b: TCamera) => a.price - b.price;
 const compareRating = (a: TCamera, b: TCamera) => a.rating - b.rating;
 
-const compare = (typeofSort: string, camera: TCamera[]) => {
-  const camerasSorted:TCamera[] = camera;
-
-  switch (typeofSort) {
+const compare = (sortKey: TSortKey, cameras: TCamera[]): TCamera[] => {
+  const camerasCopy = [...cameras];
+  switch (sortKey) {
     case 'price-up':
-      return camera.toSorted(comparePrice);
-      break;
+      return camerasCopy.sort(comparePrice);
 
     case 'price-down':
-      return camera.toSorted(comparePrice).reverse();
-      break;
+      return camerasCopy.sort(comparePrice).reverse();
 
     case 'popular-up':
-      return camera.toSorted(compareRating);
-      break;
+      return camerasCopy.sort(compareRating);
 
     case 'popular-down':
-      return camera.toSorted(compareRating).reverse();
-      break;
+      return camerasCopy.sort(compareRating).reverse();
+
+    default:
+      return cameras;
   }
-  return camerasSorted;
 };
 
+const getMinMaxPrices = (cameras: TCamera[]): Partial<TFilterPriceRange> => {
+  if (cameras.length === 0) {
+    return [undefined, undefined];
+  }
+  const prices = cameras.map((camera) => camera.price);
+  return [Math.min(...prices), Math.max(...prices)];
+};
 
-export { formatDate, compareDate, compare, comparePrice };
+const getKeyByValueType = (value: TTypeValue): TType => Object.keys(CamerasMap).find(
+  (key) => CamerasMap[key as TType] === value
+) as TType;
+
+const getKeyByValueLevel = (value: TLevelValue): TLevel => Object.keys(LevelMap).find(
+  (key) => LevelMap[key as TLevel] === value
+) as TLevel;
+
+const filterCameras = (products: TCamera[], currentFilters: TFiltersData) => products.filter(
+  (product) =>
+    (!currentFilters?.category ||
+        product.category === CategoryMap[currentFilters.category]) &&
+      (currentFilters.types.length === 0 ||
+        (currentFilters.types.includes(getKeyByValueType(product.type)) &&
+          (currentFilters.levels.length === 0 ||
+            currentFilters.levels.includes(
+              getKeyByValueLevel(product.level)
+            ))))
+);
+
+const filterCamerasByPrice = (
+  cameras: TCamera[],
+  [priceFrom, priceTo]: Partial<TFilterPriceRange>
+) => {
+  if (!priceFrom && !priceTo) {
+    return cameras;
+  }
+
+  return cameras.filter((camera) => (
+    (!priceFrom || camera.price >= priceFrom) &&
+      (!priceTo || camera.price <= priceTo)
+  ));
+};
+
+export { formatDate, compareDate, compare, comparePrice, getMinMaxPrices, filterCameras, filterCamerasByPrice };
 

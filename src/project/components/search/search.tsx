@@ -12,7 +12,7 @@ function Search({ cameras }: SearchProps) {
   const [ inputItems, setInputItems ] = useState('');
   const [ listCameras, setListCameras ] = useState<TCamera[]>([]);
 
-  const isOpened = inputItems && inputItems.length >= 1 ? true : false;
+  const isOpened = !!(inputItems && inputItems.length >= 1);
 
   const classOpened = classNames('form-search', {'list-opened': isOpened});
 
@@ -49,7 +49,7 @@ function Search({ cameras }: SearchProps) {
 
   return(
     <>
-      <div className={classOpened}>
+      <div className={classOpened} data-testid='search'>
         <form>
           <label>
             <svg

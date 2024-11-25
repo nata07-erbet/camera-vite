@@ -14,25 +14,23 @@ import { PopUpAddToBasket } from '../components/pop-up/pop-up-add-to-basket';
 import { Footer } from '../components/footer/footer';
 
 function Product() {
-  const [ cameras, setCameras ] = useState<TCamera[]>([]);
-  const [ currentTab, setCurrentTab ] = useState<TTab>(DEFAULT_TAB);
-  const [ reviews, setReviews ] = useState<TReview[]>([]);
-  const [ similars, setSimilars ] = useState<TCamera[]>([]);
-  const [ isShowPopUpAddBasket, setIsShowPopUpAddBasket ] = useState(false);
-
+  const [cameras, setCameras] = useState<TCamera[]>([]);
+  const [currentTab, setCurrentTab] = useState<TTab>(DEFAULT_TAB);
+  const [reviews, setReviews] = useState<TReview[]>([]);
+  const [similars, setSimilars] = useState<TCamera[]>([]);
+  const [isShowPopUpAddBasket, setIsShowPopUpAddBasket] = useState(false);
 
   const isActive = currentTab === DEFAULT_TAB;
 
   const classIsActiveTab = classNames('tabs__element', {
     'is-active': isActive,
-    disabled: !isActive
+    disabled: !isActive,
   });
 
   const classNonActiveTab = classNames('tabs__element', {
     'is-active': !isActive,
-    disabled: !isActive
+    disabled: !isActive,
   });
-
 
   const params = useParams();
   const cameraId = Number(params.id);
@@ -70,25 +68,22 @@ function Product() {
     api
       .get<TCamera[]>(`${ReqRoutes.Cameras}/${cameraId}/${ReqRoutes.Similar}`)
       .then((response) => setSimilars(response.data));
-
   }, [cameraId]);
 
   return (
-    <div className='wrapper' data-testid ='product-page'>
+    <div className="wrapper" data-testid="product-page">
       <Header cameras={cameras} />
       <main>
         {currentCamera && (
-          <div className='page-content'>
-            <Breadcrumbs
-              camera={currentCamera}
-            />
-            <div className='page-content__section'>
-              <section className='product'>
-                <div className='container'>
-                  <div className='product__img'>
+          <div className="page-content">
+            <Breadcrumbs camera={currentCamera} />
+            <div className="page-content__section">
+              <section className="product">
+                <div className="container">
+                  <div className="product__img">
                     <picture>
                       <source
-                        type='image/webp'
+                        type="image/webp"
                         srcSet={`/${currentCamera.previewImgWebp}`}
                       />
                       <img
@@ -100,64 +95,75 @@ function Product() {
                       />
                     </picture>
                   </div>
-                  <div className='product__content'>
-                    <h1 className='title title--h3'>{currentCamera.name}</h1>
+                  <div className="product__content">
+                    <h1 className="title title--h3">{currentCamera.name}</h1>
                     <Rate camera={currentCamera} />
-                    <p className='product__price'>
-                      <span className='visually-hidden'>Цена:</span>{(currentCamera.price).toLocaleString()} ₽
+                    <p className="product__price">
+                      <span className="visually-hidden">Цена:</span>
+                      {currentCamera.price.toLocaleString()} ₽
                     </p>
                     <button
-                      className='btn btn--purple'
-                      type='button'
+                      className="btn btn--purple"
+                      type="button"
                       onClick={handleButtonClick}
                     >
-                      <svg width={24} height={16} aria-hidden='true'>
-                        <use xlinkHref='#icon-add-basket' />
+                      <svg width={24} height={16} aria-hidden="true">
+                        <use xlinkHref="#icon-add-basket" />
                       </svg>
                       Добавить в корзину
                     </button>
 
-                    <div className='tabs product__tabs'>
-                      <div className='tabs__controls product__tabs-controls'>
+                    <div className="tabs product__tabs">
+                      <div className="tabs__controls product__tabs-controls">
                         {TABS.map((tab) => (
                           <button
                             key={tab}
-                            className='tabs__control'
-                            type='button'
+                            className="tabs__control"
+                            type="button"
                             onClick={() => handleTabClick(tab)}
                           >
                             {TabsMap[tab]}
                           </button>
-                        )
-                        )}
+                        ))}
                       </div>
-                      <div className='tabs__content'>
+                      <div className="tabs__content">
                         <div className={classNonActiveTab}>
-                          <ul className='product__tabs-list'>
-                            <li className='item-list'>
-                              <span className='item-list__title'>Артикул:</span>
-                              <p className='item-list__text'> {currentCamera.id}</p>
+                          <ul className="product__tabs-list">
+                            <li className="item-list">
+                              <span className="item-list__title">Артикул:</span>
+                              <p className="item-list__text">
+                                {' '}
+                                {currentCamera.id}
+                              </p>
                             </li>
-                            <li className='item-list'>
-                              <span className='item-list__title'>Категория:</span>
-                              <p className='item-list__text'>{currentCamera.category}</p>
+                            <li className="item-list">
+                              <span className="item-list__title">
+                                Категория:
+                              </span>
+                              <p className="item-list__text">
+                                {currentCamera.category}
+                              </p>
                             </li>
-                            <li className='item-list'>
-                              <span className='item-list__title'>Тип камеры:</span>
-                              <p className='item-list__text'>{currentCamera.type}</p>
+                            <li className="item-list">
+                              <span className="item-list__title">
+                                Тип камеры:
+                              </span>
+                              <p className="item-list__text">
+                                {currentCamera.type}
+                              </p>
                             </li>
-                            <li className='item-list'>
-                              <span className='item-list__title'>Уровень:</span>
-                              <p className='item-list__text'>{currentCamera.level}</p>
+                            <li className="item-list">
+                              <span className="item-list__title">Уровень:</span>
+                              <p className="item-list__text">
+                                {currentCamera.level}
+                              </p>
                             </li>
                           </ul>
                         </div>
 
                         <div className={classIsActiveTab}>
-                          <div className='product__tabs-text'>
-                            <p>
-                              {currentCamera.description}
-                            </p>
+                          <div className="product__tabs-text">
+                            <p>{currentCamera.description}</p>
                           </div>
                         </div>
                       </div>
@@ -166,23 +172,23 @@ function Product() {
                 </div>
               </section>
             </div>
-            {similars &&
-              <SimilarProduct similars={similars} />}
+            {similars && <SimilarProduct similars={similars} />}
             {reviews && (
-              <div className='page-content__section'>
+              <div className="page-content__section">
                 <Reviews reviews={reviews} />
               </div>
             )}
           </div>
         )}
       </main>
-      {currentCamera &&
+      {currentCamera && (
         <PopUpAddToBasket
           camera={currentCamera}
           isActive={isShowPopUpAddBasket}
           onClose={handlePopUpClose}
-        />}
-      <UpBtn onScrollTop = { handleScrollTop }/>
+        />
+      )}
+      <UpBtn onScrollTop={handleScrollTop} />
       <Footer />
     </div>
   );

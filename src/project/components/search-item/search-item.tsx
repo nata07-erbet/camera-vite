@@ -26,6 +26,7 @@ function SearchItem({ camera }: SearchItemProps) {
   return(
     <Link to={href}>
       <li
+        data-testid='search-item'
         key={camera.id}
         className="form-search__select-item"
         tabIndex={camera.id}
@@ -33,7 +34,7 @@ function SearchItem({ camera }: SearchItemProps) {
         onBlur={handleBlur}
         style={{
           outline: isFocused
-            ? '2px solid #7575e2' //  уточнить
+            ? '2px solid #7575e2'
             : 'none'
         }}
       >

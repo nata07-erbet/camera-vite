@@ -1,11 +1,11 @@
 import { render, screen } from '@testing-library/react';
-import { ProductCard } from './product-card';
+import { SearchItem } from './search-item';
 import { cameraMock } from '../../mocks/camera-mocks';
 
 describe('component: productsMocks', () => {
   it('should render correctly', () => {
-    const expectedTestId = 'product';
-    const preparedComponent = <ProductCard camera={cameraMock} onOpen={vi.fn()}/>;
+    const expectedTestId = 'search-item';
+    const preparedComponent = <SearchItem camera={cameraMock} />;
 
     render(preparedComponent);
 

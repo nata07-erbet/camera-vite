@@ -1,61 +1,66 @@
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { TCategory, TType, TFiltersData, TFormInputs, TFilterPriceRange } from '../../types/types';
-import { CATEGORIES, CategoryMap, CategoryList, CAMERAS, CamerasMap, CamerasList, LEVELS, LevelMap, LevelsList, INITIAL_FILTERS } from '../../const/const';
+import {
+  TCategory,
+  TType,
+  TFiltersData,
+  TFormInputs,
+  TFilterPriceRange,
+} from '../../types/types';
+import {
+  CATEGORIES,
+  CategoryMap,
+  CategoryList,
+  CAMERAS,
+  CamerasMap,
+  CamerasList,
+  LEVELS,
+  LevelMap,
+  LevelsList,
+} from '../../const/const';
 
 type FilterProps = {
-  initialFilters: Partial<TFiltersData>;
+  initialFilters: TFiltersData;
   onFeaturesChange: (newData: TFiltersData) => void;
   onReset: () => void;
-  minPrice: number;
-  maxPrice: number;
-  initPriceRange: TFilterPriceRange;
+  minPrice: number | undefined;
+  maxPrice: number | undefined;
+  initPriceRange: Partial<TFilterPriceRange>;
   onPricesChange: (inputs: TFilterPriceRange) => void;
 };
 
-function Filter ({
+function Filter({
   initialFilters,
   onFeaturesChange,
   onReset,
   minPrice,
   maxPrice,
   initPriceRange,
-  onPricesChange
+  onPricesChange,
 }: FilterProps) {
-  const [ filterData, setFilterData ] = useState<TFiltersData>({
-    ...INITIAL_FILTERS,
-    ...initialFilters,
-  });
+  const [filterData, setFilterData] = useState<TFiltersData>(initialFilters);
 
-  const {
-    register,
-    watch,
-    handleSubmit,
-    setValue,
-    reset
-  } = useForm<TFormInputs>({
-    mode: 'all',
-    defaultValues: {
-      priceFrom: initPriceRange[0],
-      priceUp: initPriceRange[1]
-    }
-  });
+  const { register, watch, handleSubmit, setValue, reset } =
+    useForm<TFormInputs>({
+      mode: 'all',
+      defaultValues: {
+        priceFrom: initPriceRange[0],
+        priceUp: initPriceRange[1],
+      },
+    });
 
   const AvailableTypes: Record<TCategory, TType[]> = {
     [CategoryList.Photocamera]: [
       CamerasList.Collection,
       CamerasList.Digital,
       CamerasList.Film,
-      CamerasList.Snapshot
+      CamerasList.Snapshot,
     ],
 
-    [CategoryList.Videocamera]: [
-      CamerasList.Collection,
-      CamerasList.Digital,
-    ],
+    [CategoryList.Videocamera]: [CamerasList.Collection, CamerasList.Digital],
   };
 
-  function checkIfTypeAvailable (category: TCategory, type: TType) {
+  function checkIfTypeAvailable(category: TCategory, type: TType) {
     return AvailableTypes[category].includes(type);
   }
 
@@ -63,7 +68,9 @@ function Filter ({
     const newData: TFiltersData = {
       ...filterData,
       category: category,
-      types: filterData.types.filter((type) => checkIfTypeAvailable(category, type)), //пустой массив на  выходе
+      types: filterData.types.filter((type) =>
+        checkIfTypeAvailable(category, type)
+      ), //пустой массив на  выходе
     };
 
     setFilterData(newData);
@@ -72,8 +79,7 @@ function Filter ({
 
   const handleChooseType = (evt: ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = evt.target;
-    const type = value as (typeof CamerasList)[keyof typeof CamerasList] ;
-
+    const type = value as (typeof CamerasList)[keyof typeof CamerasList];
     const newData: TFiltersData = {
       ...filterData,
       types: checked
@@ -86,7 +92,7 @@ function Filter ({
   };
 
   const handleChooseLevel = (evt: ChangeEvent<HTMLInputElement>) => {
-    const { checked , value } = evt.target;
+    const { checked, value } = evt.target;
     const level = value as (typeof LevelsList)[keyof typeof LevelsList];
 
     const newData: TFiltersData = {
@@ -103,42 +109,55 @@ function Filter ({
   const watchPriceFrom = Number(watch('priceFrom'));
   const watchPriceUp = Number(watch('priceUp'));
 
-  const handleChangePriceMin = () => {
+  const handleChangePriceMin = useCallback(() => {
     let value = watchPriceFrom;
+    if (!value) {
+      return;
+    }
 
-    if(watchPriceFrom < minPrice) {
+    if (watchPriceUp && watchPriceFrom > watchPriceUp) {
+      value = watchPriceUp;
+    } else if (
+      !watchPriceUp &&
+      typeof maxPrice === 'number' &&
+      value > maxPrice
+    ) {
+      value = maxPrice;
+    } else if (
+      typeof minPrice === 'number' &&
+      watchPriceFrom < minPrice
+    ) {
       value = minPrice;
-    } else if(
-      watchPriceUp &&
-      watchPriceFrom < watchPriceUp
-    ){
-      value = watchPriceFrom;
     }
 
     setValue('priceFrom', value);
-    onPricesChange([value, watchPriceFrom]);
-  };
+    onPricesChange([value, watchPriceUp]);
+  }, [watchPriceFrom, watchPriceUp, minPrice, maxPrice, setValue, onPricesChange]);
 
-  const handleChangePriceMax = () => {
+  const handleChangePriceMax = useCallback(() => {
     let value = watchPriceUp;
+    if (!value) {
+      return;
+    }
 
-    if(watchPriceUp > maxPrice){
-      value = maxPrice;
-    } else if (watchPriceFrom &&
-      watchPriceUp > watchPriceFrom
-    ){
-      value = watchPriceUp;
-    } else if (watchPriceFrom &&
-      watchPriceUp < watchPriceFrom) {
+    if (watchPriceFrom && value < watchPriceFrom) {
+      value = watchPriceFrom;
+    } else if (
+      !watchPriceFrom &&
+      typeof minPrice === 'number' &&
+      value < minPrice
+    ) {
+      value = minPrice;
+    } else if (typeof maxPrice === 'number' && watchPriceUp > maxPrice) {
       value = maxPrice;
     }
 
     setValue('priceUp', value);
-    onPricesChange([watchPriceUp, value]);
-  };
+    onPricesChange([watchPriceFrom, value]);
+  }, [watchPriceFrom, watchPriceUp, minPrice, maxPrice, setValue, onPricesChange]);
 
   const handleClickReset = () => {
-    setFilterData(INITIAL_FILTERS);
+    setFilterData(initialFilters);
     onReset();
     reset();
   };
@@ -147,12 +166,19 @@ function Filter ({
     handleSubmit(() => true)(evt);
   };
 
-  return(
+  useEffect(() => {
+    if (typeof minPrice === 'number' && watchPriceFrom < minPrice) {
+      handleChangePriceMin();
+    }
+
+    if (typeof maxPrice === 'number' && watchPriceUp > maxPrice) {
+      handleChangePriceMax();
+    }
+  }, [minPrice, maxPrice, handleChangePriceMin, handleChangePriceMax, watchPriceUp, watchPriceFrom]);
+
+  return (
     <div className="catalog-filter">
-      <form
-        action="#"
-        onSubmit={handleFormSubmit}
-      >
+      <form action="#" onSubmit={handleFormSubmit}>
         <h2 className="visually-hidden">Фильтр</h2>
         <fieldset className="catalog-filter__block">
           <legend className="title title--h5">Цена, ₽</legend>
@@ -162,12 +188,12 @@ function Filter ({
                 <input
                   type="number"
                   placeholder={
-                    Number.isSafeInteger(minPrice)
+                    typeof minPrice === 'number'
                       ? minPrice.toString()
-                      : undefined
+                      : ''
                   }
                   {...register('priceFrom', {
-                    onBlur: handleChangePriceMin
+                    onBlur: handleChangePriceMin,
                   })}
                 />
               </label>
@@ -176,13 +202,13 @@ function Filter ({
               <label>
                 <input
                   type="number"
-                  placeholder= {
-                    Number.isSafeInteger(maxPrice)
+                  placeholder={
+                    typeof maxPrice === 'number'
                       ? maxPrice.toString()
-                      : undefined
+                      : ''
                   }
                   {...register('priceUp', {
-                    onBlur: handleChangePriceMax
+                    onBlur: handleChangePriceMax,
                   })}
                 />
               </label>
@@ -203,7 +229,9 @@ function Filter ({
                   onChange={() => handleChooseCategory(category)}
                 />
                 <span className="custom-radio__icon" />
-                <span className="custom-radio__label">{CategoryMap[category]}</span>
+                <span className="custom-radio__label">
+                  {CategoryMap[category]}
+                </span>
               </label>
             </div>
           ))}
@@ -220,10 +248,15 @@ function Filter ({
                   value={type}
                   checked={filterData.types.includes(type)}
                   onChange={handleChooseType}
-                  disabled={Boolean(filterData.category && !checkIfTypeAvailable(filterData.category, type))}
+                  disabled={Boolean(
+                    filterData.category &&
+                      !checkIfTypeAvailable(filterData.category, type)
+                  )}
                 />
                 <span className="custom-checkbox__icon" />
-                <span className="custom-checkbox__label">{CamerasMap[type]}</span>
+                <span className="custom-checkbox__label">
+                  {CamerasMap[type]}
+                </span>
               </label>
             </div>
           ))}
@@ -242,7 +275,9 @@ function Filter ({
                   onChange={handleChooseLevel}
                 />
                 <span className="custom-checkbox__icon" />
-                <span className="custom-checkbox__label">{LevelMap[level]}</span>
+                <span className="custom-checkbox__label">
+                  {LevelMap[level]}
+                </span>
               </label>
             </div>
           ))}

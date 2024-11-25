@@ -13,13 +13,13 @@ function Basket() {
 
   useEffect(() => {
     api
-      .get(ReqRoutes.Cameras)
+      .get<TCamera[]>(ReqRoutes.Cameras)
       .then((response) => setCameras(response.data));
   }, []);
 
   return(
     <div className="wrapper">
-      <Header/>
+      <Header cameras={cameras}/>
       <main>
         <div className="page-content">
           <Breadcrumbs />

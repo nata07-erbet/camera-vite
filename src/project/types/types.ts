@@ -1,13 +1,13 @@
-import { AppRouteTab, SortTabInner, SortTabOrder, CategoryList, CamerasList, CamerasMap, LevelsList, LevelMap, PriceMap } from '../const/const';
+import { AppRouteTab, SortTabInner, SortTabOrder, CategoryList, CamerasList, LevelsList, PriceMap } from '../const/const';
 
 type TCamera = {
   id: number;
   name: string;
   vendorCode: string;
-  type: 'Коллекционная' | 'Моментальная' | 'Цифровая' | 'Плёночная';
-  category: 'Видеокамера' | 'Фотоаппарат';
+  type: TTypeValue;
+  category: TCategoryValue;
   description: string;
-  level: 'Нулевой' | 'Любительский' | 'Профессиональный';
+  level: TLevelValue;
   price: number;
   rating: number;
   reviewCount: number;
@@ -47,14 +47,15 @@ type TReview = {
 
   type TSortType = (typeof SortTabInner)[keyof typeof SortTabInner];
   type TSortDirection = (typeof SortTabOrder)[keyof typeof SortTabOrder];
-
+  type TSortKey = `${TSortType}-${TSortDirection}`;
 
   type TCategory = (typeof CategoryList)[keyof typeof CategoryList];
   type TType = (typeof CamerasList)[keyof typeof CamerasList];
   type TLevel = (typeof LevelsList)[keyof typeof LevelsList];
 
-  type TTypeValue = (typeof CamerasMap)[keyof typeof CamerasMap];
-  type TTypeLevel = (typeof LevelMap)[keyof typeof LevelMap];
+  type TCategoryValue = 'Видеокамера' | 'Фотоаппарат';
+  type TTypeValue = 'Коллекционная' | 'Моментальная' | 'Цифровая' | 'Плёночная';
+  type TLevelValue = 'Нулевой' | 'Любительский' | 'Профессиональный';
 
   type TFiltersData = {
     category: TCategory | null;
@@ -79,11 +80,12 @@ export type {
   TOrder,
   TSortType,
   TSortDirection,
+  TSortKey,
   TCategory,
   TType,
   TTypeValue,
   TLevel,
-  TTypeLevel,
+  TLevelValue,
   TFiltersData,
   TPrice,
   TFormInputs,

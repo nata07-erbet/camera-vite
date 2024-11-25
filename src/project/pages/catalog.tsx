@@ -1,7 +1,19 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { api } from '../api/api';
-import { TCamera, TPromo, TSortType, TSortDirection, TFiltersData, TTypeValue, TTypeLevel, TFilterPriceRange } from '../types/types';
-import { ReqRoutes, DEFAULT_SORT_TYPE, DEFAULT_SORT_DIRECTION, CategoryMap, CamerasMap, LevelMap, INITIAL_FILTERS } from '../const/const';
+import {
+  TCamera,
+  TPromo,
+  TSortType,
+  TSortDirection,
+  TFiltersData,
+  TFilterPriceRange,
+} from '../types/types';
+import {
+  ReqRoutes,
+  DEFAULT_SORT_TYPE,
+  DEFAULT_SORT_DIRECTION,
+  INITIAL_FILTERS,
+} from '../const/const';
 import { Header } from '../components/header/header';
 import { SwiperSliders } from '../components/swiper-sliders/swiper-sliders';
 import { ProductsList } from '../components/products-list/products-list';
@@ -11,8 +23,12 @@ import { Filter } from '../components/filter/filter';
 import { Pagination } from '../components/pagination/pagination';
 import { PopUpContact } from '../components/pop-up/pop-up-contact';
 import { Footer } from '../components/footer/footer';
-import { compare, comparePrice } from '../utils/utils';
-
+import {
+  compare,
+  filterCameras,
+  filterCamerasByPrice,
+  getMinMaxPrices,
+} from '../utils/utils';
 
 function Catalog() {
   const [cameras, setCameras] = useState<TCamera[]>([]);
@@ -22,53 +38,29 @@ function Catalog() {
   const [cameraId, setCameraId] = useState<TCamera['id']>();
   const cameraByBasket = cameras.find((camera) => camera.id === cameraId);
 
-  const [ sortType, setSortType ] = useState<TSortType>(DEFAULT_SORT_TYPE);
-  const [ sortDirection, setSortDirection ] = useState<TSortDirection>(DEFAULT_SORT_DIRECTION);
+  const [sortType, setSortType] = useState<TSortType>(DEFAULT_SORT_TYPE);
+  const [sortDirection, setSortDirection] = useState<TSortDirection>(
+    DEFAULT_SORT_DIRECTION
+  );
 
-  const [ filters, setFilters ] = useState<TFiltersData>();
+  const [filters, setFilters] = useState<TFiltersData>(INITIAL_FILTERS);
 
-  const [ priceRange, setPriceRange ] = useState<Partial<TFilterPriceRange>>([1000, 2000]);
+  const [priceRange, setPriceRange] = useState<Partial<TFilterPriceRange>>([]);
 
-  const sortKey = `${sortType}-${sortDirection}`;
+  const sortKey = `${sortType}-${sortDirection}` as const;
   const sortedCameras = compare(sortKey, cameras);
-  const sortedByPriceCameras = cameras.toSorted(comparePrice);
 
-  const prices = sortedByPriceCameras.map(camera => camera.price);
-  const priceMin = Math.min(...prices);
-  const priceMax = Math.max(...prices);
+  const filteredCameras = useMemo(
+    () => filterCameras(sortedCameras, filters),
+    [sortedCameras, filters]
+  );
 
-  function getKeyByValueType (value: TTypeValue) {
-    return Object.keys(CamerasMap).find((key) => CamerasMap[key] === value);
-  }
+  const [minPrice, maxPrice] = useMemo(
+    () => getMinMaxPrices(filteredCameras),
+    [filteredCameras]
+  );
 
-  function getKeyByValueLevel (value: TTypeLevel) {
-    return Object.keys(LevelMap).find((key) => LevelMap[key] === value);
-  }
-
-
-  const filterCameras = (products: TCamera[], currentFilters: TFiltersData) => {
-    products.filter((product) =>
-      (!currentFilters?.category || product.category === CategoryMap[currentFilters?.category]) &&
-      (currentFilters.types.includes(getKeyByValueType(product.type)) &&
-      (currentFilters.levels.includes(getKeyByValueLevel(product.level)))
-      ));
-  };
-
-  const filteredCameras = useMemo(() => {
-    const result = filters
-      ? filterCameras(cameras, filters)
-      : cameras;
-
-    return result;
-  }, [cameras, filters]);
-
-  const filterCamerasByPrice = (cameras: TCamera[], [priceFrom, priceTo]: TFilterPriceRange) => {
-    cameras.filter((camera) =>  camera.price >= priceFrom && camera.price <= priceTo);
-  };
-
-  const filteredCamerasByPrice = useMemo(() => {
-    filterCamerasByPrice(filteredCameras, priceRange)
-  },[filteredCameras, priceRange]);
+  const camerasToShow = filterCamerasByPrice(filteredCameras, priceRange);
 
   const handleChangeFilters = (newData: TFiltersData) => {
     setFilters(newData);
@@ -82,7 +74,7 @@ function Catalog() {
     setIsShowPopUp(false);
   };
 
-  const handleOpenPopUp = (id:TCamera['id']) => {
+  const handleOpenPopUp = (id: TCamera['id']) => {
     setIsShowPopUp(true);
     setCameraId(id);
   };
@@ -91,11 +83,11 @@ function Catalog() {
     setSortType(type);
   };
 
-  const handleClickDirection = (direction : TSortDirection) => {
+  const handleClickDirection = (direction: TSortDirection) => {
     setSortDirection(direction);
   };
 
-  const handlePricesChange = useCallback((range: TFilterPriceRange ) => {
+  const handlePricesChange = useCallback((range: TFilterPriceRange) => {
     setPriceRange(range);
   }, []);
 
@@ -113,14 +105,13 @@ function Catalog() {
       .then((response) => setPromos(response.data));
   }, []);
 
-
   return (
-    <div className="wrapper">
-      <Header cameras={cameras}/>
+    <div className="wrapper" data-testid="main-page">
+      <Header cameras={cameras} />
       <main>
-        { promos && <SwiperSliders promos={promos} />};
+        {promos && <SwiperSliders promos={promos} />};
         <div className="page-content">
-          <Breadcrumbs/>
+          <Breadcrumbs />
           <section className="catalog">
             <div className="container">
               <h1 className="title title--h2">Каталог фото- и видеотехники</h1>
@@ -128,43 +119,44 @@ function Catalog() {
                 <div className="catalog__aside">
                   <img src="img/banner.png" />
                   <Filter
-                    initialFilters = {filters}
-                    onFeaturesChange = {(newData: TFiltersData) => handleChangeFilters(newData)}
+                    initialFilters={filters}
+                    onFeaturesChange={handleChangeFilters}
                     onReset={handleResetFilters}
-                    minPrice={priceMin}
-                    maxPrice={priceMax}
+                    minPrice={minPrice}
+                    maxPrice={maxPrice}
                     initPriceRange={priceRange}
-                    onPricesChange={(inputs: TFilterPriceRange) => handlePricesChange(inputs)}
+                    onPricesChange={handlePricesChange}
                   />
                 </div>
                 <div className="catalog__content">
                   <Sort
-                    onClickType = {handleClickType}
-                    onClickDirection ={handleClickDirection}
+                    onClickType={handleClickType}
+                    onClickDirection={handleClickDirection}
                   />
-                  {sortedCameras &&
+                  {camerasToShow && (
                     <ProductsList
-                      cameras={sortedCameras}
-                      onOpen={(id) =>handleOpenPopUp(id)}
-                    />}
-                  <Pagination cameras={cameras}/>
+                      cameras={camerasToShow}
+                      onOpen={(id) => handleOpenPopUp(id)}
+                    />
+                  )}
+                  <Pagination cameras={cameras} />
                 </div>
               </div>
             </div>
           </section>
         </div>
       </main>
-      {cameraByBasket &&
+      {cameraByBasket && (
         <PopUpContact
           onSubmit={handleSubmit}
           isActive={isShowPopUp}
           cameraByBasket={cameraByBasket}
           onClose={handleClosePopUp}
-        />}
+        />
+      )}
       <Footer />
     </div>
   );
 }
 
 export { Catalog };
-

@@ -1,4 +1,4 @@
-import { TTab, TSortType, TSortDirection, TCategory, TType, TLevel, TPrice } from '../types/types';
+import { TTab, TSortType, TSortDirection, TCategory, TType, TLevel, TPrice, TFiltersData } from '../types/types';
 
 const BASE_URL = 'https://camera-shop.accelerator.htmlacademy.pro/';
 const ALL_STARS = 5;
@@ -68,7 +68,7 @@ const SortOrderMap = {
 const DEFAULT_SORT_DIRECTION = SortTabOrder.Up;
 const SORT_ORDER: TSortDirection[] = ['up', 'down'];
 
-const INITIAL_FILTERS = {
+const INITIAL_FILTERS: TFiltersData = {
   category: null,
   types: [],
   levels: [],
@@ -112,7 +112,7 @@ const LevelsList = {
   Professional: 'professional'
 } as const;
 
-const LevelMap = {
+const LevelMap: Record<TLevel, string> = {
   [LevelsList.Zero]: 'Нулевой',
   [LevelsList.NonProfessional]: 'Любительский',
   [LevelsList.Professional]: 'Профессиональный',

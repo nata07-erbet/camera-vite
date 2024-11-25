@@ -10,13 +10,13 @@ function Stars({ rating }: StarsProps) {
 
   return(
     <>
-      {Array.from({ length: iconStarFull }, () => (
-        <svg key={rating} width={17} height={16} aria-hidden="true" data-testid="star">
+      {Array.from({ length: iconStarFull }, (_, idx) => (
+        <svg key={idx} width={17} height={16} aria-hidden="true" data-testid="star">
           <use xlinkHref="#icon-full-star" />
         </svg>
       ))}
-      {Array.from({ length: iconStar }, () => (
-        <svg key={rating} width={17} height={16} aria-hidden="true">
+      {Array.from({ length: iconStar }, (_, idx) => (
+        <svg key={idx} width={17} height={16} aria-hidden="true">
           <use xlinkHref="#icon-star" />
         </svg>))}
     </>

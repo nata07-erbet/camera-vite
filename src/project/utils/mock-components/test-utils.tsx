@@ -1,10 +1,12 @@
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
 import { render } from '@testing-library/react';
 import { AppRoutes } from '../../const/const';
-import { routeConfig } from '../../route-config/route-config';
 
-const renderWithRouter = (initialRoute: string = AppRoutes.Main) => {
-  const router = createMemoryRouter(routeConfig, {
+const renderWithRouter = (
+  element: React.ReactElement,
+  initialRoute: string = AppRoutes.Main
+) => {
+  const router = createMemoryRouter([{ path: initialRoute, element }], {
     initialEntries: [initialRoute],
   });
   return render(<RouterProvider router={router} />);

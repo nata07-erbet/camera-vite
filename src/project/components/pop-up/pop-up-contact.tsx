@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, FormEventHandler } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import FocusLock from 'react-focus-lock';
 import { useHookFormMask } from 'use-mask-input';
@@ -66,8 +66,9 @@ function PopUpContact({
     api
       .post('/orders', formData)
       .then(onSubmit)
-      .catch((err) => setError('root', err));
+      .catch((err: Error) => setError('root', { 'message': err.message}));
   };
+
   useEffect(() => {
     if(inputRef.current) {
       telInput.ref(inputRef.current);
@@ -78,7 +79,7 @@ function PopUpContact({
   return (
     <FocusLock>
       <PopUpMain {...props}>
-        <form onSubmit={handleSubmit(handleSubmitData)}>
+        <form onSubmit={handleSubmit(handleSubmitData) as FormEventHandler}>
           <p className="title title--h4">Свяжитесь со мной</p>
           <div className="basket-item basket-item--short">
             <div className="basket-item__img">

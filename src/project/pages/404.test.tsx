@@ -1,12 +1,13 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
 import { NotFoundPage } from './404';
+import { renderWithRouter } from '../utils/mock-components/test-utils';
 
 describe('Component: NotFoundScreen', () => {
   it('should render correctly', () => {
-    const expectedHeaderText = '404 Not found';
-    const expectedLinkText = 'Go to main Page';
+    const expectedHeaderText = 'This page not found';
+    const expectedLinkText = 'Go to main page';
 
-    render(<NotFoundPage />);
+    renderWithRouter(<NotFoundPage />, '/404');
 
     expect(screen.getByText(expectedHeaderText)).toBeInTheDocument();
     expect(screen.getByText(expectedLinkText)).toBeInTheDocument();

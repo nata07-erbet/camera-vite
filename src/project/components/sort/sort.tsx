@@ -22,7 +22,7 @@ function Sort({ onClickType, onClickDirection }: SortProps) {
   };
 
   return(
-    <div className="catalog-sort">
+    <div className="catalog-sort" data-testid="sort">
       <form action="#">
         <div className="catalog-sort__inner">
           <p className="title title--h5">Сортировать:</p>

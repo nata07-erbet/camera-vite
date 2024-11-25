@@ -8,6 +8,6 @@ describe('component: Rating', () => {
 
     render(preparedComponent);
 
-    expect(screen.getByTestId(expectedTestId)).toBeInTheDocument();
+    expect(screen.getAllByTestId(expectedTestId)).toHaveLength(5);
   });
 });
