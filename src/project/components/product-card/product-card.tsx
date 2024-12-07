@@ -5,8 +5,8 @@ import { Rate } from '../rate/rate';
 
 type ProductCardProps = {
   camera: TCamera;
-  onOpen?: (id: TCamera['id']) => void | undefined;
   isActive?: boolean;
+  onOpen?: (id: TCamera['id']) => void | undefined;
 };
 
 function ProductCard({ onOpen, camera, isActive }: ProductCardProps) {
@@ -50,7 +50,11 @@ function ProductCard({ onOpen, camera, isActive }: ProductCardProps) {
       </div>
       <div className="product-card__buttons">
         <button
-          className="btn btn--purple product-card__btn"
+          className={classNames(
+            'btn','btn--purple',
+            'product-card__btn',
+            // { 'disabled': () => handleClickButtonBuy(camera.id)}
+          )}
           type="button"
           onClick={() => handleClickButtonBuy(camera.id)}
         >

@@ -7,7 +7,7 @@ type ProductsListProps = {
   onOpen?: (id: TCamera['id']) => void;
 };
 
-function ProductsList({onOpen, cameras }: ProductsListProps) {
+function ProductsList({ onOpen, cameras }: ProductsListProps) {
 
   const handleOpenPopUp = (id: TCamera['id']) => {
     onOpen?.(id);

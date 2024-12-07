@@ -19,7 +19,7 @@ const ReqRoutes = {
 const AppRoutes = {
   Main: '/',
   Camera: '/camera/:id',
-  Basket: '/basket'
+  Basket: '/card'
 };
 
 const NavMap = {

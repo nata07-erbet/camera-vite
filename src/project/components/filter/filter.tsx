@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useCallback, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import {
   TCategory,
@@ -29,7 +29,7 @@ type FilterProps = {
   onPricesChange: (inputs: TFilterPriceRange) => void;
 };
 
-function Filter({
+function Filter ({
   initialFilters,
   onFeaturesChange,
   onReset,
@@ -68,9 +68,7 @@ function Filter({
     const newData: TFiltersData = {
       ...filterData,
       category: category,
-      types: filterData.types.filter((type) =>
-        checkIfTypeAvailable(category, type)
-      ), //пустой массив на  выходе
+      types: filterData.types.filter((type) => checkIfTypeAvailable(category, type)),
     };
 
     setFilterData(newData);
@@ -111,9 +109,6 @@ function Filter({
 
   const handleChangePriceMin = useCallback(() => {
     let value = watchPriceFrom;
-    if (!value) {
-      return;
-    }
 
     if (watchPriceUp && watchPriceFrom > watchPriceUp) {
       value = watchPriceUp;
@@ -134,30 +129,26 @@ function Filter({
     onPricesChange([value, watchPriceUp]);
   }, [watchPriceFrom, watchPriceUp, minPrice, maxPrice, setValue, onPricesChange]);
 
-  const handleChangePriceMax = useCallback(() => {
+  const handleChangePriceMax = () => {
     let value = watchPriceUp;
-    if (!value) {
-      return;
-    }
 
-    if (watchPriceFrom && value < watchPriceFrom) {
-      value = watchPriceFrom;
-    } else if (
-      !watchPriceFrom &&
-      typeof minPrice === 'number' &&
-      value < minPrice
-    ) {
-      value = minPrice;
-    } else if (typeof maxPrice === 'number' && watchPriceUp > maxPrice) {
+    if(watchPriceUp > maxPrice){
+      value = maxPrice;
+    } else if (watchPriceFrom &&
+      watchPriceUp > watchPriceFrom
+    ){
+      value = watchPriceUp;
+    } else if (watchPriceFrom &&
+      watchPriceUp < watchPriceFrom) {
       value = maxPrice;
     }
 
     setValue('priceUp', value);
-    onPricesChange([watchPriceFrom, value]);
-  }, [watchPriceFrom, watchPriceUp, minPrice, maxPrice, setValue, onPricesChange]);
+    onPricesChange([watchPriceUp, value]);
+  };
 
   const handleClickReset = () => {
-    setFilterData(initialFilters);
+    setFilterData(INITIAL_FILTERS);
     onReset();
     reset();
   };
@@ -166,19 +157,12 @@ function Filter({
     handleSubmit(() => true)(evt);
   };
 
-  useEffect(() => {
-    if (typeof minPrice === 'number' && watchPriceFrom < minPrice) {
-      handleChangePriceMin();
-    }
-
-    if (typeof maxPrice === 'number' && watchPriceUp > maxPrice) {
-      handleChangePriceMax();
-    }
-  }, [minPrice, maxPrice, handleChangePriceMin, handleChangePriceMax, watchPriceUp, watchPriceFrom]);
-
-  return (
+  return(
     <div className="catalog-filter">
-      <form action="#" onSubmit={handleFormSubmit}>
+      <form
+        action="#"
+        onSubmit={handleFormSubmit}
+      >
         <h2 className="visually-hidden">Фильтр</h2>
         <fieldset className="catalog-filter__block">
           <legend className="title title--h5">Цена, ₽</legend>
@@ -190,10 +174,10 @@ function Filter({
                   placeholder={
                     typeof minPrice === 'number'
                       ? minPrice.toString()
-                      : ''
+                      : undefined
                   }
                   {...register('priceFrom', {
-                    onBlur: handleChangePriceMin,
+                    onBlur: handleChangePriceMin
                   })}
                 />
               </label>
@@ -202,13 +186,13 @@ function Filter({
               <label>
                 <input
                   type="number"
-                  placeholder={
-                    typeof maxPrice === 'number'
+                  placeholder= {
+                    Number.isSafeInteger(maxPrice)
                       ? maxPrice.toString()
-                      : ''
+                      : undefined
                   }
                   {...register('priceUp', {
-                    onBlur: handleChangePriceMax,
+                    onBlur: handleChangePriceMax
                   })}
                 />
               </label>
@@ -229,9 +213,7 @@ function Filter({
                   onChange={() => handleChooseCategory(category)}
                 />
                 <span className="custom-radio__icon" />
-                <span className="custom-radio__label">
-                  {CategoryMap[category]}
-                </span>
+                <span className="custom-radio__label">{CategoryMap[category]}</span>
               </label>
             </div>
           ))}
@@ -248,15 +230,10 @@ function Filter({
                   value={type}
                   checked={filterData.types.includes(type)}
                   onChange={handleChooseType}
-                  disabled={Boolean(
-                    filterData.category &&
-                      !checkIfTypeAvailable(filterData.category, type)
-                  )}
+                  disabled={Boolean(filterData.category && !checkIfTypeAvailable(filterData.category, type))}
                 />
                 <span className="custom-checkbox__icon" />
-                <span className="custom-checkbox__label">
-                  {CamerasMap[type]}
-                </span>
+                <span className="custom-checkbox__label">{CamerasMap[type]}</span>
               </label>
             </div>
           ))}
@@ -275,9 +252,7 @@ function Filter({
                   onChange={handleChooseLevel}
                 />
                 <span className="custom-checkbox__icon" />
-                <span className="custom-checkbox__label">
-                  {LevelMap[level]}
-                </span>
+                <span className="custom-checkbox__label">{LevelMap[level]}</span>
               </label>
             </div>
           ))}

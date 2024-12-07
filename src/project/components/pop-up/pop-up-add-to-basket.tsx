@@ -4,9 +4,14 @@ import { PopUpMainProps } from './pop-up-main';
 
 type PopUpAddToBasketProps = PopUpMainProps & {
   camera: TCamera;
+  onClickAddSuccess: () => void;
 };
 
-function PopUpAddToBasket({ camera, ...props }: PopUpAddToBasketProps) {
+function PopUpAddToBasket({ camera, onClickAddSuccess, ...props }: PopUpAddToBasketProps) {
+  const handleClickAddSuccess = () => {
+    onClickAddSuccess();
+  };
+
   return(
     <PopUpMain {...props}>
       <p className="title title--h4">Добавить товар в корзину</p>
@@ -45,6 +50,7 @@ function PopUpAddToBasket({ camera, ...props }: PopUpAddToBasketProps) {
         <button
           className="btn btn--purple modal__btn modal__btn--fit-width"
           type="button"
+          onClick={handleClickAddSuccess}
         >
           <svg width={24} height={16} aria-hidden="true">
             <use xlinkHref="#icon-add-basket" />

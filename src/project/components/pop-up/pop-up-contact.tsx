@@ -4,8 +4,8 @@ import FocusLock from 'react-focus-lock';
 import { useHookFormMask } from 'use-mask-input';
 import { ErrorMessage } from '@hookform/error-message';
 
-import { PopUpMain } from '../pop-up/pop-up-main';
-import { PopUpMainProps } from '../pop-up/pop-up-main';
+import { PopUpMain } from './pop-up-main';
+import { PopUpMainProps } from './pop-up-main';
 import { TCamera, TOrder } from '../../types/types';
 
 import { api } from '../../api/api';

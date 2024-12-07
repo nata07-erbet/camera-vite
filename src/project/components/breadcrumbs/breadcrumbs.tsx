@@ -4,9 +4,10 @@ import { AppRoutes } from '../../const/const';
 
 type BreadcrumbsProps = {
   camera?: TCamera;
+  isBasketPage: boolean;
 };
 
-function Breadcrumbs({ camera }: BreadcrumbsProps) {
+function Breadcrumbs({ camera, isBasketPage }: BreadcrumbsProps) {
   return (
     <div className="breadcrumbs">
       <div className="container">
@@ -22,7 +23,7 @@ function Breadcrumbs({ camera }: BreadcrumbsProps) {
             </li>
             <li className="breadcrumbs__item">
               <span className="breadcrumbs__link breadcrumbs__link--active">
-                Каталог
+                {isBasketPage ? 'Корзина' : 'Каталог'}
               </span>
             </li>
           </ul>

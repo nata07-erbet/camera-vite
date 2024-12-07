@@ -21,7 +21,8 @@ import { Breadcrumbs } from '../components/breadcrumbs/breadcrumbs';
 import { Sort } from '../components/sort/sort';
 import { Filter } from '../components/filter/filter';
 import { Pagination } from '../components/pagination/pagination';
-import { PopUpContact } from '../components/pop-up/pop-up-contact';
+import { PopUpAddToBasket } from '../components/pop-up/pop-up-add-to-basket';
+import { PopUpAddSuccess } from '../components/pop-up/pop-up-add-success';
 import { Footer } from '../components/footer/footer';
 import {
   compare,
@@ -30,22 +31,24 @@ import {
   getMinMaxPrices,
 } from '../utils/utils';
 
+
 function Catalog() {
-  const [cameras, setCameras] = useState<TCamera[]>([]);
-  const [promos, setPromos] = useState<TPromo[]>([]);
+  const [ cameras, setCameras ] = useState<TCamera[]>([]);
+  const [ promos, setPromos ] = useState<TPromo[]>([]);
 
   const [isShowPopUp, setIsShowPopUp] = useState(false);
+  const [ isShowPopUpSuccess, setIsShowPopUpSuccess ] = useState(false);
+
   const [cameraId, setCameraId] = useState<TCamera['id']>();
-  const cameraByBasket = cameras.find((camera) => camera.id === cameraId);
 
   const [sortType, setSortType] = useState<TSortType>(DEFAULT_SORT_TYPE);
   const [sortDirection, setSortDirection] = useState<TSortDirection>(
     DEFAULT_SORT_DIRECTION
   );
 
-  const [filters, setFilters] = useState<TFiltersData>(INITIAL_FILTERS);
+  const [ filters, setFilters ] = useState<TFiltersData>(INITIAL_FILTERS);
 
-  const [priceRange, setPriceRange] = useState<Partial<TFilterPriceRange>>([]);
+  const [ priceRange, setPriceRange ] = useState<Partial<TFilterPriceRange>>([]);
 
   const sortKey = `${sortType}-${sortDirection}` as const;
   const sortedCameras = compare(sortKey, cameras);
@@ -59,6 +62,7 @@ function Catalog() {
     () => getMinMaxPrices(filteredCameras),
     [filteredCameras]
   );
+  const currentCamera = cameras.find((camera) => camera.id === cameraId);
 
   const camerasToShow = filterCamerasByPrice(filteredCameras, priceRange);
 
@@ -66,12 +70,19 @@ function Catalog() {
     setFilters(newData);
   };
 
-  const handleSubmit = () => {
-    setIsShowPopUp(false);
+  const handleClickAddSuccess = () => {
+    setIsShowPopUpSuccess(true);
+
   };
 
-  const handleClosePopUp = () => {
+  const handlePopUpClose = () => {
     setIsShowPopUp(false);
+    setIsShowPopUpSuccess(false);
+  };
+
+  const handleContinue = () => {
+    setIsShowPopUp(false);
+    setIsShowPopUpSuccess(false);
   };
 
   const handleOpenPopUp = (id: TCamera['id']) => {
@@ -111,7 +122,7 @@ function Catalog() {
       <main>
         {promos && <SwiperSliders promos={promos} />};
         <div className="page-content">
-          <Breadcrumbs />
+          <Breadcrumbs isBasketPage={false} />
           <section className="catalog">
             <div className="container">
               <h1 className="title title--h2">Каталог фото- и видеотехники</h1>
@@ -146,14 +157,19 @@ function Catalog() {
           </section>
         </div>
       </main>
-      {cameraByBasket && (
-        <PopUpContact
-          onSubmit={handleSubmit}
+      {currentCamera && (
+        <PopUpAddToBasket
+          camera={currentCamera}
           isActive={isShowPopUp}
-          cameraByBasket={cameraByBasket}
-          onClose={handleClosePopUp}
+          onClose={handlePopUpClose}
+          onClickAddSuccess={handleClickAddSuccess}
         />
       )}
+      <PopUpAddSuccess
+        isActive={isShowPopUpSuccess}
+        onClose={handlePopUpClose}
+        onContinue={handleContinue}
+      />
       <Footer />
     </div>
   );

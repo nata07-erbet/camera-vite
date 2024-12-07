@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { api } from '../api/api';
-import { ReqRoutes, TABS, TabsMap, DEFAULT_TAB } from '../const/const';
+import { AppRoutes, ReqRoutes, TABS, TabsMap, DEFAULT_TAB } from '../const/const';
 import { TCamera, TTab, TReview } from '../types/types';
 import { Header } from '../components/header/header';
 import { Breadcrumbs } from '../components/breadcrumbs/breadcrumbs';
@@ -11,6 +11,7 @@ import { SimilarProduct } from '../components/similar-product/similar-product';
 import { UpBtn } from '../components/up-btn/up-btn';
 import { Reviews } from '../components/reviews-list/reviews-list';
 import { PopUpAddToBasket } from '../components/pop-up/pop-up-add-to-basket';
+import { PopUpAddSuccess } from '../components/pop-up/pop-up-add-success';
 import { Footer } from '../components/footer/footer';
 
 function Product() {
@@ -18,7 +19,8 @@ function Product() {
   const [currentTab, setCurrentTab] = useState<TTab>(DEFAULT_TAB);
   const [reviews, setReviews] = useState<TReview[]>([]);
   const [similars, setSimilars] = useState<TCamera[]>([]);
-  const [isShowPopUpAddBasket, setIsShowPopUpAddBasket] = useState(false);
+  const [ isShowPopUp, setIsShowPopUp ] = useState(false);
+  const [ isShowPopUpSuccess, setIsShowPopUpSuccess ] = useState(false);
 
   const isActive = currentTab === DEFAULT_TAB;
 
@@ -35,6 +37,7 @@ function Product() {
   const params = useParams();
   const cameraId = Number(params.id);
   const currentCamera = cameras.find((camera) => camera.id === cameraId);
+  const navigate = useNavigate();
 
   const handleTabClick = (tab: TTab) => {
     setCurrentTab(tab);
@@ -49,11 +52,22 @@ function Product() {
   };
 
   const handleButtonClick = () => {
-    setIsShowPopUpAddBasket((prevState) => !prevState);
+    setIsShowPopUp(true);
   };
 
   const handlePopUpClose = () => {
-    setIsShowPopUpAddBasket(false);
+    setIsShowPopUp(false);
+    setIsShowPopUpSuccess(false);
+  };
+
+  const handleClickAddSuccess = () => {
+    setIsShowPopUpSuccess(true);
+  };
+
+  const handleContinue = () => {
+    navigate(AppRoutes.Main);
+    setIsShowPopUp(false);
+    setIsShowPopUpSuccess(false);
   };
 
   useEffect(() => {
@@ -76,7 +90,7 @@ function Product() {
       <main>
         {currentCamera && (
           <div className="page-content">
-            <Breadcrumbs camera={currentCamera} />
+            <Breadcrumbs camera={currentCamera} isBasketPage={false} />
             <div className="page-content__section">
               <section className="product">
                 <div className="container">
@@ -184,10 +198,16 @@ function Product() {
       {currentCamera && (
         <PopUpAddToBasket
           camera={currentCamera}
-          isActive={isShowPopUpAddBasket}
+          isActive={isShowPopUp}
           onClose={handlePopUpClose}
+          onClickAddSuccess={handleClickAddSuccess}
         />
       )}
+      <PopUpAddSuccess
+        isActive={isShowPopUpSuccess}
+        onClose={handlePopUpClose}
+        onContinue={handleContinue}
+      />
       <UpBtn onScrollTop={handleScrollTop} />
       <Footer />
     </div>
