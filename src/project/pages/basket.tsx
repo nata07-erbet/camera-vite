@@ -4,12 +4,16 @@ import { ReqRoutes } from '../const/const';
 import { Header } from '../components/header/header';
 import { Footer } from '../components/footer/footer';
 import { Breadcrumbs } from '../components/breadcrumbs/breadcrumbs';
-import { BasketItem } from '../components/basket-item/basket-item';
 import { TCamera } from '../types/types';
+import { BasketList } from '../components/basket-list/basket-list';
+import { PopUpRemove } from '../components/pop-up/pop-up-remove';
+
+import { cameraMocks } from '../mocks/camera-mocks';
+const camerasByBasket: TCamera[] = cameraMocks;
 
 function Basket() {
-  const [cameras, setCameras] = useState<TCamera[]>([]);
-  const addedCamera = cameras.find((camera) => camera.id === 2);
+  const [ cameras, setCameras ] = useState<TCamera[]>([]);
+  const [ popUpIsShow, setPopUpIsShow ] = useState(false);
 
   useEffect(() => {
     api
@@ -17,35 +21,45 @@ function Basket() {
       .then((response) => setCameras(response.data));
   }, []);
 
+  const handleDeleteFromBasket =  () => {
+    setPopUpIsShow(true);
+  };
+
+  const handleClosePopUp = () => {
+    setPopUpIsShow(false);
+  }
+
   return(
     <div className="wrapper">
-      <Header cameras={cameras}/>
+      <Header cameras={cameras} camerasByBasket={camerasByBasket}/>
       <main>
         <div className="page-content">
           <Breadcrumbs isBasketPage />
           <section className="basket">
             <div className="container">
               <h1 className="title title--h2">Корзина</h1>
-              <ul className="basket__list">
-                {addedCamera && <BasketItem camera={addedCamera}/>}
-              </ul>
+              <BasketList cameras={camerasByBasket} onDelete={handleDeleteFromBasket}/>
               <div className="basket__summary">
-                <div className="basket__promo">
-                  {/*<p class="title title&#45;&#45;h4">Если у вас есть промокод на скидку, примените его в этом поле</p>
-                <div class="basket-form">
+              <div className="basket__promo">
+                <p className="title title--h4">
+                  Если у вас есть промокод на скидку, примените его в этом поле
+                </p>
+                <div className="basket-form">
                   <form action="#">
-                    <div class="custom-input">
-                      <label><span class="custom-input__label">Промокод</span>
-                        <input type="text" name="promo" placeholder="Введите промокод">
+                    <div className="custom-input">
+                      <label>
+                        <span className="custom-input__label">Промокод</span>
+                        <input type="text" name="promo" placeholder="Введите промокод" />
                       </label>
-                      <p class="custom-input__error">Промокод неверный</p>
-                      <p class="custom-input__success">Промокод принят!</p>
+                      <p className="custom-input__error">Промокод неверный</p>
+                      <p className="custom-input__success">Промокод принят!</p>
                     </div>
-                    <button class="btn" type="submit">Применить
+                    <button className="btn" type="submit">
+                      Применить
                     </button>
                   </form>
-                </div>*/}
                 </div>
+              </div>
                 <div className="basket__summary-order">
                   <p className="basket__summary-item">
                     <span className="basket__summary-text">Всего:</span>
@@ -74,6 +88,11 @@ function Basket() {
           </section>
         </div>
       </main>
+      <PopUpRemove
+        isActive={popUpIsShow}
+        camera={cameraMocks[0]}
+        onClose={handleClosePopUp}
+      />
       <Footer/>
     </div>
   );

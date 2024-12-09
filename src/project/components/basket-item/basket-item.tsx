@@ -2,9 +2,15 @@ import { TCamera } from '../../types/types';
 
 type BasketItemProps = {
   camera: TCamera;
+  onDelete: () => void;
 };
 
-function BasketItem ({ camera }: BasketItemProps) {
+function BasketItem ({ camera, onDelete }: BasketItemProps) {
+
+  const handleClickDelete = () => {
+    onDelete();
+  };
+
   return(
     <li className="basket-item">
       <div className="basket-item__img">
@@ -70,6 +76,7 @@ function BasketItem ({ camera }: BasketItemProps) {
         className="cross-btn"
         type="button"
         aria-label="Удалить товар"
+        onClick={handleClickDelete}
       >
         <svg width={10} height={10} aria-hidden="true">
           <use xlinkHref="#icon-close" />

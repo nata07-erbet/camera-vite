@@ -14,6 +14,9 @@ import { PopUpAddToBasket } from '../components/pop-up/pop-up-add-to-basket';
 import { PopUpAddSuccess } from '../components/pop-up/pop-up-add-success';
 import { Footer } from '../components/footer/footer';
 
+import { cameraMocks } from '../mocks/camera-mocks';
+const camerasByBasket: TCamera[] = cameraMocks;
+
 function Product() {
   const [cameras, setCameras] = useState<TCamera[]>([]);
   const [currentTab, setCurrentTab] = useState<TTab>(DEFAULT_TAB);
@@ -86,7 +89,7 @@ function Product() {
 
   return (
     <div className="wrapper" data-testid="product-page">
-      <Header cameras={cameras} />
+      <Header cameras={cameras} camerasByBasket={camerasByBasket} />
       <main>
         {currentCamera && (
           <div className="page-content">

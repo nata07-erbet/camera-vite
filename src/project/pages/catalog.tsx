@@ -31,6 +31,8 @@ import {
   getMinMaxPrices,
 } from '../utils/utils';
 
+import { cameraMocks } from '../mocks/camera-mocks';
+const camerasByBasket: TCamera[] = cameraMocks;
 
 function Catalog() {
   const [ cameras, setCameras ] = useState<TCamera[]>([]);
@@ -118,7 +120,7 @@ function Catalog() {
 
   return (
     <div className="wrapper" data-testid="main-page">
-      <Header cameras={cameras} />
+      <Header cameras={cameras} camerasByBasket={camerasByBasket} />
       <main>
         {promos && <SwiperSliders promos={promos} />};
         <div className="page-content">
