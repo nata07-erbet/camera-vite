@@ -14,6 +14,7 @@ const camerasByBasket: TCamera[] = cameraMocks;
 function Basket() {
   const [ cameras, setCameras ] = useState<TCamera[]>([]);
   const [ popUpIsShow, setPopUpIsShow ] = useState(false);
+  const [ isRemoveItem, setIsRemoveItem ] = useState(false);
 
   useEffect(() => {
     api
@@ -27,6 +28,10 @@ function Basket() {
 
   const handleClosePopUp = () => {
     setPopUpIsShow(false);
+  };
+
+  const handleClickRemoveFromBasket = () => {
+    setIsRemoveItem(true);
   }
 
   return(
@@ -38,7 +43,12 @@ function Basket() {
           <section className="basket">
             <div className="container">
               <h1 className="title title--h2">Корзина</h1>
-              <BasketList cameras={camerasByBasket} onDelete={handleDeleteFromBasket}/>
+              <BasketList
+                cameras={camerasByBasket}
+                onDelete={handleDeleteFromBasket}
+                isRemoveItem={isRemoveItem}
+
+              />
               <div className="basket__summary">
               <div className="basket__promo">
                 <p className="title title--h4">
@@ -92,6 +102,7 @@ function Basket() {
         isActive={popUpIsShow}
         camera={cameraMocks[0]}
         onClose={handleClosePopUp}
+        onRemoveFromBasket={handleClickRemoveFromBasket}
       />
       <Footer/>
     </div>

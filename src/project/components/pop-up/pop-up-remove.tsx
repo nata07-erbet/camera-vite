@@ -4,8 +4,14 @@ import { TCamera } from '../../types/types';
 
 type PopUpRemoveProps = PopUpMainProps & {
   camera: TCamera;
-}
-function PopUpRemove ({ camera, ...props }: PopUpRemoveProps) {
+  onRemoveFromBasket: () => void;
+};
+
+function PopUpRemove ({ camera, onRemoveFromBasket, ...props }: PopUpRemoveProps) {
+  const handleClickRemoveFromBasket = () => {
+      onRemoveFromBasket();
+  };
+
   return(
     <PopUpMain {...props}>
       <p className="title title--h4">Удалить этот товар?</p>
@@ -41,6 +47,7 @@ function PopUpRemove ({ camera, ...props }: PopUpRemoveProps) {
           <button
             className="btn btn--purple modal__btn modal__btn--half-width"
             type="button"
+            onClick={handleClickRemoveFromBasket}
           >
             Удалить
           </button>

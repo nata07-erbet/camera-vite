@@ -1,18 +1,26 @@
+import classNames from 'classnames';
 import { TCamera } from '../../types/types';
+import { Quantity } from '../quantity/quantity';
 
 type BasketItemProps = {
   camera: TCamera;
   onDelete: () => void;
+  isRemoveItem:  boolean;
 };
 
-function BasketItem ({ camera, onDelete }: BasketItemProps) {
+function BasketItem ({ camera, onDelete, isRemoveItem }: BasketItemProps) {
 
   const handleClickDelete = () => {
     onDelete();
   };
 
+
+  const classHidden = classNames(
+    'basket-item',
+    {'visually-hidden': isRemoveItem});
+
   return(
-    <li className="basket-item">
+    <li className={classHidden}>
       <div className="basket-item__img">
         <picture>
           <source
@@ -42,33 +50,7 @@ function BasketItem ({ camera, onDelete }: BasketItemProps) {
       <p className="basket-item__price">
         <span className="visually-hidden">Цена:</span>{camera.price} ₽
       </p>
-      <div className="quantity">
-        <button
-          className="btn-icon btn-icon--prev"
-          aria-label="уменьшить количество товара"
-        >
-          <svg width={7} height={12} aria-hidden="true">
-            <use xlinkHref="#icon-arrow" />
-          </svg>
-        </button>
-        <label className="visually-hidden" htmlFor="counter1" />
-        <input
-          type="number"
-          id="counter1"
-          defaultValue={2}
-          min={1}
-          max={99}
-          aria-label="количество товара"
-        />
-        <button
-          className="btn-icon btn-icon--next"
-          aria-label="увеличить количество товара"
-        >
-          <svg width={7} height={12} aria-hidden="true">
-            <use xlinkHref="#icon-arrow" />
-          </svg>
-        </button>
-      </div>
+      <Quantity />
       <div className="basket-item__total-price">
         <span className="visually-hidden">Общая цена:</span>37 940 ₽
       </div>

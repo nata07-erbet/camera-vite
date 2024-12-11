@@ -6,6 +6,9 @@ const REVIEW_SHOW = 3;
 const CATALOG_SHOW = 9;
 const BASKET_AMOUNT = 9;
 
+const MIN_CAMERA = 1;
+const MAX_CAMERA = 9;
+
 const DATE_FORMAT = 'DD MMMM';
 
 const ReqRoutes = {
@@ -132,4 +135,4 @@ const PriceMap = {
 const PRICES: TPrice[] = ['от', 'до'];
 
 
-export { BASE_URL, ReqRoutes, AppRoutes, NavMap, ALL_STARS, TABS, AppRouteTab, TabsMap, DEFAULT_TAB, DATE_FORMAT, REVIEW_SHOW, CATALOG_SHOW, SortTabInner, SortInnerMap, SORT_INNER, DEFAULT_SORT_TYPE, SortTabOrder, SORT_ORDER, SortOrderMap, DEFAULT_SORT_DIRECTION, CATEGORIES, CategoryList, CategoryMap, DEFAULT_CATEGORY, CAMERAS, CamerasMap, CamerasList, LEVELS, LevelsList, LevelMap, INITIAL_FILTERS, PriceList, PriceMap, PRICES, BASKET_AMOUNT };
+export { BASE_URL, ReqRoutes, AppRoutes, NavMap, ALL_STARS, TABS, AppRouteTab, TabsMap, DEFAULT_TAB, DATE_FORMAT, REVIEW_SHOW, CATALOG_SHOW, SortTabInner, SortInnerMap, SORT_INNER, DEFAULT_SORT_TYPE, SortTabOrder, SORT_ORDER, SortOrderMap, DEFAULT_SORT_DIRECTION, CATEGORIES, CategoryList, CategoryMap, DEFAULT_CATEGORY, CAMERAS, CamerasMap, CamerasList, LEVELS, LevelsList, LevelMap, INITIAL_FILTERS, PriceList, PriceMap, PRICES, BASKET_AMOUNT, MIN_CAMERA, MAX_CAMERA  };
