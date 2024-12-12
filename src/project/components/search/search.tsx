@@ -1,6 +1,5 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import classNames from 'classnames';
-import { Link } from 'react-router-dom';
 import { SearchList } from '../search-list/search-list';
 import { TCamera } from '../../types/types';
 
@@ -48,41 +47,39 @@ function Search({ cameras }: SearchProps) {
 
 
   return(
-    <>
-      <div className={classOpened} data-testid='search'>
-        <form>
-          <label>
-            <svg
-              className="form-search__icon"
-              width={16}
-              height={16}
-              aria-hidden="true"
-            >
-              <use xlinkHref="#icon-lens" />
-            </svg>
-            <input
-              className="form-search__input"
-              type="text"
-              autoComplete="off"
-              placeholder="Поиск по сайту"
-              value={inputItems}
-              onChange={handleInput}
-            />
-          </label>
-          {cameras && inputItems.length >= 3 && <SearchList cameras={listCameras}/>}
-        </form>
-        <button
-          className="form-search__reset"
-          type="reset"
-          onClick={handleResetClick}
-        >
-          <svg width={10} height={10} aria-hidden="true">
-            <use xlinkHref="#icon-close" />
+    <div className={classOpened} data-testid='search'>
+      <form>
+        <label>
+          <svg
+            className="form-search__icon"
+            width={16}
+            height={16}
+            aria-hidden="true"
+          >
+            <use xlinkHref="#icon-lens" />
           </svg>
-          <span className="visually-hidden">Сбросить поиск</span>
-        </button>
-      </div>
-    </>
+          <input
+            className="form-search__input"
+            type="text"
+            autoComplete="off"
+            placeholder="Поиск по сайту"
+            value={inputItems}
+            onChange={handleInput}
+          />
+        </label>
+        {cameras && inputItems.length >= 3 && <SearchList cameras={listCameras}/>}
+      </form>
+      <button
+        className="form-search__reset"
+        type="reset"
+        onClick={handleResetClick}
+      >
+        <svg width={10} height={10} aria-hidden="true">
+          <use xlinkHref="#icon-close" />
+        </svg>
+        <span className="visually-hidden">Сбросить поиск</span>
+      </button>
+    </div>
   );
 }
 

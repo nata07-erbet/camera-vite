@@ -13,13 +13,13 @@ function BasketList({ cameras, onDelete, isRemoveItem }: BasketListProps) {
     <ul className="basket__list">
       {cameras && (
         cameras
-        .slice(0, BASKET_AMOUNT)
-        .map((camera) => <BasketItem
-                          camera={camera}
-                          onDelete={onDelete}
-                          isRemoveItem={isRemoveItem}
-                          />)
-      )}
+          .slice(0, BASKET_AMOUNT)
+          .map((camera) => (<BasketItem
+            key={camera.id}
+            camera={camera}
+            onDelete={onDelete}
+            isRemoveItem={isRemoveItem}
+          />)))}
     </ul>);
 }
 

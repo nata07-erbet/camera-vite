@@ -9,7 +9,7 @@ type PopUpRemoveProps = PopUpMainProps & {
 
 function PopUpRemove ({ camera, onRemoveFromBasket, ...props }: PopUpRemoveProps) {
   const handleClickRemoveFromBasket = () => {
-      onRemoveFromBasket();
+    onRemoveFromBasket();
   };
 
   return(
@@ -31,35 +31,35 @@ function PopUpRemove ({ camera, onRemoveFromBasket, ...props }: PopUpRemoveProps
             />
           </picture>
         </div>
-          <div className="basket-item__description">
-            <p className="basket-item__title">{camera.name}</p>
-            <ul className="basket-item__list">
-              <li className="basket-item__list-item">
-                <span className="basket-item__article">Артикул:</span>{''}
-                <span className="basket-item__number">{camera.vendorCode}</span>
-              </li>
-              <li className="basket-item__list-item">{camera.type}</li>
-              <li className="basket-item__list-item">{camera.level}</li>
-            </ul>
-          </div>
+        <div className="basket-item__description">
+          <p className="basket-item__title">{camera.name}</p>
+          <ul className="basket-item__list">
+            <li className="basket-item__list-item">
+              <span className="basket-item__article">Артикул:</span>{''}
+              <span className="basket-item__number">{camera.vendorCode}</span>
+            </li>
+            <li className="basket-item__list-item">{camera.type}</li>
+            <li className="basket-item__list-item">{camera.level}</li>
+          </ul>
         </div>
-        <div className="modal__buttons">
-          <button
-            className="btn btn--purple modal__btn modal__btn--half-width"
-            type="button"
-            onClick={handleClickRemoveFromBasket}
-          >
-            Удалить
-          </button>
-          <Link
-            className="btn btn--transparent modal__btn modal__btn--half-width"
-              to="#"
-          >
-            Продолжить покупки
-          </Link>
-        </div>
+      </div>
+      <div className="modal__buttons">
+        <button
+          className="btn btn--purple modal__btn modal__btn--half-width"
+          type="button"
+          onClick={handleClickRemoveFromBasket}
+        >
+          Удалить
+        </button>
+        <Link
+          className="btn btn--transparent modal__btn modal__btn--half-width"
+          to="#"
+        >
+          Продолжить покупки
+        </Link>
+      </div>
     </PopUpMain>
   );
-};
+}
 
-export { PopUpRemove }
+export { PopUpRemove };

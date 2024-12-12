@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { Link, NavLink, useNavigate } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { NavMap } from '../../const/const';
 import { AppRoutes } from '../../const/const';
 import { Search } from '../search/search';
@@ -13,9 +13,9 @@ type HeaderProps = {
 
 function Header({ cameras, camerasByBasket }: HeaderProps) {
   const count = camerasByBasket && camerasByBasket.length;
-  const isAdded = count && count >= 1 ? true : false;
+  const isAdded = count >= 1 ? true : false;
 
-  const classHidden =  classNames('header__basket-count', {'visually-hidden': !isAdded});
+  const classHidden = classNames('header__basket-count', {'visually-hidden': !isAdded});
 
   return (
     <header className="header" id="header">

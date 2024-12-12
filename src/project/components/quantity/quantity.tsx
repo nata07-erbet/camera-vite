@@ -11,7 +11,7 @@ function Quantity () {
     } else if(count > MAX_CAMERA) {
       return MAX_CAMERA;
     }
-  }
+  };
 
   const handleClickDec = () => {
     setInitCount((prevState) => prevState - 1);
@@ -27,40 +27,40 @@ function Quantity () {
     setInitCount(count);
   };
 
- return(
-  <div className="quantity">
-    <button
-      className="btn-icon btn-icon--prev"
-      aria-label="уменьшить количество товара"
-      onClick={handleClickDec}
-    >
-      <svg width={7} height={12} aria-hidden="true">
-        <use xlinkHref="#icon-arrow" />
-      </svg>
-    </button>
-    <label className="visually-hidden" htmlFor="counter1" />
-    <input
-      type="number"
-      id="counter1"
-      min={1}
-      max={99}
-      aria-label="количество товара"
-      value={isValid(initCount)}
-      onChange={handleClickAddValue}
-    />
-    <button
-      className="btn-icon btn-icon--next"
-      aria-label="увеличить количество товара"
-      onClick={handleClickInc}
-    >
-      <svg width={7} height={12} aria-hidden="true">
-        <use xlinkHref="#icon-arrow" />
-      </svg>
-    </button>
-  </div>
- );
-};
+  return(
+    <div className="quantity">
+      <button
+        className="btn-icon btn-icon--prev"
+        aria-label="уменьшить количество товара"
+        onClick={handleClickDec}
+      >
+        <svg width={7} height={12} aria-hidden="true">
+          <use xlinkHref="#icon-arrow" />
+        </svg>
+      </button>
+      <label className="visually-hidden" htmlFor="counter1" />
+      <input
+        type="number"
+        id="counter1"
+        min={1}
+        max={99}
+        aria-label="количество товара"
+        value={isValid(initCount)}
+        onChange={handleClickAddValue}
+      />
+      <button
+        className="btn-icon btn-icon--next"
+        aria-label="увеличить количество товара"
+        onClick={handleClickInc}
+      >
+        <svg width={7} height={12} aria-hidden="true">
+          <use xlinkHref="#icon-arrow" />
+        </svg>
+      </button>
+    </div>
+  );
+}
 
-export { Quantity }
+export { Quantity };
 
 

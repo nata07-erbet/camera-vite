@@ -5,7 +5,7 @@ import { Quantity } from '../quantity/quantity';
 type BasketItemProps = {
   camera: TCamera;
   onDelete: () => void;
-  isRemoveItem:  boolean;
+  isRemoveItem: boolean;
 };
 
 function BasketItem ({ camera, onDelete, isRemoveItem }: BasketItemProps) {
