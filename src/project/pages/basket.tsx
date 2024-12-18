@@ -76,6 +76,7 @@ function Basket() {
     api
       .post(ReqRoutes.Orders, orderData)
       .then((response) => {
+        console.log(response);
         setIsShowPopUpThanks(true);
         onClear();
         setSendingStatus(RequestStatus.Success)

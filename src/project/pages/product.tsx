@@ -12,9 +12,11 @@ import { UpBtn } from '../components/up-btn/up-btn';
 import { Reviews } from '../components/reviews-list/reviews-list';
 import { PopUpAddToBasket } from '../components/pop-up/pop-up-add-to-basket';
 import { PopUpAddSuccess } from '../components/pop-up/pop-up-add-success';
+import { PopUpAddReview } from '../components/pop-up/pop-up-add-review';
 import { Footer } from '../components/footer/footer';
 
 import { cameraMocks } from '../mocks/camera-mocks';
+import { truncateSync } from 'fs';
 const camerasByBasket: TCamera[] = cameraMocks;
 
 // type ProductProps = {
@@ -217,6 +219,7 @@ function Product() {
         onContinue={handleContinue}
       />
       <UpBtn onScrollTop={handleScrollTop} />
+      <PopUpAddReview isActive={true} />
       <Footer />
     </div>
   );
