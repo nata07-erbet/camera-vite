@@ -1,19 +1,47 @@
 import classNames from 'classnames';
+import { ChangeEvent, useState } from 'react';
 import { TCamera } from '../../types/types';
-import { Quantity } from '../quantity/quantity';
+import { MAX_CAMERA, MIN_CAMERA } from '../../const/const';
+
 
 type BasketItemProps = {
   camera: TCamera;
-  onDelete: () => void;
-  isRemoveItem: boolean;
+  onDeleteFromBasket: (id:TCamera['id']) => void;
+  selectedId?: TCamera['id'] | null;
+  isSending: boolean;
 };
 
-function BasketItem ({ camera, onDelete, isRemoveItem }: BasketItemProps) {
+function BasketItem ({ camera, onDeleteFromBasket, selectedId, isSending }: BasketItemProps) {
+  const [ initCount, setInitCount ] = useState(1);
 
-  const handleClickDelete = () => {
-    onDelete();
+  const isRemoveItem = camera.id === selectedId ? true : false;
+  const totalPrice = camera.price * initCount;
+
+  const isValid = (count: number) => {
+    if(count >= MIN_CAMERA && count <= MAX_CAMERA) {
+      return count;
+    } else if(count > MAX_CAMERA) {
+      return MAX_CAMERA;
+    }
   };
 
+  const handleClickDelete = (id: TCamera['id']) => {
+    onDeleteFromBasket(id);
+  };
+
+  const handleClickDec = () => {
+    setInitCount((prevState) => prevState - 1);
+  };
+
+  const handleClickInc = () => {
+    setInitCount((prevState) => prevState + 1);
+  };
+
+  const handleClickAddValue = (evt: ChangeEvent<HTMLInputElement>) => {
+    const count = Number(evt.target.value);
+    isValid(count);
+    setInitCount(count);
+  };
 
   const classHidden = classNames(
     'basket-item',
@@ -25,14 +53,14 @@ function BasketItem ({ camera, onDelete, isRemoveItem }: BasketItemProps) {
         <picture>
           <source
             type="image/webp"
-            srcSet="img/content/orlenok.webp, img/content/orlenok@2x.webp 2x"
+            srcSet={camera.previewImgWebp}
           />
           <img
-            src="img/content/orlenok.jpg"
-            srcSet="img/content/orlenok@2x.jpg 2x"
+            src={camera.previewImg}
+            srcSet={camera.previewImg2x}
             width={140}
             height={120}
-            alt="Фотоаппарат «Орлёнок»"
+            alt={camera.name}
           />
         </picture>
       </div>
@@ -50,15 +78,47 @@ function BasketItem ({ camera, onDelete, isRemoveItem }: BasketItemProps) {
       <p className="basket-item__price">
         <span className="visually-hidden">Цена:</span>{camera.price} ₽
       </p>
-      <Quantity />
+      <div className="quantity">
+        <button
+          className="btn-icon btn-icon--prev"
+          aria-label="уменьшить количество товара"
+          onClick={handleClickDec}
+          disabled={isSending}
+        >
+          <svg width={7} height={12} aria-hidden="true">
+            <use xlinkHref="#icon-arrow" />
+          </svg>
+        </button>
+        <label className="visually-hidden" htmlFor="counter1" />
+        <input
+          type="number"
+          id="counter1"
+          min={1}
+          max={99}
+          aria-label="количество товара"
+          value={isValid(initCount)}
+          onChange={handleClickAddValue}
+        />
+        <button
+          className="btn-icon btn-icon--next"
+          aria-label="увеличить количество товара"
+          onClick={handleClickInc}
+          disabled={isSending}
+        >
+          <svg width={7} height={12} aria-hidden="true">
+            <use xlinkHref="#icon-arrow" />
+          </svg>
+        </button>
+      </div>
       <div className="basket-item__total-price">
-        <span className="visually-hidden">Общая цена:</span>37 940 ₽
+        <span className="visually-hidden">Общая цена:</span>{totalPrice}
       </div>
       <button
         className="cross-btn"
         type="button"
         aria-label="Удалить товар"
-        onClick={handleClickDelete}
+        onClick={() => handleClickDelete(camera.id)}
+        disabled={isSending}
       >
         <svg width={10} height={10} aria-hidden="true">
           <use xlinkHref="#icon-close" />
@@ -69,3 +129,4 @@ function BasketItem ({ camera, onDelete, isRemoveItem }: BasketItemProps) {
 }
 
 export { BasketItem };
+

@@ -1,15 +1,24 @@
 import { TCamera } from '../../types/types';
 import { PopUpMain } from './pop-up-main';
 import { PopUpMainProps } from './pop-up-main';
+import { KEY_LOCAL_STORAGE_OFFERS } from '../../const/const';
+import { setBasketLocalStorAge } from '../../utils/utils';
+
+import { cameraMocks } from '../../mocks/camera-mocks';
+
 
 type PopUpAddToBasketProps = PopUpMainProps & {
   camera: TCamera;
-  onClickAddSuccess: () => void;
+  onClickAddSuccess: (id: TCamera['id']) => void;
 };
 
 function PopUpAddToBasket({ camera, onClickAddSuccess, ...props }: PopUpAddToBasketProps) {
-  const handleClickAddSuccess = () => {
-    onClickAddSuccess();
+
+  const handleClickAddSuccess = (id: TCamera['id']) => {
+    const addedCameras = cameraMocks;
+
+    onClickAddSuccess(id);
+    setBasketLocalStorAge(KEY_LOCAL_STORAGE_OFFERS, addedCameras);
   };
 
   return(
@@ -50,7 +59,7 @@ function PopUpAddToBasket({ camera, onClickAddSuccess, ...props }: PopUpAddToBas
         <button
           className="btn btn--purple modal__btn modal__btn--fit-width"
           type="button"
-          onClick={handleClickAddSuccess}
+          onClick={() => handleClickAddSuccess(camera.id)}
         >
           <svg width={24} height={16} aria-hidden="true">
             <use xlinkHref="#icon-add-basket" />

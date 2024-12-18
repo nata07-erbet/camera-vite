@@ -10,6 +10,7 @@ const MIN_CAMERA = 1;
 const MAX_CAMERA = 9;
 
 const DATE_FORMAT = 'DD MMMM';
+const KEY_LOCAL_STORAGE_OFFERS = 'my_basket';
 
 const ReqRoutes = {
   Main: '/',
@@ -132,7 +133,14 @@ const PriceMap = {
   [PriceList.PriceUp]: 'до'
 } as const;
 
+const RequestStatus = {
+  Idle: 'Idle',
+  Pending: 'Pending',
+  Error: 'Error',
+  Success: 'Success'
+}
+
 const PRICES: TPrice[] = ['от', 'до'];
 
 
-export { BASE_URL, ReqRoutes, AppRoutes, NavMap, ALL_STARS, TABS, AppRouteTab, TabsMap, DEFAULT_TAB, DATE_FORMAT, REVIEW_SHOW, CATALOG_SHOW, SortTabInner, SortInnerMap, SORT_INNER, DEFAULT_SORT_TYPE, SortTabOrder, SORT_ORDER, SortOrderMap, DEFAULT_SORT_DIRECTION, CATEGORIES, CategoryList, CategoryMap, DEFAULT_CATEGORY, CAMERAS, CamerasMap, CamerasList, LEVELS, LevelsList, LevelMap, INITIAL_FILTERS, PriceList, PriceMap, PRICES, BASKET_AMOUNT, MIN_CAMERA, MAX_CAMERA };
+export { BASE_URL, ReqRoutes, AppRoutes, NavMap, ALL_STARS, TABS, AppRouteTab, TabsMap, DEFAULT_TAB, DATE_FORMAT, REVIEW_SHOW, CATALOG_SHOW, SortTabInner, SortInnerMap, SORT_INNER, DEFAULT_SORT_TYPE, SortTabOrder, SORT_ORDER, SortOrderMap, DEFAULT_SORT_DIRECTION, CATEGORIES, CategoryList, CategoryMap, DEFAULT_CATEGORY, CAMERAS, CamerasMap, CamerasList, LEVELS, LevelsList, LevelMap, INITIAL_FILTERS, PriceList, PriceMap, PRICES, BASKET_AMOUNT, MIN_CAMERA, MAX_CAMERA, KEY_LOCAL_STORAGE_OFFERS, RequestStatus };

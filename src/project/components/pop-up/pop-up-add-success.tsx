@@ -5,6 +5,7 @@ import { AppRoutes } from '../../const/const';
 
 type PopUpAddSuccessProps = PopUpMainProps & {
   onContinue: () => void;
+
 };
 function PopUpAddSuccess({ onContinue, ...props }: PopUpAddSuccessProps) {
   const navigate = useNavigate();

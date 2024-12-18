@@ -4,11 +4,12 @@ import { BASKET_AMOUNT } from '../../const/const';
 
 type BasketListProps = {
   cameras: TCamera[];
-  onDelete: () => void;
-  isRemoveItem: boolean;
+  onDeleteFromBasket: (id:TCamera['id']) => void;
+  selectedId?: TCamera['id'] | null;
+  isSending: boolean;
 };
 
-function BasketList({ cameras, onDelete, isRemoveItem }: BasketListProps) {
+function BasketList({ cameras, onDeleteFromBasket, selectedId, isSending }: BasketListProps) {
   return(
     <ul className="basket__list">
       {cameras && (
@@ -17,8 +18,9 @@ function BasketList({ cameras, onDelete, isRemoveItem }: BasketListProps) {
           .map((camera) => (<BasketItem
             key={camera.id}
             camera={camera}
-            onDelete={onDelete}
-            isRemoveItem={isRemoveItem}
+            onDeleteFromBasket={onDeleteFromBasket}
+            selectedId={selectedId}
+            isSending={isSending}
           />)))}
     </ul>);
 }

@@ -5,9 +5,11 @@ import { CATALOG_SHOW } from '../../const/const';
 type ProductsListProps = {
   cameras: TCamera[];
   onOpen?: (id: TCamera['id']) => void;
+  selectedId?: TCamera['id'];
+  selectIdSuccess: TCamera['id'];
 };
 
-function ProductsList({ onOpen, cameras }: ProductsListProps) {
+function ProductsList({ onOpen, cameras, selectedId, selectIdSuccess} : ProductsListProps) {
 
   const handleOpenPopUp = (id: TCamera['id']) => {
     onOpen?.(id);
@@ -22,6 +24,8 @@ function ProductsList({ onOpen, cameras }: ProductsListProps) {
             camera={camera}
             key={camera.id}
             onOpen={(id) => handleOpenPopUp(id)}
+            selectedId={selectedId}
+            selectIdSuccess={selectIdSuccess}
           />
         ))}
     </div>

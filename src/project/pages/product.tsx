@@ -17,11 +17,15 @@ import { Footer } from '../components/footer/footer';
 import { cameraMocks } from '../mocks/camera-mocks';
 const camerasByBasket: TCamera[] = cameraMocks;
 
+// type ProductProps = {
+//   onClickAddSuccess: (id: TCamera['id']) => void;
+// };
+
 function Product() {
-  const [cameras, setCameras] = useState<TCamera[]>([]);
-  const [currentTab, setCurrentTab] = useState<TTab>(DEFAULT_TAB);
-  const [reviews, setReviews] = useState<TReview[]>([]);
-  const [similars, setSimilars] = useState<TCamera[]>([]);
+  const [ cameras, setCameras ] = useState<TCamera[]>([]);
+  const [ currentTab, setCurrentTab ] = useState<TTab>(DEFAULT_TAB);
+  const [ reviews, setReviews ] = useState<TReview[]>([]);
+  const [ similars, setSimilars] = useState<TCamera[]>([]);
   const [ isShowPopUp, setIsShowPopUp ] = useState(false);
   const [ isShowPopUpSuccess, setIsShowPopUpSuccess ] = useState(false);
 
@@ -65,6 +69,7 @@ function Product() {
 
   const handleClickAddSuccess = () => {
     setIsShowPopUpSuccess(true);
+    // onClickAddSuccess(id);
   };
 
   const handleContinue = () => {

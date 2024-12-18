@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { api } from '../api/api';
 import {
   TCamera,
+
   TPromo,
   TSortType,
   TSortDirection,
@@ -31,17 +32,28 @@ import {
   getMinMaxPrices,
 } from '../utils/utils';
 
+// type CatalogProps = {
+//   selectIdSuccess: TCamera['id'];
+// };
+
 import { cameraMocks } from '../mocks/camera-mocks';
-const camerasByBasket: TCamera[] = cameraMocks;
+const camerasByBasketMock: TCamera[] = cameraMocks.slice(0,3);
 
 function Catalog() {
+  const selectIdSuccess = 1;
+
   const [ cameras, setCameras ] = useState<TCamera[]>([]);
   const [ promos, setPromos ] = useState<TPromo[]>([]);
+  const [cameraId, setCameraId] = useState<TCamera['id']| null>(null);
+  const currentCamera = cameras.find((camera) => camera.id === cameraId);
 
-  const [isShowPopUp, setIsShowPopUp] = useState(false);
+  const [ storeBasket, setStoreBasket ] = useState<TCamera[]>([]);
+  console.log(storeBasket); //показывает 1
+
+
+  const [ isShowPopUp, setIsShowPopUp] = useState(false);
   const [ isShowPopUpSuccess, setIsShowPopUpSuccess ] = useState(false);
 
-  const [cameraId, setCameraId] = useState<TCamera['id']>();
 
   const [sortType, setSortType] = useState<TSortType>(DEFAULT_SORT_TYPE);
   const [sortDirection, setSortDirection] = useState<TSortDirection>(
@@ -64,7 +76,7 @@ function Catalog() {
     () => getMinMaxPrices(filteredCameras),
     [filteredCameras]
   );
-  const currentCamera = cameras.find((camera) => camera.id === cameraId);
+
 
   const camerasToShow = filterCamerasByPrice(filteredCameras, priceRange);
 
@@ -72,9 +84,10 @@ function Catalog() {
     setFilters(newData);
   };
 
-  const handleClickAddSuccess = () => {
+  const handleClickAddSuccess = (id:TCamera['id']) => {
     setIsShowPopUpSuccess(true);
-
+    setCameraId(id);
+    setStoreBasket(storeBasket.push(currentCamera));
   };
 
   const handlePopUpClose = () => {
@@ -120,7 +133,7 @@ function Catalog() {
 
   return (
     <div className="wrapper" data-testid="main-page">
-      <Header cameras={cameras} camerasByBasket={camerasByBasket} />
+      <Header cameras={cameras} camerasByBasket={camerasByBasketMock} />
       <main>
         {promos && <SwiperSliders promos={promos} />};
         <div className="page-content">
@@ -150,6 +163,8 @@ function Catalog() {
                     <ProductsList
                       cameras={camerasToShow}
                       onOpen={(id) => handleOpenPopUp(id)}
+                      selectedId={cameraId}
+                      selectIdSuccess={selectIdSuccess}
                     />
                   )}
                   <Pagination cameras={cameras} />

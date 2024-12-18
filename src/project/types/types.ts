@@ -40,11 +40,10 @@ type TReview = {
   }
 
   type TOrder = {
-    camerasIds: [number];
+    camerasIds: number[];
     coupon?: string;
-    tel: string;
-  }
-
+    tel?: string;
+  };
   type TSortType = (typeof SortTabInner)[keyof typeof SortTabInner];
   type TSortDirection = (typeof SortTabOrder)[keyof typeof SortTabOrder];
   type TSortKey = `${TSortType}-${TSortDirection}`;
@@ -89,5 +88,5 @@ export type {
   TFiltersData,
   TPrice,
   TFormInputs,
-  TFilterPriceRange
+  TFilterPriceRange,
 };

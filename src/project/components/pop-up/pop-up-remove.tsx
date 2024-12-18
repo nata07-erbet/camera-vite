@@ -4,12 +4,13 @@ import { TCamera } from '../../types/types';
 
 type PopUpRemoveProps = PopUpMainProps & {
   camera: TCamera;
-  onRemoveFromBasket: () => void;
+  onRemoveFromBasket?: (id: TCamera['id']) => void;
 };
 
 function PopUpRemove ({ camera, onRemoveFromBasket, ...props }: PopUpRemoveProps) {
-  const handleClickRemoveFromBasket = () => {
-    onRemoveFromBasket();
+
+  const handleClickRemoveFromBasket = (id: TCamera['id']) => {
+    onRemoveFromBasket?.(id);
   };
 
   return(
@@ -20,14 +21,14 @@ function PopUpRemove ({ camera, onRemoveFromBasket, ...props }: PopUpRemoveProps
           <picture>
             <source
               type="image/webp"
-              srcSet="img/content/orlenok.webp, img/content/orlenok@2x.webp 2x"
+              srcSet={camera.previewImgWebp}
             />
             <img
-              src="img/content/orlenok.jpg"
+              src={camera.previewImg}
               srcSet="img/content/orlenok@2x.jpg 2x"
               width={140}
               height={120}
-              alt="Фотоаппарат «Орлёнок»"
+              alt={camera.name}
             />
           </picture>
         </div>
@@ -47,7 +48,7 @@ function PopUpRemove ({ camera, onRemoveFromBasket, ...props }: PopUpRemoveProps
         <button
           className="btn btn--purple modal__btn modal__btn--half-width"
           type="button"
-          onClick={handleClickRemoveFromBasket}
+          onClick={() => handleClickRemoveFromBasket(camera.id)}
         >
           Удалить
         </button>

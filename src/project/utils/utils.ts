@@ -77,5 +77,11 @@ const filterCamerasByPrice = (
   ));
 };
 
-export { formatDate, compareDate, compare, comparePrice, getMinMaxPrices, filterCameras, filterCamerasByPrice };
+
+const setBasketLocalStorAge = (key: string, value: TCamera[]) => {
+  localStorage.setItem(key, JSON.stringify(value));
+};
+
+
+export { formatDate, compareDate, compare, comparePrice, getMinMaxPrices, filterCameras, filterCamerasByPrice, setBasketLocalStorAge };
 
