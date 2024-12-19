@@ -15,8 +15,8 @@ import { PopUpAddSuccess } from '../components/pop-up/pop-up-add-success';
 import { PopUpAddReview } from '../components/pop-up/pop-up-add-review';
 import { Footer } from '../components/footer/footer';
 
+
 import { cameraMocks } from '../mocks/camera-mocks';
-import { truncateSync } from 'fs';
 const camerasByBasket: TCamera[] = cameraMocks;
 
 // type ProductProps = {
