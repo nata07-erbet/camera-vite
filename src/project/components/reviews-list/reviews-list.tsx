@@ -7,9 +7,10 @@ import { REVIEW_SHOW } from '../../const/const';
 
 type ReviewsProps = {
   reviews: TReview[];
+  onClickAddReview: () => void;
 }
 
-function Reviews({ reviews }: ReviewsProps) {
+function Reviews({ reviews, onClickAddReview }: ReviewsProps) {
   const [ reviewShowCount, setReviewShowCount ] = useState<number>(REVIEW_SHOW);
 
   const classButtonHidden = classNames('btn', 'btn--purple', {
@@ -20,12 +21,22 @@ function Reviews({ reviews }: ReviewsProps) {
     setReviewShowCount((prevState) => prevState + REVIEW_SHOW);
   };
 
+  const handleClickAddReview = () => {
+    onClickAddReview();
+  }
+
   return (
     <section className="review-block">
       <div className="container">
         <div className="page-content__headed">
           <h2 className="title title--h3">Отзывы</h2>
-          <button className="btn visually-hidden" type="button">Оставить свой отзыв</button>
+          <button
+            className="btn"
+            type="button"
+            onClick={handleClickAddReview}
+          >
+            Оставить свой отзыв
+          </button>
         </div>
         <ul className="review-block__list">
           {reviews

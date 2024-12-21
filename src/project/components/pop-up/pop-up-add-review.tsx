@@ -10,6 +10,7 @@ import { RateBarMap, SettingValidation} from '../../const/const';
 type PopUpAddReviewProps = PopUpMainProps & {
   cameraId: number;
   onSubmit: () => void;
+  onClickSendReview: () => void;
 };
 
 type FormInputs = {
@@ -22,7 +23,7 @@ type FormInputs = {
   rate: string;
 };
 
-function PopUpAddReview ({cameraId, onSubmit, ...props}: PopUpAddReviewProps) {
+function PopUpAddReview ({cameraId, onSubmit, onClickSendReview, ...props}: PopUpAddReviewProps) {
   const [ sendingStatus, setSendingStatus ] = useState();
 
   const isSending = sendingStatus == RequestStatus.Pending;
@@ -82,7 +83,6 @@ function PopUpAddReview ({cameraId, onSubmit, ...props}: PopUpAddReviewProps) {
     },
   });
 
-
   const userMinus = register('userMinus', {
     required: {
       value: true,
@@ -124,7 +124,11 @@ function PopUpAddReview ({cameraId, onSubmit, ...props}: PopUpAddReviewProps) {
         })
         .catch((err) => setError('root', err))
         ;
-  }
+  };
+
+  const handleClickSendReview = () => {
+    onClickSendReview();
+  };
 
   return (
     <PopUpMain { ...props}>
@@ -243,6 +247,7 @@ function PopUpAddReview ({cameraId, onSubmit, ...props}: PopUpAddReviewProps) {
             <button
               className="btn btn--purple form-review__btn"
               type="submit"
+              onClick={handleClickSendReview}
             >
               Отправить отзыв
             </button>

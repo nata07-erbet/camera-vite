@@ -13,6 +13,7 @@ import { Reviews } from '../components/reviews-list/reviews-list';
 import { PopUpAddToBasket } from '../components/pop-up/pop-up-add-to-basket';
 import { PopUpAddSuccess } from '../components/pop-up/pop-up-add-success';
 import { PopUpAddReview } from '../components/pop-up/pop-up-add-review';
+import { PopUpReviewThanks } from '../components/pop-up/pop-up-review-thanks'
 import { Footer } from '../components/footer/footer';
 
 
@@ -30,6 +31,9 @@ function Product() {
   const [ similars, setSimilars] = useState<TCamera[]>([]);
   const [ isShowPopUp, setIsShowPopUp ] = useState(false);
   const [ isShowPopUpSuccess, setIsShowPopUpSuccess ] = useState(false);
+  const [ isShowPopUpReview, setIsShowPopUpReview ] = useState(false);
+  const [ isShowPopUpReviewThanks, setIsShowPopUpReviewThanks ] = useState(false);
+
 
   const isActive = currentTab === DEFAULT_TAB;
 
@@ -67,6 +71,8 @@ function Product() {
   const handlePopUpClose = () => {
     setIsShowPopUp(false);
     setIsShowPopUpSuccess(false);
+    setIsShowPopUpReview(false);
+    setIsShowPopUpReviewThanks(false)
   };
 
   const handleClickAddSuccess = () => {
@@ -80,9 +86,19 @@ function Product() {
     setIsShowPopUpSuccess(false);
   };
 
-  const handleFormSubmit = () => {
-    console.log('Data send success');
-  }
+  const handleClickAddReview = () => {
+    setIsShowPopUpReview(true);
+  };
+
+  const handleFormSubmitReview = () => {
+    setIsShowPopUpReview(false);
+  };
+
+  const handleClickSendReview = () => {
+    setIsShowPopUpReview(false);
+    setIsShowPopUpReviewThanks(true);
+  };
+
 
   useEffect(() => {
     api
@@ -203,7 +219,11 @@ function Product() {
             {similars && <SimilarProduct similars={similars} />}
             {reviews && (
               <div className="page-content__section">
-                <Reviews reviews={reviews} />
+                <Reviews
+                  reviews={reviews}
+                  onClickAddReview ={handleClickAddReview}
+
+                />
               </div>
             )}
           </div>
@@ -224,9 +244,15 @@ function Product() {
       />
       <UpBtn onScrollTop={handleScrollTop} />
       <PopUpAddReview
-        isActive={true}
+        isActive={isShowPopUpReview}
+        onClose={handlePopUpClose}
         cameraId={cameraId}
-        onSubmit={handleFormSubmit}
+        onSubmit={handleFormSubmitReview}
+      />
+      <PopUpReviewThanks
+        isActive={isShowPopUpReviewThanks}
+        onClose={handlePopUpClose}
+        onClickSendReview={handleClickSendReview}
       />
       <Footer />
     </div>
