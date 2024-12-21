@@ -80,6 +80,10 @@ function Product() {
     setIsShowPopUpSuccess(false);
   };
 
+  const handleFormSubmit = () => {
+    console.log('Data send success');
+  }
+
   useEffect(() => {
     api
       .get<TCamera[]>(ReqRoutes.Cameras)
@@ -219,7 +223,11 @@ function Product() {
         onContinue={handleContinue}
       />
       <UpBtn onScrollTop={handleScrollTop} />
-      <PopUpAddReview isActive={true} />
+      <PopUpAddReview
+        isActive={true}
+        cameraId={cameraId}
+        onSubmit={handleFormSubmit}
+      />
       <Footer />
     </div>
   );

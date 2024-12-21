@@ -28,16 +28,21 @@ type TPromo = {
 
 type TTab = (typeof AppRouteTab)[keyof typeof AppRouteTab];
 
-type TReview = {
+type TReviewId = {
   id: string;
   createAt: string;
+};
+
+type TReviewPost =  {
   cameraId: number;
   userName: string;
   advantage: string;
   disadvantage: string;
   review: string;
   rating: number;
-  }
+  };
+
+  type TReview = TReviewId & TReviewPost;
 
   type TOrder = {
     camerasIds: number[];
@@ -89,4 +94,5 @@ export type {
   TPrice,
   TFormInputs,
   TFilterPriceRange,
+  TReviewPost
 };

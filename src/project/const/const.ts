@@ -9,9 +9,6 @@ const BASKET_AMOUNT = 9;
 const MIN_CAMERA = 1;
 const MAX_CAMERA = 9;
 
-const MIN_RATE = 1;
-const MAX_RATE = 5
-
 const DATE_FORMAT = 'DD MMMM';
 const KEY_LOCAL_STORAGE_OFFERS = 'my_basket';
 
@@ -151,7 +148,20 @@ const RateBarMap = {
   5: 'Ужасно',
 };
 
+const SettingValidation = {
+  UserMessageRateRequired: 'Rate number is required',
+  UserMessageRateValidation: 'Rate must contain from 1 to 5 stars',
+  UserNameMessageRequired: 'UserName is required',
+  UserNameMessageValidation: 'UserName must contain from 2 to 15 letters',
+  UserPlusMessageRequired: 'Advantage is required',
+  UserPlusMessageValidation: 'Advantage must contain from 10 to 160 letters',
+  UserMinusMessageRequired: 'Disadvantage is required',
+  UserMinusMessageValidation: 'Disadvantage must contain from 10 to 160 letters',
+  UserCommentMessageRequired: 'Comment is required',
+  UserCommentMessageValidation: 'Comment must contain from 10 to 160 letters',
+};
+
 const PRICES: TPrice[] = ['от', 'до'];
 
 
-export { BASE_URL, ReqRoutes, AppRoutes, NavMap, ALL_STARS, TABS, AppRouteTab, TabsMap, DEFAULT_TAB, DATE_FORMAT, REVIEW_SHOW, CATALOG_SHOW, SortTabInner, SortInnerMap, SORT_INNER, DEFAULT_SORT_TYPE, SortTabOrder, SORT_ORDER, SortOrderMap, DEFAULT_SORT_DIRECTION, CATEGORIES, CategoryList, CategoryMap, DEFAULT_CATEGORY, CAMERAS, CamerasMap, CamerasList, LEVELS, LevelsList, LevelMap, INITIAL_FILTERS, PriceList, PriceMap, PRICES, BASKET_AMOUNT, MIN_CAMERA, MAX_CAMERA, KEY_LOCAL_STORAGE_OFFERS, RequestStatus, RateBarMa };
+export { BASE_URL, ReqRoutes, AppRoutes, NavMap, ALL_STARS, TABS, AppRouteTab, TabsMap, DEFAULT_TAB, DATE_FORMAT, REVIEW_SHOW, CATALOG_SHOW, SortTabInner, SortInnerMap, SORT_INNER, DEFAULT_SORT_TYPE, SortTabOrder, SORT_ORDER, SortOrderMap, DEFAULT_SORT_DIRECTION, CATEGORIES, CategoryList, CategoryMap, DEFAULT_CATEGORY, CAMERAS, CamerasMap, CamerasList, LEVELS, LevelsList, LevelMap, INITIAL_FILTERS, PriceList, PriceMap, PRICES, BASKET_AMOUNT, MIN_CAMERA, MAX_CAMERA, KEY_LOCAL_STORAGE_OFFERS, RequestStatus, RateBarMap, SettingValidation };

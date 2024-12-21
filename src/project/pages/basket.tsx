@@ -78,7 +78,7 @@ function Basket() {
       .then((response) => {
         console.log(response);
         setIsShowPopUpThanks(true);
-        onClear();
+        onClear;
         setSendingStatus(RequestStatus.Success)
       })
       .catch((error) => {
