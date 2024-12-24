@@ -20,7 +20,7 @@ function ProductCard({ onOpen, camera, isActive, onClickBuy, idSuccess}: Product
     id: camera.id.toString(),
   });
 
-  const handleClickButtonBuy = (id: TCamera['id'], camera:TCamera) => {
+  const handleClickButtonBuy = (id: TCamera['id']) => {
     onOpen?.(id);
     onClickBuy?.(id);
   };

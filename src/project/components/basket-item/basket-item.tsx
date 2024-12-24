@@ -9,9 +9,11 @@ type BasketItemProps = {
   onDeleteFromBasket: (id: TCamera['id']) => void;
   selectedId?: TCamera['id'] | null;
   isSending: boolean;
+  onChangeQuantity: (newCount: number) => void;
+  onInputQuantity: (newCount: number) => void;
 };
 
-function BasketItem ({ camera, onDeleteFromBasket, selectedId, isSending }: BasketItemProps) {
+function BasketItem ({ camera, onDeleteFromBasket, selectedId, isSending, onChangeQuantity, onInputQuantity}: BasketItemProps) {
   const [ initCount, setInitCount ] = useState(1);
   const isRemoveItem = camera.id === selectedId ? true : false;
 
@@ -32,18 +34,21 @@ function BasketItem ({ camera, onDeleteFromBasket, selectedId, isSending }: Bask
   const handleClickDec = () => {
     const newCount = initCount - 1;
     setInitCount(newCount);
+    onChangeQuantity(newCount);
   };
 
   const handleClickInc = () => {
     const newCount = initCount + 1;
     setInitCount(newCount);
+    onChangeQuantity(newCount);
   };
 
 
   const handleClickAddValue = (evt: ChangeEvent<HTMLInputElement>) => {
-    const count = Number(evt.target.value);
-    getValid(count);
-    setInitCount(count);
+    const newCount = Number(evt.target.value);
+    getValid(newCount);
+    setInitCount(newCount);
+    onInputQuantity(newCount);
   };
 
   const classHidden = classNames(

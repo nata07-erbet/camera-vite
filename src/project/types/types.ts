@@ -76,6 +76,10 @@ type TReviewPost = {
 
   type TFilterPriceRange = [number, number];
 
+  type TLocalStore = TCamera & {
+    quantity: number;
+  }
+
 export type {
   TCamera,
   TPromo,
@@ -94,5 +98,6 @@ export type {
   TPrice,
   TFormInputs,
   TFilterPriceRange,
-  TReviewPost
+  TReviewPost,
+  TLocalStore
 };
