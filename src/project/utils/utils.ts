@@ -78,10 +78,5 @@ const filterCamerasByPrice = (
 };
 
 
-const setBasketLocalStorAge = (key: string, value: TCamera[]) => {
-  localStorage.setItem(key, JSON.stringify(value));
-};
-
-
-export { formatDate, compareDate, compare, comparePrice, getMinMaxPrices, filterCameras, filterCamerasByPrice, setBasketLocalStorAge };
+export { formatDate, compareDate, compare, comparePrice, getMinMaxPrices, filterCameras, filterCamerasByPrice };
 

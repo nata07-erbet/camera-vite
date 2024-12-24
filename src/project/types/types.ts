@@ -33,7 +33,7 @@ type TReviewId = {
   createAt: string;
 };
 
-type TReviewPost =  {
+type TReviewPost = {
   cameraId: number;
   userName: string;
   advantage: string;

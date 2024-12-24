@@ -23,7 +23,7 @@ function Reviews({ reviews, onClickAddReview }: ReviewsProps) {
 
   const handleClickAddReview = () => {
     onClickAddReview();
-  }
+  };
 
   return (
     <section className="review-block">

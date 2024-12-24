@@ -148,7 +148,7 @@ function Filter ({
   };
 
   const handleClickReset = () => {
-    setFilterData(INITIAL_FILTERS);
+    setFilterData(initialFilters);
     onReset();
     reset();
   };

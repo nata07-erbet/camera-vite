@@ -13,27 +13,28 @@ import { Reviews } from '../components/reviews-list/reviews-list';
 import { PopUpAddToBasket } from '../components/pop-up/pop-up-add-to-basket';
 import { PopUpAddSuccess } from '../components/pop-up/pop-up-add-success';
 import { PopUpAddReview } from '../components/pop-up/pop-up-add-review';
-import { PopUpReviewThanks } from '../components/pop-up/pop-up-review-thanks'
+import { PopUpReviewThanks } from '../components/pop-up/pop-up-review-thanks';
 import { Footer } from '../components/footer/footer';
-
+import { addCamera } from '../store/local-store-basket';
 
 import { cameraMocks } from '../mocks/camera-mocks';
 const camerasByBasket: TCamera[] = cameraMocks;
 
-// type ProductProps = {
-//   onClickAddSuccess: (id: TCamera['id']) => void;
-// };
-
 function Product() {
+  const navigate = useNavigate();
+
   const [ cameras, setCameras ] = useState<TCamera[]>([]);
   const [ currentTab, setCurrentTab ] = useState<TTab>(DEFAULT_TAB);
   const [ reviews, setReviews ] = useState<TReview[]>([]);
   const [ similars, setSimilars] = useState<TCamera[]>([]);
-  const [ isShowPopUp, setIsShowPopUp ] = useState(false);
+
+  const [ cameraIdSimilar, setCameraIdSimilar ] = useState<TCamera['id'] | null>(null);
+  const [ currentCamera, setCurrentCamera ] = useState<TCamera | null>(null);
+
+  const [ isShowPopUpAddBasket, setIsShowPopUpAddBasket ] = useState(false);
   const [ isShowPopUpSuccess, setIsShowPopUpSuccess ] = useState(false);
   const [ isShowPopUpReview, setIsShowPopUpReview ] = useState(false);
   const [ isShowPopUpReviewThanks, setIsShowPopUpReviewThanks ] = useState(false);
-
 
   const isActive = currentTab === DEFAULT_TAB;
 
@@ -49,8 +50,7 @@ function Product() {
 
   const params = useParams();
   const cameraId = Number(params.id);
-  const currentCamera = cameras.find((camera) => camera.id === cameraId);
-  const navigate = useNavigate();
+  const currentCameraByProduct = cameras.find((camera) => camera.id === cameraId);
 
   const handleTabClick = (tab: TTab) => {
     setCurrentTab(tab);
@@ -64,25 +64,28 @@ function Product() {
     });
   };
 
-  const handleButtonClick = () => {
-    setIsShowPopUp(true);
+  const handleButtonClickAddBasketByProduct = () => {
+    setIsShowPopUpAddBasket(true);
+    currentCameraByProduct && setCurrentCamera(currentCameraByProduct);
+
   };
 
   const handlePopUpClose = () => {
-    setIsShowPopUp(false);
+    setIsShowPopUpAddBasket(false);
     setIsShowPopUpSuccess(false);
     setIsShowPopUpReview(false);
-    setIsShowPopUpReviewThanks(false)
+    setIsShowPopUpReviewThanks(false);
   };
 
-  const handleClickAddSuccess = () => {
+  const handleClickAddSuccess = (id :TCamera['id'], camera: TCamera) => {
     setIsShowPopUpSuccess(true);
-    // onClickAddSuccess(id);
+    console.log(id);
+    addCamera(camera);
   };
 
   const handleContinue = () => {
     navigate(AppRoutes.Main);
-    setIsShowPopUp(false);
+    setIsShowPopUpAddBasket(false);
     setIsShowPopUpSuccess(false);
   };
 
@@ -92,13 +95,18 @@ function Product() {
 
   const handleFormSubmitReview = () => {
     setIsShowPopUpReview(false);
-  };
-
-  const handleClickSendReview = () => {
-    setIsShowPopUpReview(false);
     setIsShowPopUpReviewThanks(true);
   };
 
+  const handleOpenPopUpAddBasketBySimilar = (id: TCamera['id']) => {
+    setIsShowPopUpAddBasket(true);
+    setCameraIdSimilar(id);
+    const currentCameraBySimilar = similars.find((similar) => similar.id === cameraIdSimilar);
+
+    if(currentCameraBySimilar) {
+      return setCurrentCamera(currentCameraBySimilar);
+    }
+  };
 
   useEffect(() => {
     api
@@ -118,9 +126,9 @@ function Product() {
     <div className="wrapper" data-testid="product-page">
       <Header cameras={cameras} camerasByBasket={camerasByBasket} />
       <main>
-        {currentCamera && (
+        {currentCameraByProduct && (
           <div className="page-content">
-            <Breadcrumbs camera={currentCamera} isBasketPage={false} />
+            <Breadcrumbs camera={currentCameraByProduct} isBasketPage={false} />
             <div className="page-content__section">
               <section className="product">
                 <div className="container">
@@ -128,28 +136,28 @@ function Product() {
                     <picture>
                       <source
                         type="image/webp"
-                        srcSet={`/${currentCamera.previewImgWebp}`}
+                        srcSet={`/${currentCameraByProduct.previewImgWebp}`}
                       />
                       <img
-                        src={`/${currentCamera.previewImg}`}
-                        srcSet={`/${currentCamera.previewImg2x}`}
+                        src={`/${currentCameraByProduct.previewImg}`}
+                        srcSet={`/${currentCameraByProduct.previewImg2x}`}
                         width={560}
                         height={480}
-                        alt={currentCamera.name}
+                        alt={currentCameraByProduct.name}
                       />
                     </picture>
                   </div>
                   <div className="product__content">
-                    <h1 className="title title--h3">{currentCamera.name}</h1>
-                    <Rate camera={currentCamera} />
+                    <h1 className="title title--h3">{currentCameraByProduct.name}</h1>
+                    <Rate camera={currentCameraByProduct} />
                     <p className="product__price">
                       <span className="visually-hidden">Цена:</span>
-                      {currentCamera.price.toLocaleString()} ₽
+                      {currentCameraByProduct.price.toLocaleString()} ₽
                     </p>
                     <button
                       className="btn btn--purple"
                       type="button"
-                      onClick={handleButtonClick}
+                      onClick={handleButtonClickAddBasketByProduct}
                     >
                       <svg width={24} height={16} aria-hidden="true">
                         <use xlinkHref="#icon-add-basket" />
@@ -177,7 +185,7 @@ function Product() {
                               <span className="item-list__title">Артикул:</span>
                               <p className="item-list__text">
                                 {' '}
-                                {currentCamera.id}
+                                {currentCameraByProduct.id}
                               </p>
                             </li>
                             <li className="item-list">
@@ -185,7 +193,7 @@ function Product() {
                                 Категория:
                               </span>
                               <p className="item-list__text">
-                                {currentCamera.category}
+                                {currentCameraByProduct.category}
                               </p>
                             </li>
                             <li className="item-list">
@@ -193,13 +201,13 @@ function Product() {
                                 Тип камеры:
                               </span>
                               <p className="item-list__text">
-                                {currentCamera.type}
+                                {currentCameraByProduct.type}
                               </p>
                             </li>
                             <li className="item-list">
                               <span className="item-list__title">Уровень:</span>
                               <p className="item-list__text">
-                                {currentCamera.level}
+                                {currentCameraByProduct.level}
                               </p>
                             </li>
                           </ul>
@@ -207,7 +215,7 @@ function Product() {
 
                         <div className={classIsActiveTab}>
                           <div className="product__tabs-text">
-                            <p>{currentCamera.description}</p>
+                            <p>{currentCameraByProduct.description}</p>
                           </div>
                         </div>
                       </div>
@@ -216,13 +224,16 @@ function Product() {
                 </div>
               </section>
             </div>
-            {similars && <SimilarProduct similars={similars} />}
+            {similars && (
+              <SimilarProduct
+                similars={similars}
+                onOpen={(id) => handleOpenPopUpAddBasketBySimilar(id)}
+              />)}
             {reviews && (
               <div className="page-content__section">
                 <Reviews
                   reviews={reviews}
                   onClickAddReview ={handleClickAddReview}
-
                 />
               </div>
             )}
@@ -232,7 +243,7 @@ function Product() {
       {currentCamera && (
         <PopUpAddToBasket
           camera={currentCamera}
-          isActive={isShowPopUp}
+          isActive={isShowPopUpAddBasket}
           onClose={handlePopUpClose}
           onClickAddSuccess={handleClickAddSuccess}
         />
@@ -252,7 +263,7 @@ function Product() {
       <PopUpReviewThanks
         isActive={isShowPopUpReviewThanks}
         onClose={handlePopUpClose}
-        onClickSendReview={handleClickSendReview}
+        onClosePopUpReviewThanks={handlePopUpClose}
       />
       <Footer />
     </div>

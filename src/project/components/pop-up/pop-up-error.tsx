@@ -5,11 +5,11 @@ import { AppRoutes } from '../../const/const';
 type PopUpErrorProp = PopUpMainProps
 
 function PopUpError ({ ...props }: PopUpErrorProp) {
-const navigate = useNavigate();
+  const navigate = useNavigate();
 
-const handleClickBackMain = () => {
-  navigate(AppRoutes.Main);
-};
+  const handleClickBackMain = () => {
+    navigate(AppRoutes.Main);
+  };
 
   return (
     <PopUpMain {...props}>

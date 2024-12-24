@@ -15,13 +15,14 @@ function BasketList({ cameras, onDeleteFromBasket, selectedId, isSending }: Bask
       {cameras && (
         cameras
           .slice(0, BASKET_AMOUNT)
-          .map((camera) => (<BasketItem
-            key={camera.id}
-            camera={camera}
-            onDeleteFromBasket={onDeleteFromBasket}
-            selectedId={selectedId}
-            isSending={isSending}
-          />)))}
+          .map((camera) => (
+            <BasketItem
+              key={camera.id}
+              camera={camera}
+              onDeleteFromBasket={onDeleteFromBasket}
+              selectedId={selectedId}
+              isSending={isSending}
+            />)))}
     </ul>);
 }
 

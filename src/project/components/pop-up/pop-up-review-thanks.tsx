@@ -1,14 +1,13 @@
-import { useNavigate } from 'react-router-dom';
 import { PopUpMain, PopUpMainProps } from '../pop-up/pop-up-main';
-import { AppRoutes } from '../../const/const';
 
-type PopUpReviewThanks = PopUpMainProps;
+type PopUpReviewThanksProps = PopUpMainProps & {
+  onClosePopUpReviewThanks: () => void;
+};
 
-function PopUpReviewThanks ({ ...props }: PopUpMainProps) {
-  const navigate = useNavigate();
+function PopUpReviewThanks ({ onClosePopUpReviewThanks, ...props }: PopUpReviewThanksProps) {
 
   const handleClickButton = () => {
-    navigate(AppRoutes.Main);
+    onClosePopUpReviewThanks();
   };
 
   return(

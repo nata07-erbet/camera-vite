@@ -6,22 +6,22 @@ import { MAX_CAMERA, MIN_CAMERA } from '../../const/const';
 
 type BasketItemProps = {
   camera: TCamera;
-  onDeleteFromBasket: (id:TCamera['id']) => void;
+  onDeleteFromBasket: (id: TCamera['id']) => void;
   selectedId?: TCamera['id'] | null;
   isSending: boolean;
 };
 
 function BasketItem ({ camera, onDeleteFromBasket, selectedId, isSending }: BasketItemProps) {
   const [ initCount, setInitCount ] = useState(1);
-
   const isRemoveItem = camera.id === selectedId ? true : false;
-  const totalPrice = camera.price * initCount;
 
-  const isValid = (count: number) => {
+  const getValid = (count: number) => {
     if(count >= MIN_CAMERA && count <= MAX_CAMERA) {
       return count;
     } else if(count > MAX_CAMERA) {
       return MAX_CAMERA;
+    } else if(count < MIN_CAMERA) {
+      return MIN_CAMERA;
     }
   };
 
@@ -30,16 +30,19 @@ function BasketItem ({ camera, onDeleteFromBasket, selectedId, isSending }: Bask
   };
 
   const handleClickDec = () => {
-    setInitCount((prevState) => prevState - 1);
+    const newCount = initCount - 1;
+    setInitCount(newCount);
   };
 
   const handleClickInc = () => {
-    setInitCount((prevState) => prevState + 1);
+    const newCount = initCount + 1;
+    setInitCount(newCount);
   };
+
 
   const handleClickAddValue = (evt: ChangeEvent<HTMLInputElement>) => {
     const count = Number(evt.target.value);
-    isValid(count);
+    getValid(count);
     setInitCount(count);
   };
 
@@ -96,7 +99,7 @@ function BasketItem ({ camera, onDeleteFromBasket, selectedId, isSending }: Bask
           min={1}
           max={99}
           aria-label="количество товара"
-          value={isValid(initCount)}
+          value={getValid(initCount)}
           onChange={handleClickAddValue}
         />
         <button
@@ -111,7 +114,7 @@ function BasketItem ({ camera, onDeleteFromBasket, selectedId, isSending }: Bask
         </button>
       </div>
       <div className="basket-item__total-price">
-        <span className="visually-hidden">Общая цена:</span>{totalPrice}
+        <span className="visually-hidden">Общая цена:</span>{getValid(initCount) * camera.price}
       </div>
       <button
         className="cross-btn"

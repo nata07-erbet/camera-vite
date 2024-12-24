@@ -9,9 +9,14 @@ import { ProductCard } from '../product-card/product-card';
 
 type SimilarProductProps ={
   similars: TCamera[];
+  onOpen?: (id: TCamera['id']) => void;
 };
 
-function SimilarProduct({ similars }: SimilarProductProps) {
+function SimilarProduct({ similars , onOpen }: SimilarProductProps) {
+  const handleOpenPopUpAddBasket = (id: TCamera['id']) => {
+    onOpen?.(id);
+  };
+
   return (
     <div className="page-content__section">
       <section className="product-similar">
@@ -35,7 +40,11 @@ function SimilarProduct({ similars }: SimilarProductProps) {
             >
               {similars.map((similar) => (
                 <SwiperSlide key={similar.id}>
-                  <ProductCard camera={similar}/>
+                  <ProductCard
+                    camera={similar}
+                    onOpen={(id) => handleOpenPopUpAddBasket(id)}
+                    selectIdSuccess={0}
+                  />
                 </SwiperSlide>
               ))}
             </Swiper>

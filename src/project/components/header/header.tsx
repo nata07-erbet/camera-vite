@@ -12,8 +12,8 @@ type HeaderProps = {
 };
 
 function Header({ cameras, camerasByBasket }: HeaderProps) {
-  const count = camerasByBasket && camerasByBasket.length;
-  const isAdded = count >= 1 ? true : false;
+  const totalCount = camerasByBasket && (camerasByBasket.length);
+  const isAdded = totalCount >= 1 ? true : false;
 
   const classHidden = classNames('header__basket-count', {'visually-hidden': !isAdded});
 
@@ -53,7 +53,7 @@ function Header({ cameras, camerasByBasket }: HeaderProps) {
           <svg width={16} height={16} aria-hidden="true">
             <use xlinkHref="#icon-basket" />
           </svg>
-          <span className={classHidden}>{count}</span>
+          <span className={classHidden}>{totalCount}</span>
         </Link>
       </div>
     </header>

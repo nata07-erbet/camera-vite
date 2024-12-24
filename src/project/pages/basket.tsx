@@ -12,26 +12,24 @@ import { Spinner } from '../components/spinner/spinner';
 import { PopUpRemove } from '../components/pop-up/pop-up-remove';
 import { PopUpAddThanks } from '../components/pop-up/pop-up-add-thanks';
 import { PopUpError } from '../components/pop-up/pop-up-error';
-
-import { cameraMocks } from '../mocks/camera-mocks';
-const camerasByBasket: TCamera[] = cameraMocks.slice(0,3);
+import { localStoreBasket } from '../store/local-store-basket';
+import { dropCamera, clearBasket } from '../store/local-store-basket';
 
 function Basket() {
   const navigate = useNavigate();
+  console.log(localStoreBasket);
 
   const [sendingStatus, setSendingStatus ] = useState(RequestStatus.Idle);
   const [ isSending, setIsSending ] = useState(false);
   const [ cameras, setCameras ] = useState<TCamera[]>([]);
 
-  const [ popUpIsShow, setPopUpIsShow ] = useState(false);
+  const [ isShowPopUpRemove, setIsShowPopUpRemove ] = useState(false);
   const [ isShowPopUpThanks, setIsShowPopUpThanks ] = useState(false);
   const [ isShowPopUpError, setIsShowPopUpError ] = useState(false);
 
-  const [ camerasByBasketLocal, setCamerasByBasketLocal ] = useState(camerasByBasket);
-
-
   const [ selectedIdDelete, setSelectedIdDelete ] = useState<TCamera['id'] | null>(null);
   const [ selectedIdRemove, setSelectedIdRemove ] = useState<TCamera['id'] | null>(null);
+
 
   const cameraByDelete = cameras.find((camera) => camera.id === selectedIdDelete);
 
@@ -43,25 +41,27 @@ function Basket() {
 
 
   const handleDeleteFromBasket = (id: TCamera['id']) => {
-    setPopUpIsShow(true);
+    setIsShowPopUpRemove(true);
     setSelectedIdDelete(id);
   };
 
+  // кнопка удалить
   const handleClickRemoveFromBasket = (id: TCamera['id']) => {
     setSelectedIdRemove(id);
-    setPopUpIsShow(false);
+    dropCamera(id);
+    setIsShowPopUpRemove(false);
   };
 
   const handleClosePopUp = () => {
-    setPopUpIsShow(false);
+    setIsShowPopUpRemove(false);
     setIsShowPopUpThanks(false);
-    setIsShowPopUpError(false)
+    setIsShowPopUpError(false);
     navigate(AppRoutes.Main);
 
   };
 
   const onClear = () => {
-    setCamerasByBasketLocal([]);
+    clearBasket();
   };
 
   const handleClickSubmit = () => {
@@ -69,115 +69,114 @@ function Basket() {
     setIsSending(true);
 
     const orderData: TOrder = {
-      camerasIds: camerasByBasket.map((camera) => camera.id),
+      camerasIds: localStoreBasket.map((camera) => camera.id),
       coupon: 'camera-333'
     };
 
     api
       .post(ReqRoutes.Orders, orderData)
       .then((response) => {
-        console.log(response);
         setIsShowPopUpThanks(true);
         onClear;
-        setSendingStatus(RequestStatus.Success)
+        setSendingStatus(RequestStatus.Success);
       })
       .catch((error) => {
         console.log(error);
-        setSendingStatus(RequestStatus.Error)
+        setSendingStatus(RequestStatus.Error);
         setIsShowPopUpError(true);
-
-      })
+      });
   };
+
 
   return(
     <>
       {sendingStatus === RequestStatus.Pending && (<Spinner />)}
       <div className="wrapper">
-          <Header cameras={cameras} camerasByBasket={camerasByBasket}/>
-          <main>
-            <div className="page-content">
-              <Breadcrumbs isBasketPage />
-              <section className="basket">
-                <div className="container">
-                  <h1 className="title title--h2">Корзина</h1>
-                  <BasketList
-                    cameras={camerasByBasketLocal}
-                    onDeleteFromBasket={handleDeleteFromBasket}
-                    selectedId={selectedIdRemove}
-                    isSending={isSending}
-                  />
-                  <div className="basket__summary">
-                    <div className="basket__promo">
-                      <p className="title title--h4">
-                        Если у вас есть промокод на скидку, примените его в этом поле
-                      </p>
-                      <div className="basket-form">
-                        <form action="#">
-                          <div className="custom-input">
-                            <label>
-                              <span className="custom-input__label">Промокод</span>
-                              <input type="text" name="promo" placeholder="Введите промокод" />
-                            </label>
-                            <p className="custom-input__error">Промокод неверный</p>
-                            <p className="custom-input__success">Промокод принят!</p>
-                          </div>
-                          <button className="btn" type="submit">
-                            Применить
-                          </button>
-                        </form>
-                      </div>
+        <Header cameras={cameras} camerasByBasket={localStoreBasket}/>
+        <main>
+          <div className="page-content">
+            <Breadcrumbs isBasketPage />
+            <section className="basket">
+              <div className="container">
+                <h1 className="title title--h2">Корзина</h1>
+                <BasketList
+                  cameras={localStoreBasket}
+                  onDeleteFromBasket={handleDeleteFromBasket}
+                  selectedId={selectedIdRemove}
+                  isSending={isSending}
+                />
+                <div className="basket__summary">
+                  <div className="basket__promo">
+                    <p className="title title--h4">
+                      Если у вас есть промокод на скидку, примените его в этом поле
+                    </p>
+                    <div className="basket-form">
+                      <form action="#">
+                        <div className="custom-input">
+                          <label>
+                            <span className="custom-input__label">Промокод</span>
+                            <input type="text" name="promo" placeholder="Введите промокод" />
+                          </label>
+                          <p className="custom-input__error">Промокод неверный</p>
+                          <p className="custom-input__success">Промокод принят!</p>
+                        </div>
+                        <button className="btn" type="submit">
+                          Применить
+                        </button>
+                      </form>
                     </div>
-
-                    <div className="basket__summary-order">
-                      <p className="basket__summary-item">
-                        <span className="basket__summary-text">Всего:</span>
-                        <span className="basket__summary-value">111 390 ₽</span>
-                      </p>
-                      <p className="basket__summary-item">
-                        <span className="basket__summary-text">Скидка:</span>
-                        <span className="basket__summary-value basket__summary-value--bonus">
-                          0 ₽
-                        </span>
-                      </p>
-                      <p className="basket__summary-item">
-                        <span className="basket__summary-text basket__summary-text--total">
-                          К оплате:
-                        </span>
-                        <span className="basket__summary-value basket__summary-value--total">
-                          111 390 ₽
-                        </span>
-                      </p>
-                      <button
-                        className="btn btn--purple"
-                        type="submit"
-                        disabled={camerasByBasket.length === 0}
-                        onClick={handleClickSubmit}
-                      >
-                        Оформить заказ
-                      </button>
-                    </div>
-
                   </div>
+
+                  <div className="basket__summary-order">
+                    <p className="basket__summary-item">
+                      <span className="basket__summary-text">Всего:</span>
+                      <span className="basket__summary-value">111 390 ₽</span>
+                    </p>
+                    <p className="basket__summary-item">
+                      <span className="basket__summary-text">Скидка:</span>
+                      <span className="basket__summary-value basket__summary-value--bonus">
+                        0 ₽
+                      </span>
+                    </p>
+                    <p className="basket__summary-item">
+                      <span className="basket__summary-text basket__summary-text--total">
+                        К оплате:
+                      </span>
+                      <span className="basket__summary-value basket__summary-value--total">
+                        111 390 ₽
+                      </span>
+                    </p>
+                    <button
+                      className="btn btn--purple"
+                      type="submit"
+                      disabled={localStoreBasket.length === 0}
+                      onClick={handleClickSubmit}
+                    >
+                      Оформить заказ
+                    </button>
+                  </div>
+
                 </div>
-              </section>
-            </div>
-          </main>
-          {cameraByDelete && (
-            <PopUpRemove
-              isActive={popUpIsShow}
-              camera={cameraByDelete}
-              onClose={handleClosePopUp}
-              onRemoveFromBasket={handleClickRemoveFromBasket}
-            />)}
-          <PopUpAddThanks
-            isActive={isShowPopUpThanks}
+              </div>
+            </section>
+          </div>
+        </main>
+        {cameraByDelete && (
+          <PopUpRemove
+            isActive={isShowPopUpRemove}
+            camera={cameraByDelete}
             onClose={handleClosePopUp}
-          />
-          <PopUpError
-            isActive={isShowPopUpError}
-            onClose={handleClosePopUp}
-             />
-          <Footer/>
+            onRemoveFromBasket={handleClickRemoveFromBasket}
+          />)}
+        <PopUpAddThanks
+          isActive={isShowPopUpThanks}
+          onClose={handleClosePopUp}
+        />
+        <PopUpError
+          isActive={isShowPopUpError}
+          onClose={handleClosePopUp}
+        />
+        <Footer/>
       </div>
     </>
 

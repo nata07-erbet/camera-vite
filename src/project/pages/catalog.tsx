@@ -2,7 +2,6 @@ import { useState, useEffect, useMemo, useCallback } from 'react';
 import { api } from '../api/api';
 import {
   TCamera,
-
   TPromo,
   TSortType,
   TSortDirection,
@@ -31,24 +30,18 @@ import {
   filterCamerasByPrice,
   getMinMaxPrices,
 } from '../utils/utils';
-
-// type CatalogProps = {
-//   selectIdSuccess: TCamera['id'];
-// };
+import { addCamera } from '../store/local-store-basket';
 
 import { cameraMocks } from '../mocks/camera-mocks';
 const camerasByBasketMock: TCamera[] = cameraMocks.slice(0,3);
 
 function Catalog() {
-  const selectIdSuccess = 1;
 
   const [ cameras, setCameras ] = useState<TCamera[]>([]);
   const [ promos, setPromos ] = useState<TPromo[]>([]);
   const [cameraId, setCameraId] = useState<TCamera['id']| null>(null);
   const currentCamera = cameras.find((camera) => camera.id === cameraId);
-
-  const [ storeBasket, setStoreBasket ] = useState<TCamera[]>([]);
-  console.log(storeBasket); //показывает 1
+  const [ idSuccess, setIdSuccess ] = useState<TCamera['id']>()
 
 
   const [ isShowPopUp, setIsShowPopUp] = useState(false);
@@ -84,10 +77,11 @@ function Catalog() {
     setFilters(newData);
   };
 
-  const handleClickAddSuccess = (id:TCamera['id']) => {
+  const handleClickAddSuccess = (id:TCamera['id'], camera: TCamera) => {
     setIsShowPopUpSuccess(true);
     setCameraId(id);
-    setStoreBasket(storeBasket.push(currentCamera));
+    setIdSuccess(id);
+    addCamera(camera);
   };
 
   const handlePopUpClose = () => {
@@ -163,8 +157,7 @@ function Catalog() {
                     <ProductsList
                       cameras={camerasToShow}
                       onOpen={(id) => handleOpenPopUp(id)}
-                      selectedId={cameraId}
-                      selectIdSuccess={selectIdSuccess}
+                      idSuccess={idSuccess}
                     />
                   )}
                   <Pagination cameras={cameras} />

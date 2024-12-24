@@ -9,18 +9,18 @@ type ProductCardProps = {
   isActive?: boolean;
   onOpen?: (id: TCamera['id']) => void | undefined;
   onClickBuy?: (id: TCamera['id']) => void | undefined;
-  selectedId?: TCamera['id'];
-  selectIdSuccess: TCamera['id'];
+  idSuccess?: TCamera['id']
 };
 
-function ProductCard({ onOpen, camera, isActive, onClickBuy, selectedId, selectIdSuccess }: ProductCardProps) {
+function ProductCard({ onOpen, camera, isActive, onClickBuy, idSuccess}: ProductCardProps) {
   const generateImgUrl = (img: string) => `${window.location.origin}/${img}`;
+  const isAdded = camera.id === idSuccess;
 
   const href = generatePath('/camera/:id', {
     id: camera.id.toString(),
   });
 
-  const handleClickButtonBuy = (id: TCamera['id']) => {
+  const handleClickButtonBuy = (id: TCamera['id'], camera:TCamera) => {
     onOpen?.(id);
     onClickBuy?.(id);
   };
@@ -54,28 +54,28 @@ function ProductCard({ onOpen, camera, isActive, onClickBuy, selectedId, selectI
         </p>
       </div>
       <div className="product-card__buttons">
-        {camera.id !== selectedId || camera.id !== selectIdSuccess
-          ? (
-            <button
-              className={classNames(
-                'btn','btn--purple',
-                'product-card__btn',
-              )}
-              type="button"
-              onClick={() => handleClickButtonBuy(camera.id)}
-            >
-              Купить
-            </button>) : (
-            <Link
-              className="btn btn--purple-border"
-              to={AppRoutes.Basket}
-            >
-              <svg width={16} height={16} aria-hidden="true">
-                <use xlinkHref="#icon-basket" />
-              </svg>
-                В корзине
-            </Link>
-          )}
+        {isAdded
+          ? ( <Link
+            className="btn btn--purple-border"
+            to={AppRoutes.Basket}
+          >
+            <svg width={16} height={16} aria-hidden="true">
+              <use xlinkHref="#icon-basket" />
+            </svg>
+              В корзине
+          </Link>)
+          : ( <button
+            className={classNames(
+              'btn','btn--purple',
+              'product-card__btn',
+            )}
+            type="button"
+            onClick={() => handleClickButtonBuy(camera.id, camera)}
+          >
+            Купить
+          </button>)
+        }
+
         <Link className="btn btn--transparent" to={href}>
           Подробнее
         </Link>
