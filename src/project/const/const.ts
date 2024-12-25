@@ -163,5 +163,34 @@ const SettingValidation = {
 
 const PRICES: TPrice[] = ['от', 'до'];
 
+const DiscountMap = {
+  firstLevel: 3,
+  secondLevel: 5,
+  thirdLevel: 10,
+  fourthLevel: 15
+};
 
-export { BASE_URL, ReqRoutes, AppRoutes, NavMap, ALL_STARS, TABS, AppRouteTab, TabsMap, DEFAULT_TAB, DATE_FORMAT, REVIEW_SHOW, CATALOG_SHOW, SortTabInner, SortInnerMap, SORT_INNER, DEFAULT_SORT_TYPE, SortTabOrder, SORT_ORDER, SortOrderMap, DEFAULT_SORT_DIRECTION, CATEGORIES, CategoryList, CategoryMap, DEFAULT_CATEGORY, CAMERAS, CamerasMap, CamerasList, LEVELS, LevelsList, LevelMap, INITIAL_FILTERS, PriceList, PriceMap, PRICES, BASKET_AMOUNT, MIN_CAMERA, MAX_CAMERA, KEY_LOCAL_STORAGE_OFFERS, RequestStatus, RateBarMap, SettingValidation };
+const QuantityMap = {
+  firstStep: 2,
+  secondStepStart: 3,
+  secondStepEnd: 5,
+  thirdStepStart: 6,
+  thirdStepEnd: 10,
+  fourthStep: 10
+};
+
+const SummaryMap = {
+  firstStage: 10000,
+  secondStage: 20000,
+  thirdStage: 30000,
+};
+
+const DiscountSummaryMap = {
+  second: 1,
+  third : 2,
+  fourth: 3,
+};
+
+
+
+export { BASE_URL, ReqRoutes, AppRoutes, NavMap, ALL_STARS, TABS, AppRouteTab, TabsMap, DEFAULT_TAB, DATE_FORMAT, REVIEW_SHOW, CATALOG_SHOW, SortTabInner, SortInnerMap, SORT_INNER, DEFAULT_SORT_TYPE, SortTabOrder, SORT_ORDER, SortOrderMap, DEFAULT_SORT_DIRECTION, CATEGORIES, CategoryList, CategoryMap, DEFAULT_CATEGORY, CAMERAS, CamerasMap, CamerasList, LEVELS, LevelsList, LevelMap, INITIAL_FILTERS, PriceList, PriceMap, PRICES, BASKET_AMOUNT, MIN_CAMERA, MAX_CAMERA, KEY_LOCAL_STORAGE_OFFERS, RequestStatus, RateBarMap, SettingValidation, DiscountMap, QuantityMap, SummaryMap, DiscountSummaryMap, decDiscountBySum};

@@ -3,13 +3,13 @@ import { TLocalStore } from '../types/types';
 const CAMERA_BASKET = 'camera-basket';
 const localStoreBasket: TLocalStore[] = JSON.parse(localStorage.getItem(CAMERA_BASKET)) || [];
 
-const addCamera = (camera: TLocalStore, quantity) => {
+const addCamera = (camera: TLocalStore, quantity: number) => {
   const newCamera: TLocalStore = {
     ...camera,
-    quantity: 2
-  }
-  localStoreBasket.push(newCamera);
+    quantity: 4
+  };
 
+  localStoreBasket.push(newCamera);
   localStorage.setItem(CAMERA_BASKET, JSON.stringify(localStoreBasket));
 };
 

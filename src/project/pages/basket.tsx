@@ -18,6 +18,7 @@ import { Summary } from '../components/summary/summary';
 
 function Basket() {
   const navigate = useNavigate();
+  clearBasket();
 
   const [sendingStatus, setSendingStatus ] = useState(RequestStatus.Idle);
   const [ isSending, setIsSending ] = useState(false);
@@ -152,8 +153,6 @@ function Basket() {
         <Footer/>
       </div>
     </>
-
-
   );
 }
 export { Basket };
