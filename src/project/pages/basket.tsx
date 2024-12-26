@@ -65,28 +65,29 @@ function Basket() {
     clearBasket();
   };
 
-  const handleClickSubmit = () => {
-    setSendingStatus(RequestStatus.Pending); //?
-    setIsSending(true);
+  // const handleClickSubmit = () => {
+  //   setSendingStatus(RequestStatus.Pending); //?
+  //   setIsSending(true);
 
-    const orderData: TOrder = {
-      camerasIds: localStoreBasket.map((camera) => camera.id),
-      coupon: 'camera-333'
-    };
+  //   const orderData: TOrder = {
+  //     camerasIds: localStoreBasket.map((camera) => camera.id),
+  //     coupon: 'camera-333'
+  //   };
 
-    api
-      .post(ReqRoutes.Orders, orderData)
-      .then((response) => {
-        setIsShowPopUpThanks(true);
-        onClear;
-        setSendingStatus(RequestStatus.Success);
-      })
-      .catch((error) => {
-        console.log(error);
-        setSendingStatus(RequestStatus.Error);
-        setIsShowPopUpError(true);
-      });
-  };
+  //   api
+  //     .post(ReqRoutes.Orders, orderData)
+  //     .then((response) => {
+
+  //       setIsShowPopUpThanks(true);
+  //       onClear;
+  //       setSendingStatus(RequestStatus.Success);
+  //     })
+  //     .catch((error) => {
+  //       console.log(error);
+  //       setSendingStatus(RequestStatus.Error);
+  //       setIsShowPopUpError(true);
+  //     });
+  // };
 
 
   return(
@@ -127,9 +128,7 @@ function Basket() {
                       </form>
                     </div>
                   </div>
-                  <Summary
-                    onSubmit={handleClickSubmit}
-                   />
+                  <Summary/>
                 </div>
               </div>
             </section>

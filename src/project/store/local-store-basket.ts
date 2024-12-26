@@ -6,7 +6,7 @@ const localStoreBasket: TLocalStore[] = JSON.parse(localStorage.getItem(CAMERA_B
 const addCamera = (camera: TLocalStore, quantity: number) => {
   const newCamera: TLocalStore = {
     ...camera,
-    quantity: 4
+    quantity: 10
   };
 
   localStoreBasket.push(newCamera);

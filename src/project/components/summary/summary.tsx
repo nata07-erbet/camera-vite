@@ -1,23 +1,24 @@
+import classNames from 'classnames';
+import { api } from '../../api/api';
+import { TOrder } from '../../types/types';
 import { localStoreBasket } from '../../store/local-store-basket';
 import {  DiscountMap, QuantityMap, SummaryMap, DiscountSummaryMap } from '../../const/const';
 
 type SummaryProps = {
   onSubmit: () => void;
+  onError: () => void;
 };
 
-function Summary ({ onSubmit }: SummaryProps){
+function Summary ({ onSubmit, onError }: SummaryProps){
   const prices =  localStoreBasket && localStoreBasket.map((basket) => basket.price * basket.quantity);
-  // const totalSummary = prices.length !== 0
-  //   ? prices.reduce((prevValue: number, currentValue: number) => prevValue + currentValue)
-  //   : 0;
-
-    const totalSummary = 10000 ;
-    const totalQuantities = 7;
+  const totalSummary = prices.length !== 0
+    ? prices.reduce((prevValue: number, currentValue: number) => prevValue + currentValue)
+    : 0;
 
     const quantities =localStoreBasket && localStoreBasket.map((basket) => basket.quantity);
-    // const totalQuantities = quantities.length !== 0
-    //   ? quantities.reduce((prevValue: number, currentValue: number) => prevValue + currentValue)
-    //   : 0;
+    const totalQuantities = quantities.length !== 0
+      ? quantities.reduce((prevValue: number, currentValue: number) => prevValue + currentValue)
+      : 0;
 
     console.log(totalQuantities);
 
@@ -50,54 +51,88 @@ function Summary ({ onSubmit }: SummaryProps){
         total <= QuantityMap.fourthStep) {
           return totalSummary - totalSummary * ((DiscountMap.thirdLevel - DiscountSummaryMap.second) / 100)
     } else if(total >= QuantityMap.fourthStep) {
-      return totalSummary - totalSummary * ((DiscountMap.fourthLevel  - - DiscountSummaryMap.second) / 100)
+      return totalSummary - totalSummary * ((DiscountMap.fourthLevel - DiscountSummaryMap.second) / 100)
     } else {
       return totalSummary;
     }};
 
     const calcTotalSumDiscountThird = (total: number) => {
       if(total === QuantityMap.firstStep) {
-        return  totalSummary - totalSummary * (DiscountMap.firstLevel / 100);
+        return  totalSummary - totalSummary * ((DiscountMap.firstLevel - DiscountSummaryMap.third)/ 100);
       } else if(
         total >=  QuantityMap.secondStepStart
         && total <= QuantityMap.secondStepEnd) {
-          return totalSummary - totalSummary * (DiscountMap.secondLevel / 100);
+          return totalSummary - totalSummary * ((DiscountMap.secondLevel - DiscountSummaryMap.third) / 100);
       } else if(
           total >= QuantityMap.thirdStepStart &&
           total <= QuantityMap.fourthStep) {
-            return totalSummary - totalSummary * (DiscountMap.thirdLevel / 100)
+            return totalSummary - totalSummary * ((DiscountMap.thirdLevel - DiscountSummaryMap.third)/ 100)
       } else if(total >= QuantityMap.fourthStep) {
-        return totalSummary - totalSummary * (DiscountMap.fourthLevel / 100)
+        return totalSummary - totalSummary * ((DiscountMap.fourthLevel - DiscountSummaryMap.third) / 100)
       } else {
         return totalSummary;
       }};
 
     const calcTotalSumDiscountForth = (total: number) => {
       if(total === QuantityMap.firstStep) {
-        return  totalSummary - totalSummary * (DiscountMap.firstLevel / 100);
+        return  totalSummary - totalSummary * ((DiscountMap.firstLevel - DiscountSummaryMap.fourth) / 100);
       } else if(
         total >=  QuantityMap.secondStepStart
         && total <= QuantityMap.secondStepEnd) {
-          return totalSummary - totalSummary * (DiscountMap.secondLevel / 100);
+          return totalSummary - totalSummary * ((DiscountMap.secondLevel - DiscountSummaryMap.fourth) / 100);
       } else if(
           total >= QuantityMap.thirdStepStart &&
           total <= QuantityMap.fourthStep) {
-            return totalSummary - totalSummary * (DiscountMap.thirdLevel / 100)
+            return totalSummary - totalSummary * ((DiscountMap.thirdLevel - DiscountSummaryMap.fourth) / 100)
       } else if(total >= QuantityMap.fourthStep) {
-        return totalSummary - totalSummary * (DiscountMap.fourthLevel / 100)
+        return totalSummary - totalSummary * ((DiscountMap.fourthLevel - - DiscountSummaryMap.fourth)/ 100)
       } else {
         return totalSummary;
     }};
 
 
-  // const calcAllTotalSum = (total: number, sum: number) => {
-  //   if(sum < SummaryMap.firstStage) {
-  //     calcTotalSumDiscount(total);
-  //   } else return sum;
-  // };
+  const calcAllTotalSum = (total: number, sum: number) => {
+    if(sum < SummaryMap.firstStage) {
+      calcTotalSumDiscount(total);
+    } else if(
+      sum >= SummaryMap.firstStage && sum <= SummaryMap.secondStage
+    ){
+      return calcTotalSumDiscountSecond(total);
+    } else if(
+      sum >= SummaryMap.secondStage && sum <= SummaryMap.thirdStage) {
+        return calcTotalSumDiscountThird(total);
+      } else if(sum > SummaryMap.thirdStage) {
+        return calcTotalSumDiscountForth(total)
+      } else return calcTotalSumDiscount(total);
+      return calcTotalSumDiscount(total);
+  };
+
+  const getAllTotalSum = (total: number, sum: number) => {
+      return calcAllTotalSum(total, sum);
+  };
+
+  const getFormat = (value: number) => {
+    return (Math.floor(value)).toLocaleString('ru');
+  };
+
+  const totalSum = totalSummary;
+  const allTotalSum  = getAllTotalSum(totalQuantities, totalSummary);
+
+  const discountSummary = allTotalSum && totalSum - allTotalSum;
+
+  const isActive = discountSummary && discountSummary !== 0 ? true : false;
+  const classColor = classNames('basket__summary-value', {'basket__summary-value--bonus': isActive});
 
   const handleOrderSubmit = () =>{
-    onSubmit;
+    const orderData: TOrder = {
+      camerasIds: localStoreBasket.map((camera) => camera.id),
+      coupon: 'camera-333'
+    };
+
+    api
+    .post ('/orders', orderData)
+    .then(onSubmit)
+    .catch(onError);
   };
 
   return(
@@ -108,12 +143,12 @@ function Summary ({ onSubmit }: SummaryProps){
       <div className="basket__summary-order">
       <p className="basket__summary-item">
         <span className="basket__summary-text">Всего:</span>
-        <span className="basket__summary-value">{totalSummary} ₽</span>
+        <span className="basket__summary-value">{getFormat(totalSummary)} ₽</span>
       </p>
       <p className="basket__summary-item">
         <span className="basket__summary-text">Скидка:</span>
-        <span className="basket__summary-value basket__summary-value--bonus">
-        {totalQuantities} ₽
+        <span className={classColor}>
+          {getFormat(discountSummary)} ₽
         </span>
       </p>
       <p className="basket__summary-item">
@@ -121,14 +156,13 @@ function Summary ({ onSubmit }: SummaryProps){
           К оплате:
         </span>
         <span className="basket__summary-value basket__summary-value--total">
-          {calcTotalSumDiscountSecond(totalQuantities)} ₽
+          {getFormat(allTotalSum)} ₽
         </span>
       </p>
       <button
         className="btn btn--purple"
         type="submit"
         disabled={localStoreBasket.length === 0}
-        onClick={handleOrderSubmit}
       >
         Оформить заказ
       </button>
