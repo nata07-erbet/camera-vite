@@ -117,7 +117,7 @@ function Catalog() {
 
   useEffect(() => {
     api
-      .get<TCamera[]>(`${ReqRoutes.Cameras}`)
+      .get<TCamera[]>(ReqRoutes.Cameras)
       .then((response) => setCameras(response.data));
 
     api

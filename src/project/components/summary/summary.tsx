@@ -1,15 +1,20 @@
+import { useState } from 'react';
 import classNames from 'classnames';
+import { ReqRoutes } from '../../const/const';
 import { api } from '../../api/api';
 import { TOrder } from '../../types/types';
 import { localStoreBasket } from '../../store/local-store-basket';
 import {  DiscountMap, QuantityMap, SummaryMap, DiscountSummaryMap } from '../../const/const';
 
 type SummaryProps = {
+  onSending: () => void;
   onSubmit: () => void;
   onError: () => void;
 };
 
-function Summary ({ onSubmit, onError }: SummaryProps){
+function Summary ({onSending, onSubmit, onError }: SummaryProps){
+  const [ isSending, setIsSending ] = useState(false);
+
   const prices =  localStoreBasket && localStoreBasket.map((basket) => basket.price * basket.quantity);
   const totalSummary = prices.length !== 0
     ? prices.reduce((prevValue: number, currentValue: number) => prevValue + currentValue)
@@ -123,16 +128,25 @@ function Summary ({ onSubmit, onError }: SummaryProps){
   const isActive = discountSummary && discountSummary !== 0 ? true : false;
   const classColor = classNames('basket__summary-value', {'basket__summary-value--bonus': isActive});
 
-  const handleOrderSubmit = () =>{
+  const handleOrderSubmit = () => {;
+    setIsSending(true);
+    onSending();
+
     const orderData: TOrder = {
       camerasIds: localStoreBasket.map((camera) => camera.id),
       coupon: 'camera-333'
     };
 
     api
-    .post ('/orders', orderData)
-    .then(onSubmit)
-    .catch(onError);
+    .post (ReqRoutes.Orders, orderData)
+    .then((response) => {
+      console.log(response);
+      onSubmit;
+    })
+    .catch((err) => {
+      console.log(err);
+      onError;
+    });
   };
 
   return(
@@ -162,7 +176,7 @@ function Summary ({ onSubmit, onError }: SummaryProps){
       <button
         className="btn btn--purple"
         type="submit"
-        disabled={localStoreBasket.length === 0}
+        disabled={localStoreBasket.length === 0 || isSending }
       >
         Оформить заказ
       </button>
