@@ -20,7 +20,7 @@ function Basket() {
   clearBasket();
 
   const [sendingStatus, setSendingStatus ] = useState();
-  const isSending = sendingStatus == RequestStatus.Pending;
+  const isSending = sendingStatus === RequestStatus.Pending;
 
   const [ cameras, setCameras ] = useState<TCamera[]>([]);
 
@@ -70,7 +70,7 @@ function Basket() {
   };
 
   const handleError = () => {
-    setIsShowPopUpError(true)
+    setIsShowPopUpError(true);
   };
 
   return(

@@ -5,7 +5,7 @@ import { CATALOG_SHOW } from '../../const/const';
 type ProductsListProps = {
   cameras: TCamera[];
   onOpen?: (id: TCamera['id']) => void;
-  idSuccess?:  TCamera['id'];
+  idSuccess?: TCamera['id'];
 };
 
 function ProductsList({ onOpen, cameras, idSuccess } : ProductsListProps) {

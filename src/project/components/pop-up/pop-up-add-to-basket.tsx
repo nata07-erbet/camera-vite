@@ -11,7 +11,6 @@ function PopUpAddToBasket({ camera, onClickAddSuccess, ...props }: PopUpAddToBas
 
   const handleClickAddSuccess = (id: TCamera['id'], camera: TCamera) => {
     onClickAddSuccess(id, camera);
-
   };
 
   return(

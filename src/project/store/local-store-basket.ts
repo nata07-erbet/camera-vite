@@ -1,28 +1,34 @@
-import { useEffect } from 'react';
+
 import { ReqRoutes } from '../const/const';
 import { TCamera, TLocalStore, TPromo } from '../types/types';
 import { api } from '../api/api';
 
+const PROMO_BASKET = 'promo-basket';
+let localPromo: TPromo[] = JSON.parse(localStorage.getItem(PROMO_BASKET)) || [];
 
 const getPromo = () => {
-  let promo: TPromo[] = [];
+  api
+  .get<TPromo[]>(ReqRoutes.Promo)
+  .then((response) => {
+    localPromo = response.data;
+    localStorage.setItem(PROMO_BASKET, JSON.stringify(localPromo));
+  });
 
-    api
-    .get<TPromo[]>(ReqRoutes.Promo)
-    .then((response) => console.log(response.data));
+  return localPromo;
+};
 
-    return promo;
-}
-
-console.log(getPromo());
+const promo = getPromo();
 
 const CAMERA_BASKET = 'camera-basket';
-const localStoreBasket: TLocalStore[] =  JSON.parse(localStorage.getItem(CAMERA_BASKET)) || [];
+const localStoreBasket: TLocalStore[] = JSON.parse(localStorage.getItem(CAMERA_BASKET)) || [];
 
 const addCamera = (camera: TLocalStore, quantity: number) => {
+  const isPromo = promo.find((cameraPromo) => cameraPromo.id === camera.id) ? true : false;
+
   const newCamera: TLocalStore = {
     ...camera,
-    quantity: 10
+    quantity: 1,
+    isPromo: isPromo
   };
 
   localStoreBasket.push(newCamera);
@@ -32,12 +38,12 @@ const addCamera = (camera: TLocalStore, quantity: number) => {
 const dropCamera = (cameraId: TCamera['id']) => {
 
   const removeCamera = localStoreBasket.find((camera) => camera.id === cameraId);
-  localStorage.removeItem(CAMERA_BASKET)
+  localStorage.removeItem(CAMERA_BASKET);
 };
 
 const clearBasket = () => {
   localStorage.clear();
-}
+};
 
-export { localStoreBasket, addCamera, dropCamera, clearBasket}
+export { localStoreBasket, addCamera, dropCamera, clearBasket};
 

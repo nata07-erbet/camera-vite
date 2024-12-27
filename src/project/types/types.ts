@@ -78,6 +78,7 @@ type TReviewPost = {
 
   type TLocalStore = TCamera & {
     quantity: number;
+    isPromo: boolean;
   }
 
 export type {

@@ -9,7 +9,7 @@ type ProductCardProps = {
   isActive?: boolean;
   onOpen?: (id: TCamera['id']) => void | undefined;
   onClickBuy?: (id: TCamera['id']) => void | undefined;
-  idSuccess?: TCamera['id']
+  idSuccess?: TCamera['id'];
 };
 
 function ProductCard({ onOpen, camera, isActive, onClickBuy, idSuccess}: ProductCardProps) {
@@ -75,7 +75,6 @@ function ProductCard({ onOpen, camera, isActive, onClickBuy, idSuccess}: Product
             Купить
           </button>)
         }
-
         <Link className="btn btn--transparent" to={href}>
           Подробнее
         </Link>

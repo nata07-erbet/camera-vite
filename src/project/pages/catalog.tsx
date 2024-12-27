@@ -41,7 +41,7 @@ function Catalog() {
   const [ promos, setPromos ] = useState<TPromo[]>([]);
   const [cameraId, setCameraId] = useState<TCamera['id']| null>(null);
   const currentCamera = cameras.find((camera) => camera.id === cameraId);
-  const [ idSuccess, setIdSuccess ] = useState<TCamera['id']>()
+  const [ idSuccess, setIdSuccess ] = useState<TCamera['id']>();
 
 
   const [ isShowPopUp, setIsShowPopUp] = useState(false);

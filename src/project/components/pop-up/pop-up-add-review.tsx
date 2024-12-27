@@ -168,7 +168,7 @@ function PopUpAddReview ({cameraId, onSubmit, ...props}: PopUpAddReviewProps) {
                   <span className="rate__all-stars">5</span>
                 </div>
               </div>
-              {errors.rate &&  <p className="rate__message">Нужно оценить товар</p> }
+              {errors.rate && <p className="rate__message">Нужно оценить товар</p> }
             </fieldset>
             <div className={classInValidName}>
               <label>
