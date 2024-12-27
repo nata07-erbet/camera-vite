@@ -11,13 +11,11 @@ import { Spinner } from '../components/spinner/spinner';
 import { PopUpRemove } from '../components/pop-up/pop-up-remove';
 import { PopUpAddThanks } from '../components/pop-up/pop-up-add-thanks';
 import { PopUpError } from '../components/pop-up/pop-up-error';
-import { localStoreBasket } from '../store/local-store-basket';
-import { dropCamera, clearBasket } from '../store/local-store-basket';
+import { localStoreBasket, dropCamera, clearBasket} from '../store/local-store-basket';
 import { Summary } from '../components/summary/summary';
 
 function Basket() {
   const navigate = useNavigate();
-  clearBasket();
 
   const [sendingStatus, setSendingStatus ] = useState();
   const isSending = sendingStatus === RequestStatus.Pending;
@@ -31,6 +29,8 @@ function Basket() {
   const [ selectedIdDelete, setSelectedIdDelete ] = useState<TCamera['id'] | null>(null);
   const [ selectedIdRemove, setSelectedIdRemove ] = useState<TCamera['id'] | null>(null);
 
+  const quantityArr = localStoreBasket.map((camera) => camera.quantity);
+  const totalQuantity = quantityArr.reduce((previousValue, currentValue) => previousValue + currentValue);
 
   const cameraByDelete = cameras.find((camera) => camera.id === selectedIdDelete);
 
@@ -77,7 +77,7 @@ function Basket() {
     <>
       {isSending && (<Spinner />)}
       <div className="wrapper">
-        <Header cameras={cameras} camerasByBasket={localStoreBasket}/>
+        <Header cameras={cameras} totalQuantity={totalQuantity}/>
         <main>
           <div className="page-content">
             <Breadcrumbs isBasketPage />

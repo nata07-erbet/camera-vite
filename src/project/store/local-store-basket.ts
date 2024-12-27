@@ -16,7 +16,6 @@ const getPromo = () => {
 
   return localPromo;
 };
-
 const promo = getPromo();
 
 const CAMERA_BASKET = 'camera-basket';

@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { api } from '../api/api';
 import { AppRoutes, ReqRoutes, TABS, TabsMap, DEFAULT_TAB } from '../const/const';
+import { localStoreBasket } from '../store/local-store-basket';
 import { TCamera, TTab, TReview } from '../types/types';
 import { Header } from '../components/header/header';
 import { Breadcrumbs } from '../components/breadcrumbs/breadcrumbs';
@@ -17,10 +18,11 @@ import { PopUpReviewThanks } from '../components/pop-up/pop-up-review-thanks';
 import { Footer } from '../components/footer/footer';
 import { addCamera } from '../store/local-store-basket';
 
-import { cameraMocks } from '../mocks/camera-mocks';
-const camerasByBasket: TCamera[] = cameraMocks;
 
 function Product() {
+  const quantityArr = localStoreBasket.map((camera) => camera.quantity);
+  const totalQuantity = quantityArr.reduce((previousValue, currentValue) => previousValue + currentValue);
+
   const navigate = useNavigate();
 
   const [ cameras, setCameras ] = useState<TCamera[]>([]);
@@ -124,7 +126,7 @@ function Product() {
 
   return (
     <div className="wrapper" data-testid="product-page">
-      <Header cameras={cameras} camerasByBasket={camerasByBasket} />
+      <Header cameras={cameras} totalQuantity={totalQuantity} />
       <main>
         {currentCameraByProduct && (
           <div className="page-content">

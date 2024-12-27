@@ -14,6 +14,7 @@ import {
   DEFAULT_SORT_DIRECTION,
   INITIAL_FILTERS,
 } from '../const/const';
+import { localStoreBasket } from '../store/local-store-basket';
 import { Header } from '../components/header/header';
 import { SwiperSliders } from '../components/swiper-sliders/swiper-sliders';
 import { ProductsList } from '../components/products-list/products-list';
@@ -32,10 +33,9 @@ import {
 } from '../utils/utils';
 import { addCamera } from '../store/local-store-basket';
 
-import { cameraMocks } from '../mocks/camera-mocks';
-const camerasByBasketMock: TCamera[] = cameraMocks.slice(0,3);
-
 function Catalog() {
+  const quantityArr = localStoreBasket.map((camera) => camera.quantity);
+  const totalQuantity = quantityArr.reduce((previousValue, currentValue) => previousValue + currentValue);
 
   const [ cameras, setCameras ] = useState<TCamera[]>([]);
   const [ promos, setPromos ] = useState<TPromo[]>([]);
@@ -127,7 +127,7 @@ function Catalog() {
 
   return (
     <div className="wrapper" data-testid="main-page">
-      <Header cameras={cameras} camerasByBasket={camerasByBasketMock} />
+      <Header cameras={cameras} totalQuantity={totalQuantity} />
       <main>
         {promos && <SwiperSliders promos={promos} />};
         <div className="page-content">

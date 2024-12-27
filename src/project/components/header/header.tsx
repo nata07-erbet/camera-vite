@@ -8,11 +8,11 @@ import { TCamera } from '../../types/types';
 
 type HeaderProps = {
   cameras: TCamera[];
-  camerasByBasket: TCamera[];
+  totalQuantity: number;
 };
 
-function Header({ cameras, camerasByBasket }: HeaderProps) {
-  const totalCount = camerasByBasket && (camerasByBasket.length);
+function Header({ cameras, totalQuantity }: HeaderProps) {
+  const totalCount = totalQuantity;
   const isAdded = totalCount >= 1 ? true : false;
 
   const classHidden = classNames('header__basket-count', {'visually-hidden': !isAdded});
