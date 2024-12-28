@@ -10,10 +10,10 @@ type SummaryProps = {
   onSending: () => void;
   onSubmit: () => void;
   onError: () => void;
+  isSending: boolean;
 };
 
-function Summary ({onSending, onSubmit, onError }: SummaryProps){
-  const [ isSending, setIsSending ] = useState(false);
+function Summary ({onSending, onSubmit, onError, isSending }: SummaryProps){
 
   const promoCameras = localStoreBasket && localStoreBasket.filter((camera) => camera.isPromo === true);
   const promoCamerasPrices = promoCameras && promoCameras.map((camera) => camera.price * camera.quantity);
@@ -28,10 +28,10 @@ function Summary ({onSending, onSubmit, onError }: SummaryProps){
     : 0;
 
   const totalSummary = totalSummaryPromo + totalSummaryNotPromo;
-    const quantities = localStoreBasket && localStoreBasket.map((basket) => basket.quantity);
-    const totalQuantities = quantities.length !== 0
-      ? quantities.reduce((prevValue: number, currentValue: number) => prevValue + currentValue)
-      : 0;
+  const quantities = localStoreBasket && localStoreBasket.map((basket) => basket.quantity);
+  const totalQuantities = quantities.length !== 0
+    ? quantities.reduce((prevValue: number, currentValue: number) => prevValue + currentValue)
+    : 0;
 
     const calcTotalSumDiscount = (total: number) => {
     if(total === QuantityMap.firstStep) {
@@ -39,25 +39,26 @@ function Summary ({onSending, onSubmit, onError }: SummaryProps){
     } else if(
       total >= QuantityMap.secondStepStart
       && total <= QuantityMap.secondStepEnd) {
-        return totalSummary - totalSummary * (DiscountMap.secondLevel / 100);
+      return totalSummary - totalSummary * (DiscountMap.secondLevel / 100);
     } else if(
-        total >= QuantityMap.thirdStepStart &&
+      total >= QuantityMap.thirdStepStart &&
         total <= QuantityMap.fourthStep) {
-          return totalSummary - totalSummary * (DiscountMap.thirdLevel / 100);
+      return totalSummary - totalSummary * (DiscountMap.thirdLevel / 100);
     } else if(total >= QuantityMap.fourthStep) {
       return totalSummary - totalSummary * (DiscountMap.fourthLevel / 100);
     } else {
       return totalSummary;
-    }};
+    }
+  };
 
-   const calcTotalSumDiscountSecond = (total: number) => {
+  const calcTotalSumDiscountSecond = (total: number) => {
     if(total === QuantityMap.firstStep) {
       return totalSummary - totalSummary * ((DiscountMap.firstLevel - DiscountSummaryMap.second) / 100);
     } else if(
       total >= QuantityMap.secondStepStart
-      && total <= QuantityMap.secondStepEnd) {
+    && total <= QuantityMap.secondStepEnd) {
         return totalSummary - totalSummary * ((DiscountMap.secondLevel - DiscountSummaryMap.second) / 100);
-    } else if(
+  } else if(
         total >= QuantityMap.thirdStepStart &&
         total <= QuantityMap.fourthStep) {
           return totalSummary - totalSummary * ((DiscountMap.thirdLevel - DiscountSummaryMap.second) / 100);
@@ -68,23 +69,23 @@ function Summary ({onSending, onSubmit, onError }: SummaryProps){
     }
   };
 
-    const calcTotalSumDiscountThird = (total: number) => {
-      if(total === QuantityMap.firstStep) {
-        return totalSummary - totalSummary * ((DiscountMap.firstLevel - DiscountSummaryMap.third) / 100);
-      } else if(
-        total >= QuantityMap.secondStepStart
-        && total <= QuantityMap.secondStepEnd) {
-          return totalSummary - totalSummary * ((DiscountMap.secondLevel - DiscountSummaryMap.third) / 100);
-      } else if(
-          total >= QuantityMap.thirdStepStart &&
-          total <= QuantityMap.fourthStep) {
-            return totalSummary - totalSummary * ((DiscountMap.thirdLevel - DiscountSummaryMap.third)/ 100);
-      } else if(total >= QuantityMap.fourthStep) {
-        return totalSummary - totalSummary * ((DiscountMap.fourthLevel - DiscountSummaryMap.third) / 100);
-      } else {
-        return totalSummary;
-      }
-    };
+  const calcTotalSumDiscountThird = (total: number) => {
+    if(total === QuantityMap.firstStep) {
+      return totalSummary - totalSummary * ((DiscountMap.firstLevel - DiscountSummaryMap.third) / 100);
+    } else if(
+      total >= QuantityMap.secondStepStart
+      && total <= QuantityMap.secondStepEnd) {
+        return totalSummary - totalSummary * ((DiscountMap.secondLevel - DiscountSummaryMap.third) / 100);
+    } else if(
+        total >= QuantityMap.thirdStepStart &&
+        total <= QuantityMap.fourthStep) {
+        return totalSummary - totalSummary * ((DiscountMap.thirdLevel - DiscountSummaryMap.third) / 100);
+    } else if(total >= QuantityMap.fourthStep) {
+      return totalSummary - totalSummary * ((DiscountMap.fourthLevel - DiscountSummaryMap.third) / 100);
+    } else {
+      return totalSummary;
+    }
+  };
 
     const calcTotalSumDiscountForth = (total: number) => {
       if(total === QuantityMap.firstStep) {
@@ -118,12 +119,12 @@ function Summary ({onSending, onSubmit, onError }: SummaryProps){
         return calcTotalSumDiscountForth(total);
       } else {
         return calcTotalSumDiscount(total);
-      };
+      }
     return calcTotalSumDiscount(total);
   };
 
   const getAllTotalSum = (total: number, sum: number) => {
-   return calcAllTotalSum(total, sum);
+    return calcAllTotalSum(total, sum);
   };
 
   const getFormat = (value: number) => {
@@ -140,7 +141,7 @@ function Summary ({onSending, onSubmit, onError }: SummaryProps){
 
   const handleOrderSubmit = () => {
     onSending();
-    
+
     const orderData: TOrder = {
       camerasIds: localStoreBasket.map((camera) => camera.id),
       coupon: 'camera-333'
@@ -159,29 +160,26 @@ function Summary ({onSending, onSubmit, onError }: SummaryProps){
   };
 
   return(
-    <form
-      onSubmit={handleOrderSubmit}
-      method="post"
-    >
+  <form onSubmit={handleOrderSubmit} method="post">
     <div className="basket__summary-order">
-    <p className="basket__summary-item">
-      <span className="basket__summary-text">Всего:</span>
-      <span className="basket__summary-value">{getFormat(totalSummary)} ₽</span>
-    </p>
-    <p className="basket__summary-item">
-      <span className="basket__summary-text">Скидка:</span>
-      <span className={classColor}>
-        {getFormat(discountSummary)} ₽
-      </span>
-    </p>
-    <p className="basket__summary-item">
-      <span className="basket__summary-text basket__summary-text--total">
-        К оплате:
-      </span>
-      <span className="basket__summary-value basket__summary-value--total">
-        {getFormat(allTotalSum)} ₽
-      </span>
-    </p>
+      <p className="basket__summary-item">
+        <span className="basket__summary-text">Всего:</span>
+        <span className="basket__summary-value">{getFormat(totalSummary)} ₽</span>
+      </p>
+      <p className="basket__summary-item">
+        <span className="basket__summary-text">Скидка:</span>
+        <span className={classColor}>
+          {getFormat(discountSummary)} ₽
+        </span>
+      </p>
+      <p className="basket__summary-item">
+        <span className="basket__summary-text basket__summary-text--total">
+          К оплате:
+        </span>
+        <span className="basket__summary-value basket__summary-value--total">
+          {getFormat(allTotalSum)} ₽
+        </span>
+      </p>
     <button
       className="btn btn--purple"
       type="submit"
@@ -190,7 +188,7 @@ function Summary ({onSending, onSubmit, onError }: SummaryProps){
       Оформить заказ
     </button>
     </div>
-    </form>
+  </form>
   );
 }
 

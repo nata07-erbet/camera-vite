@@ -100,6 +100,7 @@ function Basket() {
                     onSending={handleSending}
                     onSubmit={handleSummit}
                     onError={handleError}
+                    isSending={isSending}
                   />
                 </div>
               </div>

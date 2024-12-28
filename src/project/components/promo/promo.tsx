@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { api } from '../../api/api';
 import { ReqRoutes, RequestStatus } from '../../const/const';
-import {  TPromoCoupon } from '../../types/types';
+import { TPromoCoupon } from '../../types/types';
 import { Spinner } from '../spinner/spinner';
 import { ErrorMessage } from '@hookform/error-message';
 
@@ -17,17 +17,17 @@ type TInputData = {
 function Promo({ onSubmit }: PromoProps) {
   const [sendingStatus, setSendingStatus ] = useState();
   const isSending = sendingStatus === RequestStatus.Pending;
-  const isSuccess =  sendingStatus === RequestStatus.Success;
-  const isError = sendingStatus === RequestStatus.Error
+  const isSuccess = sendingStatus === RequestStatus.Success;
+  const isError = sendingStatus === RequestStatus.Error;
 
-    const {
-    register,
-    handleSubmit,
-    formState: {errors},
-    setError
-  } = useForm<TInputData>({
-    mode: 'all'
-  });
+  const {
+  register,
+  handleSubmit,
+  formState: {errors},
+  setError
+} = useForm<TInputData>({
+  mode: 'all'
+});
 
   const couponInput = register('promo', {
     required: {
@@ -53,24 +53,23 @@ function Promo({ onSubmit }: PromoProps) {
       })
       .catch((err: Error) => {
         setError('root',{ 'message': err.message });
-        setSendingStatus(RequestStatus.Error)
-      })
+        setSendingStatus(RequestStatus.Error);
+      });
 
   };
-
     return(
-    <>
-      {isSending && <Spinner />}
-      <div className="basket__promo">
-      <p className="title title--h4">
-        Если у вас есть промокод на скидку, примените его в этом поле
-      </p>
-      <div className="basket-form">
-        <form
-          action="#"
-          method="post"
-          onSubmit={handleSubmit(onFormSubmit)}
-        >
+      <>
+        {isSending && <Spinner />}
+        <div className="basket__promo">
+        <p className="title title--h4">
+          Если у вас есть промокод на скидку, примените его в этом поле
+        </p>
+        <div className="basket-form">
+          <form
+            action="#"
+            method="post"
+            onSubmit={handleSubmit(onFormSubmit)}
+          >
           <div className="custom-input">
             <label>
               <span className="custom-input__label">Промокод</span>
@@ -87,16 +86,16 @@ function Promo({ onSubmit }: PromoProps) {
                 />
               )}
             </label>
-            {sendingStatus === isError &&  <p className="custom-input__error">Промокод неверный</p> }
+            {sendingStatus === isError && <p className="custom-input__error">Промокод неверный</p> }
             { sendingStatus === isSuccess && <p className="custom-input__success">Промокод принят!</p>}
           </div>
-          <button className="btn" type="submit">
-            Применить
-          </button>
-        </form>
-      </div>
-      </div>
-    </>
+            <button className="btn" type="submit">
+              Применить
+            </button>
+          </form>
+        </div>
+        </div>
+      </>
   );
 }
 

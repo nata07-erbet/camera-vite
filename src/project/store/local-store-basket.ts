@@ -8,11 +8,11 @@ let localPromo: TPromo[] = JSON.parse(localStorage.getItem(PROMO_BASKET)) || [];
 
 const getPromo = () => {
   api
-  .get<TPromo[]>(ReqRoutes.Promo)
-  .then((response) => {
-    localPromo = response.data;
-    localStorage.setItem(PROMO_BASKET, JSON.stringify(localPromo));
-  });
+    .get<TPromo[]>(ReqRoutes.Promo)
+    .then((response) => {
+      localPromo = response.data;
+      localStorage.setItem(PROMO_BASKET, JSON.stringify(localPromo));
+    });
 
   return localPromo;
 };

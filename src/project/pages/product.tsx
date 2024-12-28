@@ -69,7 +69,6 @@ function Product() {
   const handleButtonClickAddBasketByProduct = () => {
     setIsShowPopUpAddBasket(true);
     currentCameraByProduct && setCurrentCamera(currentCameraByProduct);
-
   };
 
   const handlePopUpClose = () => {

@@ -9,8 +9,8 @@ type PopUpAddToBasketProps = PopUpMainProps & {
 
 function PopUpAddToBasket({ camera, onClickAddSuccess, ...props }: PopUpAddToBasketProps) {
 
-  const handleClickAddSuccess = (id: TCamera['id'], camera: TCamera) => {
-    onClickAddSuccess(id, camera);
+  const handleClickAddSuccess = (id: TCamera['id'], cameraAdded: TCamera) => {
+    onClickAddSuccess(id, cameraAdded);
   };
 
   return(
