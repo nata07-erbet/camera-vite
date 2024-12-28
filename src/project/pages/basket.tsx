@@ -31,7 +31,7 @@ function Basket() {
   const [ selectedIdRemove, setSelectedIdRemove ] = useState<TCamera['id'] | null>(null);
 
   const quantityArr = localStoreBasket.map((camera) => camera.quantity);
-  const totalQuantity = quantityArr.reduce((previousValue, currentValue) => previousValue + currentValue);
+  const totalQuantity = quantityArr.length !== 0 && quantityArr.reduce((previousValue, currentValue) => previousValue + currentValue);
   const handlePromoSubmit = () => {
 
   };

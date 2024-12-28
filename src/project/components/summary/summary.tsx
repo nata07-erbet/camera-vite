@@ -160,35 +160,35 @@ function Summary ({onSending, onSubmit, onError, isSending }: SummaryProps){
   };
 
   return(
-  <form onSubmit={handleOrderSubmit} method="post">
-    <div className="basket__summary-order">
-      <p className="basket__summary-item">
-        <span className="basket__summary-text">Всего:</span>
-        <span className="basket__summary-value">{getFormat(totalSummary)} ₽</span>
-      </p>
-      <p className="basket__summary-item">
-        <span className="basket__summary-text">Скидка:</span>
-        <span className={classColor}>
-          {getFormat(discountSummary)} ₽
-        </span>
-      </p>
-      <p className="basket__summary-item">
-        <span className="basket__summary-text basket__summary-text--total">
-          К оплате:
-        </span>
-        <span className="basket__summary-value basket__summary-value--total">
-          {getFormat(allTotalSum)} ₽
-        </span>
-      </p>
-    <button
-      className="btn btn--purple"
-      type="submit"
-      disabled={localStoreBasket.length === 0 || isSending }
-    >
-      Оформить заказ
-    </button>
-    </div>
-  </form>
+    <form onSubmit={handleOrderSubmit} method="post">
+      <div className="basket__summary-order">
+        <p className="basket__summary-item">
+          <span className="basket__summary-text">Всего:</span>
+          <span className="basket__summary-value">{getFormat(totalSummary)} ₽</span>
+        </p>
+        <p className="basket__summary-item">
+          <span className="basket__summary-text">Скидка:</span>
+          <span className={classColor}>
+            {getFormat(discountSummary)} ₽
+          </span>
+        </p>
+        <p className="basket__summary-item">
+          <span className="basket__summary-text basket__summary-text--total">
+            К оплате:
+          </span>
+          <span className="basket__summary-value basket__summary-value--total">
+            {getFormat(allTotalSum)} ₽
+          </span>
+        </p>
+      <button
+        className="btn btn--purple"
+        type="submit"
+        disabled={localStoreBasket.length === 0 || isSending }
+      >
+        Оформить заказ
+      </button>
+      </div>
+    </form>
   );
 }
 

@@ -35,7 +35,7 @@ import { addCamera } from '../store/local-store-basket';
 
 function Catalog() {
   const quantityArr = localStoreBasket.map((camera) => camera.quantity);
-  const totalQuantity = quantityArr.reduce((previousValue, currentValue) => previousValue + currentValue);
+  const totalQuantity = quantityArr.length !== 0 && quantityArr.reduce((previousValue, currentValue) => previousValue + currentValue);
 
   const [ cameras, setCameras ] = useState<TCamera[]>([]);
   const [ promos, setPromos ] = useState<TPromo[]>([]);

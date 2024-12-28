@@ -55,7 +55,8 @@ function ProductCard({ onOpen, camera, isActive, onClickBuy, idSuccess}: Product
       </div>
       <div className="product-card__buttons">
         {isAdded
-          ? (<Link
+          ? (
+            <Link
             className="btn btn--purple-border"
             to={AppRoutes.Basket}
             >
@@ -63,17 +64,18 @@ function ProductCard({ onOpen, camera, isActive, onClickBuy, idSuccess}: Product
               <use xlinkHref="#icon-basket" />
             </svg>
               В корзине
-            </Link>)
-          : (<button
-            className={classNames(
-              'btn','btn--purple',
-              'product-card__btn',
-            )}
-            type="button"
-            onClick={() => handleClickButtonBuy(camera.id, camera)}
-            >
-            Купить
-          </button>)}
+            </Link>
+            ): (
+                <button
+                className={classNames(
+                  'btn','btn--purple',
+                  'product-card__btn',
+                )}
+                type="button"
+                onClick={() => handleClickButtonBuy(camera.id, camera)}
+                >
+                  Купить
+                </button>)}
         <Link className="btn btn--transparent" to={href}>
           Подробнее
         </Link>

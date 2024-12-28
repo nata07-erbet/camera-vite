@@ -38,7 +38,7 @@ function Header({ cameras, totalQuantity }: HeaderProps) {
                   key={item}
                   className="main-nav__item"
                 >
-                  <NavLink className="main-nav__link" to="#">
+                  <NavLink className="main-nav__link" to={AppRoutes.Main}>
                     {item}
                   </NavLink>
                 </li>
