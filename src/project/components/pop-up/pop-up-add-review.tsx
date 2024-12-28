@@ -120,7 +120,7 @@ function PopUpAddReview ({cameraId, onSubmit, ...props}: PopUpAddReviewProps) {
         setSendingStatus(RequestStatus.Success);
         onSubmit;
       })
-      .catch((err) => setError('root', err));
+      .catch((err: Error) => setError('root', { 'message': err.message}));
   };
 
   return (

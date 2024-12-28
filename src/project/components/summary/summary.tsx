@@ -139,9 +139,8 @@ function Summary ({onSending, onSubmit, onError }: SummaryProps){
   const classColor = classNames('basket__summary-value', {'basket__summary-value--bonus': isActive});
 
   const handleOrderSubmit = () => {
-    setIsSending(true);
     onSending();
-
+    
     const orderData: TOrder = {
       camerasIds: localStoreBasket.map((camera) => camera.id),
       coupon: 'camera-333'

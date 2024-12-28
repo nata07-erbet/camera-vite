@@ -79,7 +79,12 @@ type TReviewPost = {
   type TLocalStore = TCamera & {
     quantity: number;
     isPromo: boolean;
-  }
+  };
+
+  type TCouponValue = 'camera-333' | 'camera-444' |'camera-555';
+  type TPromoCoupon = {
+      coupon: string;
+  };
 
 export type {
   TCamera,
@@ -100,5 +105,7 @@ export type {
   TFormInputs,
   TFilterPriceRange,
   TReviewPost,
-  TLocalStore
+  TLocalStore,
+  TCouponValue,
+  TPromoCoupon
 };

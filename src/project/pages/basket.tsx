@@ -7,6 +7,7 @@ import { Footer } from '../components/footer/footer';
 import { Breadcrumbs } from '../components/breadcrumbs/breadcrumbs';
 import { TCamera } from '../types/types';
 import { BasketList } from '../components/basket-list/basket-list';
+import { Promo } from '../components/promo/promo';
 import { Spinner } from '../components/spinner/spinner';
 import { PopUpRemove } from '../components/pop-up/pop-up-remove';
 import { PopUpAddThanks } from '../components/pop-up/pop-up-add-thanks';
@@ -31,6 +32,9 @@ function Basket() {
 
   const quantityArr = localStoreBasket.map((camera) => camera.quantity);
   const totalQuantity = quantityArr.reduce((previousValue, currentValue) => previousValue + currentValue);
+  const handlePromoSubmit = () => {
+
+  };
 
   const cameraByDelete = cameras.find((camera) => camera.id === selectedIdDelete);
 
@@ -91,26 +95,7 @@ function Basket() {
                   isSending={isSending}
                 />
                 <div className="basket__summary">
-                  <div className="basket__promo">
-                    <p className="title title--h4">
-                      Если у вас есть промокод на скидку, примените его в этом поле
-                    </p>
-                    <div className="basket-form">
-                      <form action="#">
-                        <div className="custom-input">
-                          <label>
-                            <span className="custom-input__label">Промокод</span>
-                            <input type="text" name="promo" placeholder="Введите промокод" />
-                          </label>
-                          <p className="custom-input__error">Промокод неверный</p>
-                          <p className="custom-input__success">Промокод принят!</p>
-                        </div>
-                        <button className="btn" type="submit">
-                          Применить
-                        </button>
-                      </form>
-                    </div>
-                  </div>
+                  <Promo onSubmit={handlePromoSubmit} />
                   <Summary
                     onSending={handleSending}
                     onSubmit={handleSummit}
