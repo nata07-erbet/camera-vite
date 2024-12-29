@@ -34,15 +34,8 @@ function Search({ cameras }: SearchProps) {
   };
 
   useEffect(() => {
-    let isMounted = true;
-    if(isMounted) {
       const sortedCameras = filterCameras(inputItems, cameras);
       setListCameras(sortedCameras);
-    }
-
-    return () => {
-      isMounted = false;
-    };
   },[inputItems,cameras]);
 
 

@@ -34,15 +34,13 @@ function PopUpMain({ isActive, onClose, children }: PopUpMainProps) {
   }, [handleEscDownClick]);
 
   useEffect(() => {
-    let isMounted = true;
 
-    if (isActive && isMounted) {
+    if (isActive) {
       document.body.classList.add('scroll-lock');
     }
 
     return(() => {
       document.body.classList.remove('scroll-lock');
-      isMounted = false;
     });
   }, [isActive]);
 

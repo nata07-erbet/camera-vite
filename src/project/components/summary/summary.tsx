@@ -180,13 +180,13 @@ function Summary ({onSending, onSubmit, onError, isSending }: SummaryProps){
             {getFormat(allTotalSum)} ₽
           </span>
         </p>
-      <button
-        className="btn btn--purple"
-        type="submit"
-        disabled={localStoreBasket.length === 0 || isSending }
-      >
-        Оформить заказ
-      </button>
+        <button
+          className="btn btn--purple"
+          type="submit"
+          disabled={localStoreBasket.length === 0 || isSending }
+        >
+          Оформить заказ
+        </button>
       </div>
     </form>
   );

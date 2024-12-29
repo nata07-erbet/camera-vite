@@ -21,7 +21,7 @@ import { addCamera } from '../store/local-store-basket';
 
 function Product() {
   const quantityArr = localStoreBasket.map((camera) => camera.quantity);
-  const totalQuantity = quantityArr.reduce((previousValue, currentValue) => previousValue + currentValue);
+  const totalQuantity =  quantityArr.length !== 0 && quantityArr.reduce((previousValue, currentValue) => previousValue + currentValue);
 
   const navigate = useNavigate();
 
@@ -171,7 +171,9 @@ function Product() {
                         {TABS.map((tab) => (
                           <button
                             key={tab}
-                            className="tabs__control"
+                            className={classNames('tabs__control', {
+                              'is-active': tab === currentTab,
+                            })}
                             type="button"
                             onClick={() => handleTabClick(tab)}
                           >
