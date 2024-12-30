@@ -8,7 +8,7 @@ type BasketItemProps = {
   camera: TCamera;
   onDeleteFromBasket: (id: TCamera['id']) => void;
   selectedId?: TCamera['id'] | null;
-  isSending: boolean;
+  isSending?: boolean;
   onChangeQuantity: (newCount: number) => void;
   onInputQuantity: (newCount: number) => void;
 };
@@ -24,6 +24,8 @@ function BasketItem ({ camera, onDeleteFromBasket, selectedId, isSending, onChan
       return MAX_CAMERA;
     } else if(count < MIN_CAMERA) {
       return MIN_CAMERA;
+    } else {
+      return count;
     }
   };
 
@@ -56,7 +58,10 @@ function BasketItem ({ camera, onDeleteFromBasket, selectedId, isSending, onChan
     {'visually-hidden': isRemoveItem});
 
   return(
-    <li className={classHidden}>
+    <li
+    className={classHidden}
+    data-testid="basket-item"
+    >
       <div className="basket-item__img">
         <picture>
           <source
@@ -119,7 +124,7 @@ function BasketItem ({ camera, onDeleteFromBasket, selectedId, isSending, onChan
         </button>
       </div>
       <div className="basket-item__total-price">
-        <span className="visually-hidden">Общая цена:</span>{getValid(initCount) * camera.price}
+        <span className="visually-hidden">Общая цена:</span>{ initCount && getValid(initCount) * camera.price}
       </div>
       <button
         className="cross-btn"

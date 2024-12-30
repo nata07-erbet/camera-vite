@@ -1,14 +1,14 @@
 import { screen } from '@testing-library/react';
+import { SimilarProduct } from './similar-product';
 import { cameraMocks } from '../../mocks/camera-mocks';
-import { Breadcrumbs } from './breadcrumbs';
 import { renderWithRouter } from '../../utils/mock-components/test-utils';
 
-describe('Component: NotFoundScreen', () => {
+describe('component: BannerOffer', () => {
   it('should render correctly', () => {
-    const expectedTestId = 'breadcrumbs-list';
-    const prepareComponent = <Breadcrumbs camera={cameraMocks[0]} isBasketPage={false} />;
+    const expectedTestId = 'similar-product'
+    const preparedComponent = <SimilarProduct similars={cameraMocks}/>;
 
-    renderWithRouter(prepareComponent);
+    renderWithRouter(preparedComponent);
 
     expect(screen.getByTestId(expectedTestId)).toBeInTheDocument();
   });

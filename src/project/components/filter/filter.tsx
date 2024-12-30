@@ -17,6 +17,7 @@ import {
   LEVELS,
   LevelMap,
   LevelsList,
+  INITIAL_FILTERS,
 } from '../../const/const';
 
 type FilterProps = {
@@ -132,13 +133,13 @@ function Filter ({
   const handleChangePriceMax = () => {
     let value = watchPriceUp;
 
-    if(watchPriceUp > maxPrice){
+    if( maxPrice && watchPriceUp > maxPrice){
       value = maxPrice;
     } else if (watchPriceFrom &&
       watchPriceUp > watchPriceFrom
     ){
       value = watchPriceUp;
-    } else if (watchPriceFrom &&
+    } else if (maxPrice && watchPriceFrom &&
       watchPriceUp < watchPriceFrom) {
       value = maxPrice;
     }
@@ -148,7 +149,7 @@ function Filter ({
   };
 
   const handleClickReset = () => {
-    setFilterData(initialFilters);
+    setFilterData(INITIAL_FILTERS);
     onReset();
     reset();
   };

@@ -6,7 +6,7 @@ import { renderWithRouter } from '../../utils/mock-components/test-utils';
 describe('component: Header', () => {
   it('should render correctly', () => {
     const expectedText = 'Каталог';
-    const preparedComponent = <Header cameras={cameraMocks} />;
+    const preparedComponent = <Header cameras={cameraMocks} totalQuantity={0} />;
 
     renderWithRouter(preparedComponent);
 

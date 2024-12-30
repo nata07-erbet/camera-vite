@@ -10,7 +10,7 @@ type ReviewsProps = {
   onClickAddReview: () => void;
 }
 
-function Reviews({ reviews, onClickAddReview }: ReviewsProps) {
+function ReviewsList({ reviews, onClickAddReview }: ReviewsProps) {
   const [ reviewShowCount, setReviewShowCount ] = useState<number>(REVIEW_SHOW);
 
   const classButtonHidden = classNames('btn', 'btn--purple', {
@@ -60,4 +60,4 @@ function Reviews({ reviews, onClickAddReview }: ReviewsProps) {
   );
 }
 
-export { Reviews };
+export { ReviewsList };

@@ -60,40 +60,40 @@ function Promo({ onSubmit }: PromoProps) {
     return(
       <>
         {isSending && <Spinner />}
-        <div className="basket__promo">
-        <p className="title title--h4">
-          Если у вас есть промокод на скидку, примените его в этом поле
-        </p>
-        <div className="basket-form">
-          <form
-            action="#"
-            method="post"
-            onSubmit={handleSubmit(onFormSubmit)}
-          >
-          <div className="custom-input">
-            <label>
-              <span className="custom-input__label">Промокод</span>
-              <input
-                type="text"
-                placeholder="Введите промокод"
-                {...couponInput}
-              />
-              {errors.promo && (
-                <ErrorMessage
-                  name='promo'
-                  errors={errors}
-                  render={({ message }) => <p>{message}</p>}
+        <div className="basket__promo" data-testid="promo">
+          <p className="title title--h4">
+            Если у вас есть промокод на скидку, примените его в этом поле
+          </p>
+          <div className="basket-form">
+            <form
+              action="#"
+              method="post"
+              onSubmit={handleSubmit(onFormSubmit)}
+            >
+            <div className="custom-input">
+              <label>
+                <span className="custom-input__label">Промокод</span>
+                <input
+                  type="text"
+                  placeholder="Введите промокод"
+                  {...couponInput}
                 />
-              )}
-            </label>
-            {sendingStatus === isError && <p className="custom-input__error">Промокод неверный</p> }
-            { sendingStatus === isSuccess && <p className="custom-input__success">Промокод принят!</p>}
+                {errors.promo && (
+                  <ErrorMessage
+                    name='promo'
+                    errors={errors}
+                    render={({ message }) => <p>{message}</p>}
+                  />
+                )}
+              </label>
+              {sendingStatus === isError && <p className="custom-input__error">Промокод неверный</p> }
+              { sendingStatus === isSuccess && <p className="custom-input__success">Промокод принят!</p>}
+            </div>
+              <button className="btn" type="submit">
+                Применить
+              </button>
+            </form>
           </div>
-            <button className="btn" type="submit">
-              Применить
-            </button>
-          </form>
-        </div>
         </div>
       </>
   );

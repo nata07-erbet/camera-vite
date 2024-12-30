@@ -10,7 +10,7 @@ import { Breadcrumbs } from '../components/breadcrumbs/breadcrumbs';
 import { Rate } from '../components/rate/rate';
 import { SimilarProduct } from '../components/similar-product/similar-product';
 import { UpBtn } from '../components/up-btn/up-btn';
-import { Reviews } from '../components/reviews-list/reviews-list';
+import { ReviewsList } from '../components/reviews-list/reviews-list';
 import { PopUpAddToBasket } from '../components/pop-up/pop-up-add-to-basket';
 import { PopUpAddSuccess } from '../components/pop-up/pop-up-add-success';
 import { PopUpAddReview } from '../components/pop-up/pop-up-add-review';
@@ -234,7 +234,7 @@ function Product() {
               />)}
             {reviews && (
               <div className="page-content__section">
-                <Reviews
+                <ReviewsList
                   reviews={reviews}
                   onClickAddReview ={handleClickAddReview}
                 />

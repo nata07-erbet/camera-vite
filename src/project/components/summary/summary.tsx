@@ -160,7 +160,7 @@ function Summary ({onSending, onSubmit, onError, isSending }: SummaryProps){
   };
 
   return(
-    <form onSubmit={handleOrderSubmit} method="post">
+    <form onSubmit={handleOrderSubmit} method="post" data-testid="summary">
       <div className="basket__summary-order">
         <p className="basket__summary-item">
           <span className="basket__summary-text">Всего:</span>
