@@ -11,7 +11,7 @@ type BasketListProps = {
   onInputQuantity: () => void;
 };
 
-function BasketList({ cameras, onDeleteFromBasket, selectedId, isSending, onChangeQuantity,  onInputQuantity}: BasketListProps) {
+function BasketList({ cameras, onDeleteFromBasket, selectedId, isSending, onChangeQuantity, onInputQuantity}: BasketListProps) {
   return(
     <ul
     className="basket__list"
@@ -29,7 +29,8 @@ function BasketList({ cameras, onDeleteFromBasket, selectedId, isSending, onChan
               isSending={isSending}
               onChangeQuantity={onChangeQuantity}
               onInputQuantity={onInputQuantity}
-              />)))}
+            />
+          )))}
     </ul>);
 }
 

@@ -133,7 +133,7 @@ function Filter ({
   const handleChangePriceMax = () => {
     let value = watchPriceUp;
 
-    if( maxPrice && watchPriceUp > maxPrice){
+    if(maxPrice && watchPriceUp > maxPrice){
       value = maxPrice;
     } else if (watchPriceFrom &&
       watchPriceUp > watchPriceFrom

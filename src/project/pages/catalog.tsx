@@ -13,6 +13,7 @@ import {
   DEFAULT_SORT_TYPE,
   DEFAULT_SORT_DIRECTION,
   INITIAL_FILTERS,
+  CATALOG_SHOW
 } from '../const/const';
 import { localStoreBasket } from '../store/local-store-basket';
 import { Header } from '../components/header/header';
@@ -31,7 +32,7 @@ import {
   filterCamerasByPrice,
   getMinMaxPrices,
 } from '../utils/utils';
-import { addCamera } from '../store/local-store-basket';
+import { Context } from '../hooks/use-contects';
 
 function Catalog() {
   const quantityArr = localStoreBasket.map((camera) => camera.quantity);
@@ -57,6 +58,9 @@ function Catalog() {
 
   const [ priceRange, setPriceRange ] = useState<Partial<TFilterPriceRange>>([]);
 
+  const [ currentPage, setCurrentPage ] = useState<number>(5);
+
+
   const sortKey = `${sortType}-${sortDirection}` as const;
   const sortedCameras = compare(sortKey, cameras);
 
@@ -72,6 +76,8 @@ function Catalog() {
 
 
   const camerasToShow = filterCamerasByPrice(filteredCameras, priceRange);
+  const amountCatalogPages =  camerasToShow ? Math.ceil(camerasToShow.length / CATALOG_SHOW) : 0;
+
 
   const handleChangeFilters = (newData: TFiltersData) => {
     setFilters(newData);
@@ -115,6 +121,10 @@ function Catalog() {
     setFilters(INITIAL_FILTERS);
   };
 
+  const handlePageChange = () => {
+    setCurrentPage(5);
+  };
+
   useEffect(() => {
     api
       .get<TCamera[]>(ReqRoutes.Cameras)
@@ -135,6 +145,7 @@ function Catalog() {
           <section className="catalog">
             <div className="container">
               <h1 className="title title--h2">Каталог фото- и видеотехники</h1>
+              <Context />
               <div className="page-content__columns">
                 <div className="catalog__aside">
                   <img src="img/banner.png" />
@@ -160,7 +171,11 @@ function Catalog() {
                       idSuccess={idSuccess}
                     />
                   )}
-                  <Pagination cameras={cameras} />
+                  <Pagination
+                    amountCatalogPages={amountCatalogPages}
+                    currentPage={currentPage}
+                    onPageChange={handlePageChange}
+                  />
                 </div>
               </div>
             </div>

@@ -59,8 +59,8 @@ function BasketItem ({ camera, onDeleteFromBasket, selectedId, isSending, onChan
 
   return(
     <li
-    className={classHidden}
-    data-testid="basket-item"
+      className={classHidden}
+      data-testid="basket-item"
     >
       <div className="basket-item__img">
         <picture>

@@ -195,4 +195,24 @@ const DiscountSummaryMap = {
   fourth: 3,
 };
 
-export { BASE_URL, ReqRoutes, AppRoutes, NavMap, ALL_STARS, TABS, AppRouteTab, TabsMap, DEFAULT_TAB, DATE_FORMAT, REVIEW_SHOW, CATALOG_SHOW, MAX_PAGES_IN_RANGE, INITIAL_PAGE_BY_PAGINATION, SortTabInner, SortInnerMap, SORT_INNER, DEFAULT_SORT_TYPE, SortTabOrder, SORT_ORDER, SortOrderMap, DEFAULT_SORT_DIRECTION, CATEGORIES, CategoryList, CategoryMap, DEFAULT_CATEGORY, CAMERAS, CamerasMap, CamerasList, LEVELS, LevelsList, LevelMap, INITIAL_FILTERS, PriceList, PriceMap, PRICES, BASKET_AMOUNT, MIN_CAMERA, MAX_CAMERA, KEY_LOCAL_STORAGE_OFFERS, RequestStatus, RateBarMap, SettingValidation, DiscountMap, QuantityMap, SummaryMap, DiscountSummaryMap };
+
+const PaginationButton = {
+  Prev: 'Назад',
+  Next: 'Далее',
+};
+
+
+export enum NameSpace {
+  Cameras = 'CAMERAS',
+  Camera = 'CAMERA',
+  Similar = 'SIMILAR',
+  Promo = 'PROMO',
+  Reviews = 'REVIEWS',
+  Coupons = 'COUPONS',
+  Basket = 'BASKET',
+  Order = 'ORDER'
+
+};
+
+
+export { BASE_URL, ReqRoutes, AppRoutes, NavMap, ALL_STARS, TABS, AppRouteTab, TabsMap, DEFAULT_TAB, DATE_FORMAT, REVIEW_SHOW, CATALOG_SHOW, MAX_PAGES_IN_RANGE, INITIAL_PAGE_BY_PAGINATION, SortTabInner, SortInnerMap, SORT_INNER, DEFAULT_SORT_TYPE, SortTabOrder, SORT_ORDER, SortOrderMap, DEFAULT_SORT_DIRECTION, CATEGORIES, CategoryList, CategoryMap, DEFAULT_CATEGORY, CAMERAS, CamerasMap, CamerasList, LEVELS, LevelsList, LevelMap, INITIAL_FILTERS, PriceList, PriceMap, PRICES, BASKET_AMOUNT, MIN_CAMERA, MAX_CAMERA, KEY_LOCAL_STORAGE_OFFERS, RequestStatus, RateBarMap, SettingValidation, DiscountMap, QuantityMap, SummaryMap, DiscountSummaryMap, PaginationButton };
