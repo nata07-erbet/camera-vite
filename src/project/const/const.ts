@@ -208,10 +208,9 @@ export enum NameSpace {
   Similar = 'SIMILAR',
   Promo = 'PROMO',
   Reviews = 'REVIEWS',
-  Coupons = 'COUPONS',
+  Coupon = 'COUPON',
   Basket = 'BASKET',
   Order = 'ORDER'
-
 };
 
 
