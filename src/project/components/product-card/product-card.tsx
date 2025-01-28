@@ -1,4 +1,6 @@
 import classNames from 'classnames';
+import { useAppDispatch } from '../../hooks';
+import { fetchCamera, addToBasket  } from '../../store/action';
 import { TCamera } from '../../types/types';
 import { Link, generatePath } from 'react-router-dom';
 import { Rate } from '../rate/rate';
@@ -10,17 +12,19 @@ type ProductCardProps = {
   onOpen?: (id: TCamera['id']) => void | undefined;
   onClickBuy?: (id: TCamera['id']) => void | undefined;
   idSuccess?: TCamera['id'];
+  isAdded: boolean;
 };
 
-function ProductCard({ onOpen, camera, isActive, onClickBuy, idSuccess}: ProductCardProps) {
-  const generateImgUrl = (img: string) => `${window.location.origin}/${img}`;
-  const isAdded = camera.id === idSuccess;
+function ProductCard({ onOpen, camera, isActive, onClickBuy, isAdded}: ProductCardProps) {
+  const dispatch = useAppDispatch();
 
+  const generateImgUrl = (img: string) => `${window.location.origin}/${img}`;
   const href = generatePath('/camera/:id', {
     id: camera.id.toString(),
   });
 
   const handleClickButtonBuy = (id: TCamera['id']) => {
+    // dispatch(addToBasket(id));
     onOpen?.(id);
     onClickBuy?.(id);
   };
@@ -72,11 +76,15 @@ function ProductCard({ onOpen, camera, isActive, onClickBuy, idSuccess}: Product
                   'product-card__btn',
                 )}
                 type="button"
-                onClick={() => handleClickButtonBuy(camera.id, camera)}
+                onClick={() => handleClickButtonBuy(camera.id)}
                 >
                   Купить
                 </button>)}
-        <Link className="btn btn--transparent" to={href}>
+        <Link
+          className="btn btn--transparent"
+          to={href}
+          onClick={() => dispatch(fetchCamera(camera.id))}
+        >
           Подробнее
         </Link>
       </div>

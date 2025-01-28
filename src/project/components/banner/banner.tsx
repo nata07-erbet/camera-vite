@@ -6,7 +6,7 @@ type BannerProps = {
   camera: TPromo;
 }
 
-function Banner({ camera }:BannerProps) {
+function Banner({ camera }: BannerProps) {
   const href = generatePath('/camera/:id', {
     id: (camera.id).toString(),
   });

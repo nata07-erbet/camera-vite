@@ -1,17 +1,25 @@
+import { useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchPromos } from '../../store/action';
+
+
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import './swiper-slider.css';
-
-import { TPromo } from '../../types/types';
 import { Banner } from '../banner/banner';
 
-type SwiperSlidersProps = {
-  promos: TPromo[];
-};
-function SwiperSliders({ promos }: SwiperSlidersProps) {
+
+function SwiperSliders() {
+  const dispatch = useAppDispatch();
+  const promos = useAppSelector((state) => state.cameras);
+
+  useEffect(() => {
+    dispatch(fetchPromos());
+  }, []);
+
   return (
     <Swiper
       modules={[Autoplay, Pagination]}

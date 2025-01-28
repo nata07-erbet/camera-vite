@@ -1,20 +1,20 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { api } from '../api/api';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { fetchCameras } from '../store/action'
 import {
   TCamera,
-  TPromo,
   TSortType,
   TSortDirection,
   TFiltersData,
   TFilterPriceRange,
 } from '../types/types';
 import {
-  ReqRoutes,
   DEFAULT_SORT_TYPE,
   DEFAULT_SORT_DIRECTION,
   INITIAL_FILTERS,
   CATALOG_SHOW
 } from '../const/const';
+
 import { localStoreBasket } from '../store/local-store-basket';
 import { Header } from '../components/header/header';
 import { SwiperSliders } from '../components/swiper-sliders/swiper-sliders';
@@ -32,14 +32,19 @@ import {
   filterCamerasByPrice,
   getMinMaxPrices,
 } from '../utils/utils';
-import { Context } from '../hooks/use-contects';
+
 
 function Catalog() {
+  const dispatch = useAppDispatch();
+  const cameras = useAppSelector((state) => state.cameras);
+
+  useEffect(() => {
+    dispatch(fetchCameras());
+  }, []);
+
   const quantityArr = localStoreBasket.map((camera) => camera.quantity);
   const totalQuantity = quantityArr.length !== 0 && quantityArr.reduce((previousValue, currentValue) => previousValue + currentValue);
 
-  const [ cameras, setCameras ] = useState<TCamera[]>([]);
-  const [ promos, setPromos ] = useState<TPromo[]>([]);
   const [cameraId, setCameraId] = useState<TCamera['id']| null>(null);
   const currentCamera = cameras.find((camera) => camera.id === cameraId);
   const [ idSuccess, setIdSuccess ] = useState<TCamera['id']>();
@@ -74,20 +79,17 @@ function Catalog() {
     [filteredCameras]
   );
 
-
   const camerasToShow = filterCamerasByPrice(filteredCameras, priceRange);
   const amountCatalogPages =  camerasToShow ? Math.ceil(camerasToShow.length / CATALOG_SHOW) : 0;
-
 
   const handleChangeFilters = (newData: TFiltersData) => {
     setFilters(newData);
   };
 
-  const handleClickAddSuccess = (id:TCamera['id'], camera: TCamera) => {
+  const handleClickAddSuccess = (id:TCamera['id']) => {
     setIsShowPopUpSuccess(true);
     setCameraId(id);
     setIdSuccess(id);
-    addCamera(camera);
   };
 
   const handlePopUpClose = () => {
@@ -125,27 +127,20 @@ function Catalog() {
     setCurrentPage(5);
   };
 
-  useEffect(() => {
-    api
-      .get<TCamera[]>(ReqRoutes.Cameras)
-      .then((response) => setCameras(response.data));
-
-    api
-      .get<TCamera[]>(`${ReqRoutes.Promo}`)
-      .then((response) => setPromos(response.data));
-  }, []);
 
   return (
     <div className="wrapper" data-testid="main-page">
       <Header cameras={cameras} totalQuantity={totalQuantity} />
       <main>
-        {promos && <SwiperSliders promos={promos} />};
+        <SwiperSliders />;
         <div className="page-content">
-          <Breadcrumbs isBasketPage={false} />
+          <Breadcrumbs
+            cameraId={cameraId}
+            isBasketPage={false}
+          />
           <section className="catalog">
             <div className="container">
               <h1 className="title title--h2">Каталог фото- и видеотехники</h1>
-              <Context />
               <div className="page-content__columns">
                 <div className="catalog__aside">
                   <img src="img/banner.png" />

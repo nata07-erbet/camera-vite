@@ -1,16 +1,20 @@
+import { useAppDispatch } from '../../hooks/index';
+import { addToBasket } from '../../store/action';
 import { TCamera } from '../../types/types';
 import { PopUpMain } from './pop-up-main';
 import { PopUpMainProps } from './pop-up-main';
 
 type PopUpAddToBasketProps = PopUpMainProps & {
   camera: TCamera;
-  onClickAddSuccess: (id: TCamera['id'], camera: TCamera) => void;
+  onClickAddSuccess: (id: TCamera['id']) => void;
 };
 
 function PopUpAddToBasket({ camera, onClickAddSuccess, ...props }: PopUpAddToBasketProps) {
+  const dispatch = useAppDispatch();
 
-  const handleClickAddSuccess = (id: TCamera['id'], cameraAdded: TCamera) => {
-    onClickAddSuccess(id, cameraAdded);
+  const handleClickAddSuccess = (id: TCamera['id']) => {
+    onClickAddSuccess(id);
+    dispatch(addToBasket(id));
   };
 
   return(

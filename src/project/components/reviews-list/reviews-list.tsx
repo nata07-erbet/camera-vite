@@ -1,18 +1,25 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchReviews } from '../../store/action';
 import classNames from 'classnames';
-import { TReview } from '../../types/types';
 import { Review } from '../../components/review/review';
 import { compareDate } from '../../utils/utils';
 import { REVIEW_SHOW } from '../../const/const';
 
+
 type ReviewsProps = {
-  reviews: TReview[];
   onClickAddReview: () => void;
-}
+  cameraId: number
+};
 
-function ReviewsList({ reviews, onClickAddReview }: ReviewsProps) {
+function ReviewsList({ onClickAddReview, cameraId }: ReviewsProps) {
+  const dispatch = useAppDispatch();
+  const reviews = useAppSelector((state) => state.reviews);
+
+  useEffect(() => {
+    dispatch(fetchReviews(cameraId))
+  }, [])
   const [ reviewShowCount, setReviewShowCount ] = useState<number>(REVIEW_SHOW);
-
   const classButtonHidden = classNames('btn', 'btn--purple', {
     'visually-hidden': reviews.length <= reviewShowCount,
   });
@@ -39,7 +46,7 @@ function ReviewsList({ reviews, onClickAddReview }: ReviewsProps) {
           </button>
         </div>
         <ul className="review-block__list">
-          {reviews
+          {[...reviews]
             .sort(compareDate)
             .slice(0, reviewShowCount)
             .map((review) => (

@@ -1,10 +1,11 @@
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
+import { useAppDispatch, useAppSelector } from '../hooks';
+import { fetchCameras, fetchCamera, fetchSimilars, fetchReviews} from '../store/action'
 import { useParams, useNavigate } from 'react-router-dom';
-import { api } from '../api/api';
-import { AppRoutes, ReqRoutes, TABS, TabsMap, DEFAULT_TAB } from '../const/const';
+import { AppRoutes, TABS, TabsMap, DEFAULT_TAB } from '../const/const';
 import { localStoreBasket } from '../store/local-store-basket';
-import { TCamera, TTab, TReview } from '../types/types';
+import { TCamera, TTab } from '../types/types';
 import { Header } from '../components/header/header';
 import { Breadcrumbs } from '../components/breadcrumbs/breadcrumbs';
 import { Rate } from '../components/rate/rate';
@@ -18,17 +19,32 @@ import { PopUpReviewThanks } from '../components/pop-up/pop-up-review-thanks';
 import { Footer } from '../components/footer/footer';
 import { addCamera } from '../store/local-store-basket';
 
-
 function Product() {
+const params = useParams();
+const cameraId = Number(params.id);
+
+const dispatch = useAppDispatch();
+
+const cameras = useAppSelector((state) => state.cameras);
+const similars = useAppSelector((state) => state.similars);
+const reviews = useAppSelector((state) => state.reviews)
+const currentCameraByProduct = useAppSelector((state) => state.camera);
+
+useEffect(() => {
+  if(cameraId) {
+    dispatch(fetchCamera(cameraId));
+    dispatch(fetchSimilars(cameraId));
+    dispatch(fetchReviews(cameraId))
+  };
+    dispatch(fetchCameras())
+}, [dispatch, cameraId]);
+
+
   const quantityArr = localStoreBasket.map((camera) => camera.quantity);
   const totalQuantity =  quantityArr.length !== 0 && quantityArr.reduce((previousValue, currentValue) => previousValue + currentValue);
 
   const navigate = useNavigate();
-
-  const [ cameras, setCameras ] = useState<TCamera[]>([]);
   const [ currentTab, setCurrentTab ] = useState<TTab>(DEFAULT_TAB);
-  const [ reviews, setReviews ] = useState<TReview[]>([]);
-  const [ similars, setSimilars] = useState<TCamera[]>([]);
 
   const [ cameraIdSimilar, setCameraIdSimilar ] = useState<TCamera['id'] | null>(null);
   const [ currentCamera, setCurrentCamera ] = useState<TCamera | null>(null);
@@ -49,10 +65,6 @@ function Product() {
     'is-active': !isActive,
     disabled: !isActive,
   });
-
-  const params = useParams();
-  const cameraId = Number(params.id);
-  const currentCameraByProduct = cameras.find((camera) => camera.id === cameraId);
 
   const handleTabClick = (tab: TTab) => {
     setCurrentTab(tab);
@@ -109,19 +121,6 @@ function Product() {
     }
   };
 
-  useEffect(() => {
-    api
-      .get<TCamera[]>(ReqRoutes.Cameras)
-      .then((response) => setCameras(response.data));
-
-    api
-      .get<TReview[]>(`${ReqRoutes.Cameras}/${cameraId}/${ReqRoutes.Reviews}`)
-      .then((response) => setReviews(response.data));
-
-    api
-      .get<TCamera[]>(`${ReqRoutes.Cameras}/${cameraId}/${ReqRoutes.Similar}`)
-      .then((response) => setSimilars(response.data));
-  }, [cameraId]);
 
   return (
     <div className="wrapper" data-testid="product-page">
@@ -232,14 +231,14 @@ function Product() {
                 similars={similars}
                 onOpen={(id) => handleOpenPopUpAddBasketBySimilar(id)}
               />)}
-            {reviews && (
               <div className="page-content__section">
-                <ReviewsList
-                  reviews={reviews}
+                {reviews.length > 0 && (
+                  <ReviewsList
+                  cameraId={currentCamera?.id}
                   onClickAddReview ={handleClickAddReview}
                 />
+                )}
               </div>
-            )}
           </div>
         )}
       </main>

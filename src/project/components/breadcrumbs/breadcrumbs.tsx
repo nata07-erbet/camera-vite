@@ -1,13 +1,25 @@
+import { fetchCamera } from '../../store/action';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+
 import { Link } from 'react-router-dom';
 import { TCamera } from '../../types/types';
 import { AppRoutes } from '../../const/const';
+import { useEffect } from 'react';
 
 type BreadcrumbsProps = {
-  camera?: TCamera;
+  cameraId: TCamera['id'];
   isBasketPage: boolean;
 };
 
-function Breadcrumbs({ camera, isBasketPage }: BreadcrumbsProps) {
+function Breadcrumbs({cameraId, isBasketPage }: BreadcrumbsProps) {
+  const dispatch = useAppDispatch();
+
+  const camera = useAppSelector((state) => state.camera)
+
+  useEffect(() => {
+    dispatch(fetchCamera(cameraId))
+  }, []);
+
   return (
     <div className="breadcrumbs">
       <div className="container">

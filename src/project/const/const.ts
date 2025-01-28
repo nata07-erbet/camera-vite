@@ -209,7 +209,8 @@ export enum NameSpace {
   Promo = 'PROMO',
   Reviews = 'REVIEWS',
   Coupon = 'COUPON',
-  Basket = 'BASKET',
+  ToBasket = 'TO_BASKET',
+  FromBasket = 'FROM_BASKET',
   Order = 'ORDER'
 };
 

@@ -1,7 +1,7 @@
-import { api } from '../api/api';
-import { useEffect, useState} from 'react';
+import {  useAppSelector } from '../hooks';
+import { useState} from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AppRoutes, ReqRoutes, RequestStatus } from '../const/const';
+import { AppRoutes, RequestStatus } from '../const/const';
 import { Header } from '../components/header/header';
 import { Footer } from '../components/footer/footer';
 import { Breadcrumbs } from '../components/breadcrumbs/breadcrumbs';
@@ -15,13 +15,13 @@ import { PopUpError } from '../components/pop-up/pop-up-error';
 import { localStoreBasket, dropCamera, clearBasket} from '../store/local-store-basket';
 import { Summary } from '../components/summary/summary';
 
-function Basket() {
-  const navigate = useNavigate();
 
+function Basket() {
+
+  const baskets  = useAppSelector((state) => state.baskets);
+  const navigate = useNavigate();
   const [sendingStatus, setSendingStatus ] = useState();
   const isSending = sendingStatus === RequestStatus.Pending;
-
-  const [ cameras, setCameras ] = useState<TCamera[]>([]);
 
   const [ isShowPopUpRemove, setIsShowPopUpRemove ] = useState(false);
   const [ isShowPopUpThanks, setIsShowPopUpThanks ] = useState(false);
@@ -36,14 +36,7 @@ function Basket() {
 
   };
 
-  const cameraByDelete = cameras.find((camera) => camera.id === selectedIdDelete);
-
-  useEffect(() => {
-    api
-      .get<TCamera[]>(ReqRoutes.Cameras)
-      .then((response) => setCameras(response.data));
-  }, []);
-
+  const cameraByDelete = baskets.find((camera) => camera.id === selectedIdDelete);
 
   const handleDeleteFromBasket = (id: TCamera['id']) => {
     setIsShowPopUpRemove(true);
@@ -81,7 +74,7 @@ function Basket() {
     <>
       {isSending && (<Spinner />)}
       <div className="wrapper">
-        <Header cameras={cameras} totalQuantity={totalQuantity}/>
+        <Header cameras={baskets} totalQuantity={totalQuantity}/>
         <main>
           <div className="page-content">
             <Breadcrumbs isBasketPage />
@@ -89,7 +82,7 @@ function Basket() {
               <div className="container">
                 <h1 className="title title--h2">Корзина</h1>
                 <BasketList
-                  cameras={localStoreBasket}
+                  cameras={baskets}
                   onDeleteFromBasket={handleDeleteFromBasket}
                   selectedId={selectedIdRemove}
                   isSending={isSending}

@@ -1,6 +1,9 @@
+import { useAppDispatch } from '../../hooks';
+import { delFromBasket } from '../../store/action'
 import { Link } from 'react-router-dom';
 import { PopUpMain, PopUpMainProps } from './pop-up-main';
 import { TCamera } from '../../types/types';
+import { AppRoutes } from '../../const/const';
 
 type PopUpRemoveProps = PopUpMainProps & {
   camera: TCamera;
@@ -8,8 +11,10 @@ type PopUpRemoveProps = PopUpMainProps & {
 };
 
 function PopUpRemove ({ camera, onRemoveFromBasket, ...props }: PopUpRemoveProps) {
+  const dispatch = useAppDispatch();
 
   const handleClickRemoveFromBasket = (id: TCamera['id']) => {
+    dispatch(delFromBasket(id));
     onRemoveFromBasket?.(id);
   };
 
@@ -54,7 +59,7 @@ function PopUpRemove ({ camera, onRemoveFromBasket, ...props }: PopUpRemoveProps
         </button>
         <Link
           className="btn btn--transparent modal__btn modal__btn--half-width"
-          to="#"
+          to={AppRoutes.Main}
         >
           Продолжить покупки
         </Link>
