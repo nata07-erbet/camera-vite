@@ -1,18 +1,28 @@
 import classNames from 'classnames';
+import { useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { NavMap } from '../../const/const';
 import { AppRoutes } from '../../const/const';
 import { Search } from '../search/search';
-import { TCamera } from '../../types/types';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchCameras } from '../../store/action'
+import { TBasket } from '../../types/types';
 
+function Header () {
+  const dispatch = useAppDispatch();
+  const cameras = useAppSelector((state) => state.cameras);
+  const baskets = useAppSelector((state) => state.baskets);
 
-type HeaderProps = {
-  cameras: TCamera[];
-  totalQuantity: number;
-};
+  useEffect(() => {
+    dispatch(fetchCameras());
+  }, []);
 
-function Header({ cameras, totalQuantity }: HeaderProps) {
-  const totalCount = totalQuantity;
+  const quantityArr = baskets.map((camera) => camera.quantity);
+  console.log(quantityArr);
+
+  const totalQuantity = quantityArr.length > 0 ? quantityArr.reduce((previousValue, currentValue) => previousValue + currentValue) : 0;
+
+  const totalCount: TBasket['quantity'] = totalQuantity;
   const isAdded = totalCount >= 1 ? true : false;
 
   const classHidden = classNames('header__basket-count', {'visually-hidden': !isAdded});

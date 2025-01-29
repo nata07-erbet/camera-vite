@@ -15,7 +15,7 @@ import {
   CATALOG_SHOW
 } from '../const/const';
 
-import { localStoreBasket } from '../store/local-store-basket';
+// import { localStoreBasket } from '../store/local-store-basket';
 import { Header } from '../components/header/header';
 import { SwiperSliders } from '../components/swiper-sliders/swiper-sliders';
 import { ProductsList } from '../components/products-list/products-list';
@@ -37,16 +37,13 @@ import {
 function Catalog() {
   const dispatch = useAppDispatch();
   const cameras = useAppSelector((state) => state.cameras);
+  const camera = useAppSelector((state) => state.camera);
 
   useEffect(() => {
     dispatch(fetchCameras());
   }, []);
 
-  const quantityArr = localStoreBasket.map((camera) => camera.quantity);
-  const totalQuantity = quantityArr.length !== 0 && quantityArr.reduce((previousValue, currentValue) => previousValue + currentValue);
-
   const [cameraId, setCameraId] = useState<TCamera['id']| null>(null);
-  const currentCamera = cameras.find((camera) => camera.id === cameraId);
   const [ idSuccess, setIdSuccess ] = useState<TCamera['id']>();
 
 
@@ -130,7 +127,7 @@ function Catalog() {
 
   return (
     <div className="wrapper" data-testid="main-page">
-      <Header cameras={cameras} totalQuantity={totalQuantity} />
+      <Header />
       <main>
         <SwiperSliders />;
         <div className="page-content">
@@ -177,9 +174,9 @@ function Catalog() {
           </section>
         </div>
       </main>
-      {currentCamera && (
+      {camera && (
         <PopUpAddToBasket
-          camera={currentCamera}
+          camera={camera}
           isActive={isShowPopUp}
           onClose={handlePopUpClose}
           onClickAddSuccess={handleClickAddSuccess}

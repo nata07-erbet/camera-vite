@@ -17,6 +17,10 @@ type TCamera = {
   previewImgWebp2x: string;
 }
 
+type TBasket = TCamera & {
+  quantity: number
+}
+
 type TPromo = {
   id: number;
   name: string;
@@ -107,5 +111,6 @@ export type {
   TReviewPost,
   TLocalStore,
   TCouponValue,
-  TPromoCoupon
+  TPromoCoupon,
+  TBasket
 };

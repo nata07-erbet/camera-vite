@@ -7,7 +7,7 @@ import { AppRoutes } from '../../const/const';
 import { useEffect } from 'react';
 
 type BreadcrumbsProps = {
-  cameraId: TCamera['id'];
+  cameraId: TCamera['id'] | null;
   isBasketPage: boolean;
 };
 
@@ -17,7 +17,9 @@ function Breadcrumbs({cameraId, isBasketPage }: BreadcrumbsProps) {
   const camera = useAppSelector((state) => state.camera)
 
   useEffect(() => {
-    dispatch(fetchCamera(cameraId))
+    if(cameraId) {
+      dispatch(fetchCamera(cameraId));
+    }
   }, []);
 
   return (

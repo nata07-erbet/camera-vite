@@ -1,6 +1,19 @@
 import { createReducer } from "@reduxjs/toolkit";
-import { fetchCameras, fetchCamera, fetchSimilars, fetchPromos, fetchReviews, addToBasket, delFromBasket,postReviews, postCoupon, postOrder}  from './action.ts'
-import { TCamera, TReview, TCouponValue, TOrder, TPromo } from "../types/types.ts";
+import {
+  fetchCameras,
+  fetchCamera,
+  fetchSimilars,
+  fetchPromos,
+  fetchReviews,
+  addToBasket,
+  delFromBasket,
+  incrementAction,
+  decrementAction,
+  postReviews,
+  postCoupon,
+  postOrder
+} from './action.ts'
+import { TCamera, TReview, TCouponValue, TOrder, TPromo, TBasket } from "../types/types.ts";
 import { cameraMocks } from '../mocks/camera-mocks.ts';
 import { reviewMocks } from '../mocks/review-mocks.ts';
 import { promoMocks } from  '../mocks/promo-mocks.ts';
@@ -14,6 +27,7 @@ const initialState: {
   coupon: TCouponValue | null,
   order: TOrder | null
   baskets: TCamera[],
+  counter: number
 
 } = {
   cameras: [],
@@ -24,7 +38,9 @@ const initialState: {
   coupon: null,
   order: null,
   baskets: [],
+  counter: 0
 };
+
 
 const reducer = createReducer(initialState, (builder) => {
   builder
@@ -46,12 +62,21 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(addToBasket, (state, action) => {
       const cameraIntoBasket = state.cameras.find((camera) => camera.id === action.payload);
-      cameraIntoBasket && state.baskets.push(cameraIntoBasket);
+
+      if(cameraIntoBasket) {
+        state.baskets.push(cameraIntoBasket);
+      };
+
+      state.counter =  state.counter + 1;
     })
     .addCase(delFromBasket, (state, action) => {
       const cameraFromBasket = state.baskets.find((camera) => camera.id === action.payload) ?? null;
-      state.cameraFromBasket = cameraFromBasket;
       state.baskets =  state.baskets.filter((camera) => camera !== cameraFromBasket);
+
+      state.counter =  state.counter - 1;
+    })
+    .addCase(incrementAction, (state) => {
+      state.counter =  state.counter - 1;
     });
 });
 

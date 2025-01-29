@@ -211,7 +211,10 @@ export enum NameSpace {
   Coupon = 'COUPON',
   ToBasket = 'TO_BASKET',
   FromBasket = 'FROM_BASKET',
-  Order = 'ORDER'
+  Order = 'ORDER',
+  Inc = 'INCREMENT',
+  Dec = 'DECREMENT',
+  TotalQuantity = 'TOTAL_QUANTITY'
 };
 
 

@@ -24,7 +24,7 @@ function ProductCard({ onOpen, camera, isActive, onClickBuy, isAdded}: ProductCa
   });
 
   const handleClickButtonBuy = (id: TCamera['id']) => {
-    // dispatch(addToBasket(id));
+    dispatch((fetchCamera(id)));
     onOpen?.(id);
     onClickBuy?.(id);
   };

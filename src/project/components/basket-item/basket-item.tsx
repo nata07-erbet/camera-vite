@@ -1,11 +1,13 @@
 import classNames from 'classnames';
+import { useAppDispatch } from '../../hooks';
+import { fetchCamera, addToBasket  } from '../../store/action';
 import { ChangeEvent, useState } from 'react';
-import { TCamera } from '../../types/types';
+import { TCamera, TBasket } from '../../types/types';
 import { MAX_CAMERA, MIN_CAMERA } from '../../const/const';
 
 
 type BasketItemProps = {
-  camera: TCamera;
+  camera: TBasket;
   onDeleteFromBasket: (id: TCamera['id']) => void;
   selectedId?: TCamera['id'] | null;
   isSending?: boolean;
@@ -14,6 +16,8 @@ type BasketItemProps = {
 };
 
 function BasketItem ({ camera, onDeleteFromBasket, selectedId, isSending, onChangeQuantity, onInputQuantity}: BasketItemProps) {
+  const dispatch = useAppDispatch();
+
   const [ initCount, setInitCount ] = useState(1);
   const isRemoveItem = camera.id === selectedId ? true : false;
 
@@ -34,16 +38,18 @@ function BasketItem ({ camera, onDeleteFromBasket, selectedId, isSending, onChan
   };
 
   const handleClickDec = () => {
-    const newCount = initCount - 1;
-    setInitCount(newCount);
-    onChangeQuantity(newCount);
+    // const newCount = initCount - 1;
+    // setInitCount(newCount);
+    // onChangeQuantity(newCount);
   };
 
   const handleClickInc = () => {
-    const newCount = initCount + 1;
-    setInitCount(newCount);
-    onChangeQuantity(newCount);
-  };
+    // dispatch(incAction)
+  //   const newCount = initCount + 1;
+  //   setInitCount(newCount);
+  //   onChangeQuantity(newCount);
+  //
+};
 
 
   const handleClickAddValue = (evt: ChangeEvent<HTMLInputElement>) => {
@@ -142,4 +148,3 @@ function BasketItem ({ camera, onDeleteFromBasket, selectedId, isSending, onChan
 }
 
 export { BasketItem };
-
