@@ -43,7 +43,7 @@ function SimilarProduct({ similars , onOpen }: SimilarProductProps) {
                   <ProductCard
                     camera={similar}
                     onOpen={(id) => handleOpenPopUpAddBasket(id)}
-                    selectIdSuccess={0}
+                    isAdded={isAdded}
                   />
                 </SwiperSlide>
               ))}

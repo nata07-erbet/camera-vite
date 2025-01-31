@@ -61,7 +61,7 @@ function Footer() {
               <li className="footer__item">
                 <Link
                   className="link"
-                  to= to={AppRoutes.Main}>
+                  to={AppRoutes.Main}>
                   Каталог
                 </Link>
               </li>

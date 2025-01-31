@@ -15,12 +15,18 @@ type TCamera = {
   previewImg2x: string;
   previewImgWebp: string;
   previewImgWebp2x: string;
-  quantity: number
+  quantity: number,
+  isAdded: Boolean
 }
 
 type TQuantity = {
   id: number
   quantity: number
+}
+
+type TAddBasket = {
+  id: number,
+  status: boolean
 }
 
 type TPromo = {
@@ -114,5 +120,6 @@ export type {
   TLocalStore,
   TCouponValue,
   TPromoCoupon,
-  TQuantity
+  TQuantity,
+  TAddBasket
 };

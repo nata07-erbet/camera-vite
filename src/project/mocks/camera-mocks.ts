@@ -16,7 +16,8 @@ const mocksByJSON = `[
       "previewImgWebp2x": "img/content/das-auge@2x.webp",
       "rating": 4,
       "reviewCount": 68,
-      "quantity": 0
+      "quantity": 0,
+      "isAdded": false
     },
     {
       "id": 2,
@@ -33,7 +34,8 @@ const mocksByJSON = `[
       "previewImgWebp2x": "img/content/fast-shot@2x.webp",
       "rating": 4,
       "reviewCount": 22,
-      "quantity": 0
+      "quantity": 0,
+      "isAdded": false
     },
     {
       "id": 3,
@@ -50,7 +52,8 @@ const mocksByJSON = `[
       "previewImgWebp2x": "img/content/instaprinter@2x.webp",
       "rating": 3,
       "reviewCount": 11,
-      "quantity": 0
+      "quantity": 0,
+      "isAdded": false
     },
     {
       "id": 4,
@@ -67,7 +70,8 @@ const mocksByJSON = `[
       "previewImgWebp2x": "img/content/orlenok@2x.webp",
       "rating": 3,
       "reviewCount": 14,
-      "quantity": 0
+      "quantity": 0,
+      "isAdded": false
     },
     {
       "id": 5,
@@ -84,7 +88,8 @@ const mocksByJSON = `[
       "previewImgWebp2x": "img/content/van-shot@2x.webp",
       "rating": 4,
       "reviewCount": 14,
-      "quantity": 0
+      "quantity": 0,
+      "isAdded": false
     },
     {
       "id": 6,
@@ -118,7 +123,8 @@ const mocksByJSON = `[
       "previewImgWebp2x": "img/content/look-54@2x.webp",
       "rating": 3,
       "reviewCount": 22,
-      "quantity": 0
+      "quantity": 0,
+      "isAdded": false
     },
     {
       "id": 8,
@@ -135,7 +141,8 @@ const mocksByJSON = `[
       "previewImgWebp2x": "img/content/look-sf3@2x.webp",
       "rating": 3,
       "reviewCount": 20,
-      "quantity": 0
+      "quantity": 0,
+      "isAdded": false
     },
     {
       "id": 9,
@@ -152,7 +159,8 @@ const mocksByJSON = `[
       "previewImgWebp2x": "img/content/van60@2x.webp",
       "rating": 3,
       "reviewCount": 21,
-      "quantity": 0
+      "quantity": 0,
+      "isAdded": false
     },
     {
       "id": 10,
@@ -169,7 +177,8 @@ const mocksByJSON = `[
       "previewImgWebp2x": "img/content/van-click@2x.webp",
       "rating": 3,
       "reviewCount": 10,
-       "quantity": 0
+       "quantity": 0,
+       "isAdded": false
     },
     {
       "id": 11,
@@ -186,7 +195,8 @@ const mocksByJSON = `[
       "previewImgWebp2x": "img/content/sp-520@2x.webp",
       "rating": 2,
       "reviewCount": 4,
-      "quantity": 0
+      "quantity": 0,
+      "isAdded": false
     },
     {
       "id": 12,
@@ -220,7 +230,8 @@ const mocksByJSON = `[
       "previewImgWebp2x": "img/content/look-shot-5@2x.webp",
       "rating": 3,
       "reviewCount": 14,
-       "quantity": 0
+       "quantity": 0,
+       "isAdded": false
     }]`;
 
 const cameraMocks = JSON.parse(mocksByJSON) as TCamera[];
@@ -240,7 +251,8 @@ const cameraMock: TCamera = {
   previewImgWebp2x: 'img/content/prof-lite-zero@2x.webp',
   rating: 3,
   reviewCount: 6,
-  quantity: 0
+  quantity: 0,
+  isAdded: false
 };
 
 export { cameraMocks, cameraMock};

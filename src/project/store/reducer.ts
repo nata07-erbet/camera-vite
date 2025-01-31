@@ -20,6 +20,7 @@ import { promoMocks } from  '../mocks/promo-mocks.ts';
 const initialState: {
   cameras: TCamera[],
   camera: TCamera | null,
+  cameraIntoBasket: TCamera | null,
   similars: TCamera[],
   promos: TPromo[],
   reviews: TReview[],
@@ -31,13 +32,14 @@ const initialState: {
 } = {
   cameras: [],
   camera: null,
+  cameraIntoBasket: null,
   similars: [],
   promos: [],
   reviews: [],
   coupon: null,
   order: null,
   baskets: [],
-  counter: 0
+  counter: 0,
 };
 
 
@@ -63,11 +65,13 @@ const reducer = createReducer(initialState, (builder) => {
       const cameraIntoBasket = state.cameras.find((camera) => camera.id === action.payload);
 
       if (cameraIntoBasket) {
-        cameraIntoBasket.quantity =  cameraIntoBasket.quantity + 1;
         state.baskets.push(cameraIntoBasket);
+        state.cameraIntoBasket = cameraIntoBasket;
+        state.cameraIntoBasket.isAdded = true;
       };
 
       state.counter =  state.counter + 1;
+
     })
     .addCase(delFromBasket, (state, action) => {
       const cameraFromBasket = state.baskets.find((camera) => camera.id === action.payload) ?? null;

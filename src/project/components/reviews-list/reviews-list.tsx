@@ -18,7 +18,8 @@ function ReviewsList({ onClickAddReview, cameraId }: ReviewsProps) {
 
   useEffect(() => {
     dispatch(fetchReviews(cameraId))
-  }, [])
+  }, []);
+  
   const [ reviewShowCount, setReviewShowCount ] = useState<number>(REVIEW_SHOW);
   const classButtonHidden = classNames('btn', 'btn--purple', {
     'visually-hidden': reviews.length <= reviewShowCount,

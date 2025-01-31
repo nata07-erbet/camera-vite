@@ -1,6 +1,6 @@
 import classNames from 'classnames';
-import { useAppDispatch } from '../../hooks';
-import { fetchCamera, addToBasket  } from '../../store/action';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { fetchCamera } from '../../store/action';
 import { TCamera } from '../../types/types';
 import { Link, generatePath } from 'react-router-dom';
 import { Rate } from '../rate/rate';
@@ -12,11 +12,13 @@ type ProductCardProps = {
   onOpen?: (id: TCamera['id']) => void | undefined;
   onClickBuy?: (id: TCamera['id']) => void | undefined;
   idSuccess?: TCamera['id'];
-  isAdded: boolean;
 };
 
-function ProductCard({ onOpen, camera, isActive, onClickBuy, isAdded}: ProductCardProps) {
+function ProductCard({ onOpen, camera, isActive, onClickBuy}: ProductCardProps) {
   const dispatch = useAppDispatch();
+
+  const cameraIntoBasket = useAppSelector((state) => state.cameraIntoBasket);
+  const isAdded = cameraIntoBasket && camera.id === cameraIntoBasket.id ? true : false;
 
   const generateImgUrl = (img: string) => `${window.location.origin}/${img}`;
   const href = generatePath('/camera/:id', {

@@ -55,7 +55,7 @@ function PopUpAddToBasket({ camera, onClickAddSuccess, ...props }: PopUpAddToBas
         <button
           className="btn btn--purple modal__btn modal__btn--fit-width"
           type="button"
-          onClick={() => handleClickAddSuccess(camera.id, camera)}
+          onClick={() => handleClickAddSuccess(camera.id)}
         >
           <svg width={24} height={16} aria-hidden="true">
             <use xlinkHref="#icon-add-basket" />
