@@ -214,7 +214,8 @@ export enum NameSpace {
   Order = 'ORDER',
   Inc = 'INCREMENT',
   Dec = 'DECREMENT',
-  TotalQuantity = 'TOTAL_QUANTITY'
+  TotalQuantity = 'TOTAL_QUANTITY',
+  UpDateQuantity = 'UPDATE__QUANTITY'
 };
 
 

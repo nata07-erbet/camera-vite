@@ -6,24 +6,24 @@ import { AppRoutes } from '../../const/const';
 import { Search } from '../search/search';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { fetchCameras } from '../../store/action'
-import { TBasket } from '../../types/types';
 
 function Header () {
   const dispatch = useAppDispatch();
   const cameras = useAppSelector((state) => state.cameras);
   const baskets = useAppSelector((state) => state.baskets);
+  const count = useAppSelector((state) => state.counter);
 
   useEffect(() => {
     dispatch(fetchCameras());
   }, []);
 
-  const quantityArr = baskets.map((camera) => camera.quantity);
-  console.log(quantityArr);
+  // const quantityArr = baskets.map((camera) => camera.quantity);
+  // console.log(quantityArr);
 
-  const totalQuantity = quantityArr.length > 0 ? quantityArr.reduce((previousValue, currentValue) => previousValue + currentValue) : 0;
-
-  const totalCount: TBasket['quantity'] = totalQuantity;
-  const isAdded = totalCount >= 1 ? true : false;
+  // const totalQuantity = quantityArr.length > 0 ? quantityArr.reduce((previousValue, currentValue) => previousValue + currentValue) : 0;
+  // const totalCount: TBasket['quantity'] = totalQuantity;
+  
+  const isAdded = count >= 1 ? true : false;
 
   const classHidden = classNames('header__basket-count', {'visually-hidden': !isAdded});
 
@@ -63,7 +63,7 @@ function Header () {
           <svg width={16} height={16} aria-hidden="true">
             <use xlinkHref="#icon-basket" />
           </svg>
-          <span className={classHidden}>{totalCount}</span>
+          <span className={classHidden}>{count}</span>
         </Link>
       </div>
     </header>

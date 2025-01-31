@@ -7,13 +7,12 @@ import {
   fetchReviews,
   addToBasket,
   delFromBasket,
-  incrementAction,
-  decrementAction,
+  upDateQuantity,
   postReviews,
   postCoupon,
   postOrder
 } from './action.ts'
-import { TCamera, TReview, TCouponValue, TOrder, TPromo, TBasket } from "../types/types.ts";
+import { TCamera, TReview, TCouponValue, TOrder, TPromo } from "../types/types.ts";
 import { cameraMocks } from '../mocks/camera-mocks.ts';
 import { reviewMocks } from '../mocks/review-mocks.ts';
 import { promoMocks } from  '../mocks/promo-mocks.ts';
@@ -63,7 +62,8 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(addToBasket, (state, action) => {
       const cameraIntoBasket = state.cameras.find((camera) => camera.id === action.payload);
 
-      if(cameraIntoBasket) {
+      if (cameraIntoBasket) {
+        cameraIntoBasket.quantity =  cameraIntoBasket.quantity + 1;
         state.baskets.push(cameraIntoBasket);
       };
 
@@ -75,8 +75,17 @@ const reducer = createReducer(initialState, (builder) => {
 
       state.counter =  state.counter - 1;
     })
-    .addCase(incrementAction, (state) => {
-      state.counter =  state.counter - 1;
+    .addCase(upDateQuantity, (state, action) => {
+      const { id, quantity } = action.payload;
+
+      const cameraForUpdateQuantity = state.cameras.find((camera) => camera.id === id);
+
+      if(cameraForUpdateQuantity) {
+        const quantityDiff = quantity - cameraForUpdateQuantity.quantity;
+        cameraForUpdateQuantity.quantity = quantity;
+
+        state.counter =  state.counter + quantityDiff;
+      };
     });
 });
 

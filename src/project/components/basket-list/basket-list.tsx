@@ -2,6 +2,7 @@ import { TCamera } from '../../types/types';
 import { BasketItem } from '../basket-item/basket-item';
 import { BASKET_AMOUNT } from '../../const/const';
 
+
 type BasketListProps = {
   cameras: TCamera[];
   onDeleteFromBasket: (id:TCamera['id']) => void;
