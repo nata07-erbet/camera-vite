@@ -128,7 +128,10 @@ useEffect(() => {
       <main>
         {currentCameraByProduct && (
           <div className="page-content">
-            <Breadcrumbs camera={currentCameraByProduct} isBasketPage={false} />
+            <Breadcrumbs
+              cameraId={currentCameraByProduct.id}
+              isBasketPage={false}
+            />
             <div className="page-content__section">
               <section className="product">
                 <div className="container">
