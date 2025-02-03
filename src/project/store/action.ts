@@ -12,6 +12,7 @@ const postCoupon = createAction(`${NameSpace.Coupon}/postCoupon`);
 const postOrder = createAction(`${NameSpace.Order}/postCoupon`);
 
 const addToBasket = createAction<TCamera['id']>(`${NameSpace.ToBasket}`);
+const getCamerasWithNewProps = createAction(`${NameSpace.CamerasWithProps}`);
 const delFromBasket = createAction<TCamera['id']>(`${NameSpace.FromBasket}`);
 const totalQuantity = createAction(NameSpace.TotalQuantity);
 const upDateQuantity = createAction<TQuantity>(NameSpace.UpDateQuantity);
@@ -20,4 +21,4 @@ const upDateQuantity = createAction<TQuantity>(NameSpace.UpDateQuantity);
 // const decrementAction = createAction(NameSpace.Dec);
 
 
-export { fetchCameras, fetchCamera, fetchSimilars, fetchPromos, fetchReviews, postReviews, postCoupon, postOrder, addToBasket, delFromBasket, totalQuantity, upDateQuantity };
+export { fetchCameras, fetchCamera, fetchSimilars, fetchPromos, fetchReviews, postReviews, postCoupon, postOrder, addToBasket, delFromBasket, totalQuantity, upDateQuantity, getCamerasWithNewProps };

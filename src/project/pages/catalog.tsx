@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { fetchCameras } from '../store/action'
+import { fetchCameras, getCamerasWithNewProps } from '../store/action'
 import {
   TCamera,
   TSortType,
@@ -41,6 +41,7 @@ function Catalog() {
 
   useEffect(() => {
     dispatch(fetchCameras());
+    dispatch(getCamerasWithNewProps())
   }, []);
 
   const [cameraId, setCameraId] = useState<TCamera['id']| null>(null);

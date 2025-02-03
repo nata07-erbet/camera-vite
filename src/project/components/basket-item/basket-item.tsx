@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { upDateQuantity } from '../../store/action';
 import { ChangeEvent, useState } from 'react';
 import { TCamera } from '../../types/types';
@@ -18,7 +18,11 @@ type BasketItemProps = {
 function BasketItem ({ camera, onDeleteFromBasket, selectedId, isSending, onChangeQuantity, onInputQuantity}: BasketItemProps) {
   const dispatch = useAppDispatch();
 
-  const [ initCount, setInitCount ] = useState(1);
+  const cameraIntoBasket = useAppSelector((state) => state.cameraIntoBasket);
+
+  const initialCount = cameraIntoBasket ? cameraIntoBasket.quantity : 1;
+
+  const [ initCount, setInitCount ] = useState(initialCount);
   const isRemoveItem = camera.id === selectedId ? true : false;
 
   const getValid = (count: number) => {

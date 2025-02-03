@@ -204,6 +204,7 @@ const PaginationButton = {
 
 export enum NameSpace {
   Cameras = 'CAMERAS',
+  CamerasWithProps = 'CAMERAS_WITH_NEW_PROPS',
   Camera = 'CAMERA',
   Similar = 'SIMILAR',
   Promo = 'PROMO',

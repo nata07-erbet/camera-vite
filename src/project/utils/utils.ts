@@ -1,7 +1,8 @@
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import { CamerasMap, CategoryMap, DATE_FORMAT, LevelMap } from '../const/const';
-import {TCamera, TFilterPriceRange, TFiltersData, TLevel, TLevelValue, TReview, TSortKey, TType, TTypeValue } from '../types/types';
+import { TCamera, TFilterPriceRange, TFiltersData, TLevel, TLevelValue, TReview, TSortKey, TType, TTypeValue, TBasket } from '../types/types';
+import { cameraMock } from '../mocks/camera-mocks';
 
 const compareDate = (a: TReview, b: TReview) => {
   const dateA = new Date(a.createAt);
@@ -77,6 +78,18 @@ const filterCamerasByPrice = (
   ));
 };
 
+const addProperty = (items: TCamera[]) => {
+  return items.map((item) => {
+    return {
+      ...item,
+      quantity: 0,
+      isAdded: false
+    };
+  })
+}
 
-export { formatDate, compareDate, compare, comparePrice, getMinMaxPrices, filterCameras, filterCamerasByPrice };
+
+
+
+export { formatDate, compareDate, compare, comparePrice, getMinMaxPrices, filterCameras, filterCamerasByPrice, addProperty };
 
