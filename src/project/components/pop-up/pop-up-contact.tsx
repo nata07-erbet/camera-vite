@@ -7,8 +7,9 @@ import { ErrorMessage } from '@hookform/error-message';
 import { PopUpMain } from './pop-up-main';
 import { PopUpMainProps } from './pop-up-main';
 import { TCamera, TOrder } from '../../types/types';
+import { createAPI } from '../../api/api';
 
-import { api } from '../../api/api';
+const api = createAPI();
 
 type PopUpContactProps = PopUpMainProps & {
   cameraByBasket: TCamera;

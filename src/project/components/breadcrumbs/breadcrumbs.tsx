@@ -11,13 +11,13 @@ type BreadcrumbsProps = {
   isBasketPage: boolean;
 };
 
-function Breadcrumbs({cameraId, isBasketPage }: BreadcrumbsProps) {
+function Breadcrumbs({ cameraId, isBasketPage }: BreadcrumbsProps) {
   const dispatch = useAppDispatch();
 
-  const camera = useAppSelector((state) => state.camera)
+  const camera = useAppSelector((state) => state.camera);
 
   useEffect(() => {
-    if(cameraId) {
+    if (cameraId) {
       dispatch(fetchCamera(cameraId));
     }
   }, []);

@@ -1,4 +1,13 @@
-import { TTab, TSortType, TSortDirection, TCategory, TType, TLevel, TPrice, TFiltersData } from '../types/types';
+import {
+  TTab,
+  TSortType,
+  TSortDirection,
+  TCategory,
+  TType,
+  TLevel,
+  TPrice,
+  TFiltersData,
+} from '../types/types';
 
 const BASE_URL = 'https://camera-shop.accelerator.htmlacademy.pro/';
 const ALL_STARS = 5;
@@ -15,37 +24,40 @@ const MAX_CAMERA = 9;
 const DATE_FORMAT = 'DD MMMM';
 const KEY_LOCAL_STORAGE_OFFERS = 'my_basket';
 
+const ERROR_TIMEOUT = 2000;
+
 const ReqRoutes = {
   Main: '/',
-  Cameras: 'cameras',
+  Cameras: 'cameras?page',
   Similar: 'similar',
   Promo: '/promo',
   Reviews: 'reviews',
   Orders: '/orders',
-};
+  Coupons: '/coupons',
+} as const;
 
 const AppRoutes = {
   Main: '/',
   Camera: '/camera/:id',
-  Basket: '/card'
-};
-
+  Basket: '/card',
+  Loading: '/loading',
+} as const;
 
 const NavMap = {
   Catalog: 'Каталог',
   Order: 'Гарантии',
   Delivery: 'Доставка',
-  About: 'O компании'
+  About: 'O компании',
 } as const;
 
 const AppRouteTab = {
   Characteristic: 'characteristic',
-  Description: 'description'
+  Description: 'description',
 } as const;
 
 const TabsMap = {
   [AppRouteTab.Characteristic]: 'Характеристики',
-  [AppRouteTab.Description]: 'Описание'
+  [AppRouteTab.Description]: 'Описание',
 } as const;
 
 const TABS: TTab[] = ['characteristic', 'description'];
@@ -53,13 +65,13 @@ const DEFAULT_TAB = AppRouteTab.Description;
 
 const SortTabInner = {
   Price: 'price',
-  Popular: 'popular'
+  Popular: 'popular',
 } as const;
 
 const SortInnerMap = {
   [SortTabInner.Price]: 'по цене',
   [SortTabInner.Popular]: 'по популярности',
-} as const ;
+} as const;
 
 const SORT_INNER: TSortType[] = ['price', 'popular'];
 const DEFAULT_SORT_TYPE = SortTabInner.Price;
@@ -71,7 +83,7 @@ const SortTabOrder = {
 
 const SortOrderMap = {
   [SortTabOrder.Up]: 'По возрастанию',
-  [SortTabOrder.Down]: 'По убыванию'
+  [SortTabOrder.Down]: 'По убыванию',
 } as const;
 
 const DEFAULT_SORT_DIRECTION = SortTabOrder.Up;
@@ -92,7 +104,7 @@ const CategoryList = {
 
 const CategoryMap = {
   [CategoryList.Photocamera]: 'Фотоаппарат',
-  [CategoryList.Videocamera]: 'Видеокамера'
+  [CategoryList.Videocamera]: 'Видеокамера',
 } as const;
 
 const DEFAULT_CATEGORY = CategoryList.Photocamera;
@@ -113,12 +125,12 @@ const CamerasMap = {
   [CamerasList.Collection]: 'Коллекционная',
 } as const;
 
-const LEVELS: TLevel[] = ['zero','non-professional','professional'];
+const LEVELS: TLevel[] = ['zero', 'non-professional', 'professional'];
 
 const LevelsList = {
   Zero: 'zero',
   NonProfessional: 'non-professional',
-  Professional: 'professional'
+  Professional: 'professional',
 } as const;
 
 const LevelMap: Record<TLevel, string> = {
@@ -129,19 +141,19 @@ const LevelMap: Record<TLevel, string> = {
 
 const PriceList = {
   Price: 'price',
-  PriceUp: 'priceUp'
+  PriceUp: 'priceUp',
 } as const;
 
 const PriceMap = {
   [PriceList.Price]: 'от',
-  [PriceList.PriceUp]: 'до'
+  [PriceList.PriceUp]: 'до',
 } as const;
 
 const RequestStatus = {
   Idle: 'Idle',
   Pending: 'Pending',
   Error: 'Error',
-  Success: 'Success'
+  Success: 'Success',
 } as const;
 
 const RateBarMap = {
@@ -160,7 +172,8 @@ const SettingValidation = {
   UserPlusMessageRequired: 'Advantage is required',
   UserPlusMessageValidation: 'Advantage must contain from 10 to 160 letters',
   UserMinusMessageRequired: 'Disadvantage is required',
-  UserMinusMessageValidation: 'Disadvantage must contain from 10 to 160 letters',
+  UserMinusMessageValidation:
+    'Disadvantage must contain from 10 to 160 letters',
   UserCommentMessageRequired: 'Comment is required',
   UserCommentMessageValidation: 'Comment must contain from 10 to 160 letters',
 };
@@ -171,7 +184,7 @@ const DiscountMap = {
   firstLevel: 3,
   secondLevel: 5,
   thirdLevel: 10,
-  fourthLevel: 15
+  fourthLevel: 15,
 };
 
 const QuantityMap = {
@@ -180,7 +193,7 @@ const QuantityMap = {
   secondStepEnd: 5,
   thirdStepStart: 6,
   thirdStepEnd: 10,
-  fourthStep: 10
+  fourthStep: 10,
 };
 
 const SummaryMap = {
@@ -191,16 +204,14 @@ const SummaryMap = {
 
 const DiscountSummaryMap = {
   second: 1,
-  third : 2,
+  third: 2,
   fourth: 3,
 };
-
 
 const PaginationButton = {
   Prev: 'Назад',
   Next: 'Далее',
 };
-
 
 export enum NameSpace {
   Cameras = 'CAMERAS',
@@ -216,8 +227,72 @@ export enum NameSpace {
   Inc = 'INCREMENT',
   Dec = 'DECREMENT',
   TotalQuantity = 'TOTAL_QUANTITY',
-  UpDateQuantity = 'UPDATE__QUANTITY'
+  UpDateQuantity = 'UPDATE__QUANTITY',
+  Page = 'PAGE',
+  LoadedCameras = 'LOADED_CAMERAS',
+  LoadedCamera = 'LOADED_CAMERA',
+  LoadedSimilar = 'LOADED_SIMILAR',
+  LoadedPromo = 'LOADED_PROMO',
+  LoadedReviews = 'LOADED_REVIEWS',
+  SendedReviews = 'SENDED_PROMO',
+  SendedCoupon = 'SENDED_PROMO',
+  SendedOrder = 'SENDED_ORDER',
+  Error = 'ERROR',
+  ClearError = 'CLEAR_ERROR',
+  isLoadingCameras = 'IS_LOADING_CAMERAS',
+  PostLogin = 'POST_LOGIN',
+  SendedLogin = 'SENDED_LOGIN',
+  Redirect = 'REDIRECT',
+}
+
+export {
+  BASE_URL,
+  ReqRoutes,
+  AppRoutes,
+  NavMap,
+  ALL_STARS,
+  TABS,
+  AppRouteTab,
+  TabsMap,
+  DEFAULT_TAB,
+  DATE_FORMAT,
+  REVIEW_SHOW,
+  CATALOG_SHOW,
+  MAX_PAGES_IN_RANGE,
+  INITIAL_PAGE_BY_PAGINATION,
+  SortTabInner,
+  SortInnerMap,
+  SORT_INNER,
+  DEFAULT_SORT_TYPE,
+  SortTabOrder,
+  SORT_ORDER,
+  SortOrderMap,
+  DEFAULT_SORT_DIRECTION,
+  CATEGORIES,
+  CategoryList,
+  CategoryMap,
+  DEFAULT_CATEGORY,
+  CAMERAS,
+  CamerasMap,
+  CamerasList,
+  LEVELS,
+  LevelsList,
+  LevelMap,
+  INITIAL_FILTERS,
+  PriceList,
+  PriceMap,
+  PRICES,
+  BASKET_AMOUNT,
+  MIN_CAMERA,
+  MAX_CAMERA,
+  KEY_LOCAL_STORAGE_OFFERS,
+  RequestStatus,
+  RateBarMap,
+  SettingValidation,
+  DiscountMap,
+  QuantityMap,
+  SummaryMap,
+  DiscountSummaryMap,
+  PaginationButton,
+  ERROR_TIMEOUT,
 };
-
-
-export { BASE_URL, ReqRoutes, AppRoutes, NavMap, ALL_STARS, TABS, AppRouteTab, TabsMap, DEFAULT_TAB, DATE_FORMAT, REVIEW_SHOW, CATALOG_SHOW, MAX_PAGES_IN_RANGE, INITIAL_PAGE_BY_PAGINATION, SortTabInner, SortInnerMap, SORT_INNER, DEFAULT_SORT_TYPE, SortTabOrder, SORT_ORDER, SortOrderMap, DEFAULT_SORT_DIRECTION, CATEGORIES, CategoryList, CategoryMap, DEFAULT_CATEGORY, CAMERAS, CamerasMap, CamerasList, LEVELS, LevelsList, LevelMap, INITIAL_FILTERS, PriceList, PriceMap, PRICES, BASKET_AMOUNT, MIN_CAMERA, MAX_CAMERA, KEY_LOCAL_STORAGE_OFFERS, RequestStatus, RateBarMap, SettingValidation, DiscountMap, QuantityMap, SummaryMap, DiscountSummaryMap, PaginationButton };

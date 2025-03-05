@@ -5,10 +5,11 @@ import { Product } from '../pages/product';
 import { Basket } from '../pages/basket';
 import { NotFoundPage } from '../pages/404';
 
+
 const routeConfig = [
   {
     path: AppRoutes.Main,
-    element: <Catalog data-testid="main-page" idAdd={0}/>,
+    element: <Catalog/>,
   },
   {
     path: AppRoutes.Camera,

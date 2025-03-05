@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import { AppRoutes } from '../../const/const';
 
 function Footer() {
@@ -59,9 +59,7 @@ function Footer() {
             <p className="footer__title">Навигация</p>
             <ul className="footer__list">
               <li className="footer__item">
-                <Link
-                  className="link"
-                  to={AppRoutes.Main}>
+                <Link className="link" to={AppRoutes.Main}>
                   Каталог
                 </Link>
               </li>

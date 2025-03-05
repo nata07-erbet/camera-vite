@@ -1,26 +1,17 @@
-import { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchReviews } from '../../store/action';
+import { useState } from 'react';
+import { useAppSelector } from '../../hooks';
 import classNames from 'classnames';
 import { Review } from '../../components/review/review';
 import { compareDate } from '../../utils/utils';
 import { REVIEW_SHOW } from '../../const/const';
 
-
 type ReviewsProps = {
   onClickAddReview: () => void;
-  cameraId: number
 };
 
-function ReviewsList({ onClickAddReview, cameraId }: ReviewsProps) {
-  const dispatch = useAppDispatch();
+function ReviewsList({ onClickAddReview }: ReviewsProps) {
   const reviews = useAppSelector((state) => state.reviews);
-
-  useEffect(() => {
-    dispatch(fetchReviews(cameraId))
-  }, []);
-  
-  const [ reviewShowCount, setReviewShowCount ] = useState<number>(REVIEW_SHOW);
+  const [reviewShowCount, setReviewShowCount] = useState<number>(REVIEW_SHOW);
   const classButtonHidden = classNames('btn', 'btn--purple', {
     'visually-hidden': reviews.length <= reviewShowCount,
   });
@@ -38,11 +29,7 @@ function ReviewsList({ onClickAddReview, cameraId }: ReviewsProps) {
       <div className="container">
         <div className="page-content__headed">
           <h2 className="title title--h3">Отзывы</h2>
-          <button
-            className="btn"
-            type="button"
-            onClick={handleClickAddReview}
-          >
+          <button className="btn" type="button" onClick={handleClickAddReview}>
             Оставить свой отзыв
           </button>
         </div>

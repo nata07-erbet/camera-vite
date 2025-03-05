@@ -5,6 +5,7 @@ import {
 
 import { routeConfig } from '../../route-config/route-config';
 
+
 const router = createBrowserRouter(routeConfig);
 
 function App() {

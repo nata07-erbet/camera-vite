@@ -13,8 +13,8 @@ function PopUpAddToBasket({ camera, onClickAddSuccess, ...props }: PopUpAddToBas
   const dispatch = useAppDispatch();
 
   const handleClickAddSuccess = (id: TCamera['id']) => {
-    onClickAddSuccess(id);
     dispatch(addToBasket(id));
+    onClickAddSuccess(id);
   };
 
   return(

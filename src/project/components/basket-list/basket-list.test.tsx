@@ -6,13 +6,15 @@ import { renderWithRouter } from '../../utils/mock-components/test-utils';
 describe('component: BannerOffer', () => {
   it('should render correctly', () => {
     const expectedTestId = 'basket-list';
-    const preparedComponent = <BasketList
-      cameras={cameraMocks}
-      onDeleteFromBasket={vi.fn()}
-      isSending={false}
-      onChangeQuantity={vi.fn()}
-      onInputQuantity={vi.fn()}
-    />;
+    const preparedComponent = (
+      <BasketList
+        cameras={cameraMocks}
+        onDeleteFromBasket={vi.fn()}
+        isSending={false}
+        onChangeQuantity={vi.fn()}
+        onInputQuantity={vi.fn()}
+      />
+    );
 
     renderWithRouter(preparedComponent);
 

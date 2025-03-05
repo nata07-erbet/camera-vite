@@ -1,44 +1,42 @@
 import { useState } from 'react';
+import { upDatePage } from '../../store/action';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 import { MouseEvent } from 'react';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { TCamera } from '../../types/types';
-import { PaginationButton } from '../../const/const'
+import { PaginationButton, CATALOG_SHOW, AppRoutes } from '../../const/const';
 import { usePangination } from '../../hooks/use-pangination';
 
+function Pagination() {
+  const dispatch = useAppDispatch();
 
-type PaginationProps = {
-  amountCatalogPages: number;
-  currentPage: number;
-  onPageChange: () => void;
-};
+  const cameras = useAppSelector((state) => state.cameras);
+  const currentPage = useAppSelector((state) => state.currentPage);
 
-function Pagination({ amountCatalogPages, currentPage,  onPageChange }: PaginationProps) {
-  const { prevPage, nextPage, setPage  } = usePangination({ amountCatalogPages, currentPage,  onPageChange});
+  const amountCatalogPages = Math.ceil(cameras.length / CATALOG_SHOW);
 
-  const currentRangeMock = [1, 2, 3];
-  const currentPageMock  = 2;
+  const pages = Array.from(
+    { length: amountCatalogPages },
+    (_, index) => index + 1,
+  );
 
   const handlePageClick = (page: number) => {
-    setPage(page);
+    dispatch(upDatePage(page));
   };
 
   const handlePrevClick = (evt: MouseEvent<HTMLAnchorElement>) => {
     evt.preventDefault();
-    handlePageClick(prevPage);
-
   };
 
   const handleNextClick = (evt: MouseEvent<HTMLAnchorElement>) => {
     evt.preventDefault();
-    handlePageClick(nextPage);
   };
 
-
-  return(
+  return (
     <div className="pagination">
       <ul className="pagination__list">
-      <li className="pagination__item">
+        <li className="pagination__item">
           <Link
             className="pagination__link pagination__link--text"
             to={''}
@@ -48,17 +46,18 @@ function Pagination({ amountCatalogPages, currentPage,  onPageChange }: Paginati
           </Link>
         </li>
 
-        {currentRangeMock.map((page) =>(
+        {pages.map((page) => (
           <li className="pagination__item">
-          <Link
-            className={classNames(
-              'pagination__link',
-              {'pagination__link--active': page === currentPageMock}
-              )}
-            to={'1'}>
+            <Link
+              className={classNames('pagination__link', {
+                'pagination__link--active': page === currentPage,
+              })}
+              // to={AppRoutes.M}
+              onClick={() => handlePageClick(page)}
+            >
               {page}
-          </Link>
-        </li>
+            </Link>
+          </li>
         ))}
 
         <li className="pagination__item">
@@ -72,7 +71,6 @@ function Pagination({ amountCatalogPages, currentPage,  onPageChange }: Paginati
         </li>
       </ul>
     </div>
-
   );
 }
 

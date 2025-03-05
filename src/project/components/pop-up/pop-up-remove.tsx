@@ -1,5 +1,5 @@
 import { useAppDispatch } from '../../hooks';
-import { delFromBasket } from '../../store/action'
+import { delFromBasket } from '../../store/action';
 import { Link } from 'react-router-dom';
 import { PopUpMain, PopUpMainProps } from './pop-up-main';
 import { TCamera } from '../../types/types';
@@ -10,7 +10,11 @@ type PopUpRemoveProps = PopUpMainProps & {
   onRemoveFromBasket?: (id: TCamera['id']) => void;
 };
 
-function PopUpRemove ({ camera, onRemoveFromBasket, ...props }: PopUpRemoveProps) {
+function PopUpRemove({
+  camera,
+  onRemoveFromBasket,
+  ...props
+}: PopUpRemoveProps) {
   const dispatch = useAppDispatch();
 
   const handleClickRemoveFromBasket = (id: TCamera['id']) => {
@@ -18,16 +22,13 @@ function PopUpRemove ({ camera, onRemoveFromBasket, ...props }: PopUpRemoveProps
     onRemoveFromBasket?.(id);
   };
 
-  return(
+  return (
     <PopUpMain {...props}>
       <p className="title title--h4">Удалить этот товар?</p>
       <div className="basket-item basket-item--short">
         <div className="basket-item__img">
           <picture>
-            <source
-              type="image/webp"
-              srcSet={camera.previewImgWebp}
-            />
+            <source type="image/webp" srcSet={camera.previewImgWebp} />
             <img
               src={camera.previewImg}
               srcSet="img/content/orlenok@2x.jpg 2x"
@@ -41,7 +42,8 @@ function PopUpRemove ({ camera, onRemoveFromBasket, ...props }: PopUpRemoveProps
           <p className="basket-item__title">{camera.name}</p>
           <ul className="basket-item__list">
             <li className="basket-item__list-item">
-              <span className="basket-item__article">Артикул:</span>{''}
+              <span className="basket-item__article">Артикул:</span>
+              {''}
               <span className="basket-item__number">{camera.vendorCode}</span>
             </li>
             <li className="basket-item__list-item">{camera.type}</li>

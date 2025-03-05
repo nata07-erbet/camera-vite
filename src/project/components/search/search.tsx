@@ -4,16 +4,16 @@ import { SearchList } from '../search-list/search-list';
 import { TCamera } from '../../types/types';
 
 type SearchProps = {
-cameras: TCamera[];
+  cameras: TCamera[];
 };
 
 function Search({ cameras }: SearchProps) {
-  const [ inputItems, setInputItems ] = useState('');
-  const [ listCameras, setListCameras ] = useState<TCamera[]>([]);
+  const [inputItems, setInputItems] = useState('');
+  const [listCameras, setListCameras] = useState<TCamera[]>([]);
 
   const isOpened = !!(inputItems && inputItems.length >= 1);
 
-  const classOpened = classNames('form-search', {'list-opened': isOpened});
+  const classOpened = classNames('form-search', { 'list-opened': isOpened });
 
   const handleInput = (evt: ChangeEvent<HTMLInputElement>) => {
     setInputItems(evt.target.value);
@@ -23,24 +23,25 @@ function Search({ cameras }: SearchProps) {
     setInputItems('');
   };
 
-  const filterCameras = (inputValue:string, products:TCamera[]) => {
-    if(!inputValue) {
+  const filterCameras = (inputValue: string, products: TCamera[]) => {
+    if (!inputValue) {
       return [];
     }
 
-    const camerasList = products.filter((product) => product.name.toLocaleLowerCase().includes(inputValue.toLocaleLowerCase()));
+    const camerasList = products.filter((product) =>
+      product.name.toLocaleLowerCase().includes(inputValue.toLocaleLowerCase()),
+    );
 
     return camerasList;
   };
 
   useEffect(() => {
-      const sortedCameras = filterCameras(inputItems, cameras);
-      setListCameras(sortedCameras);
-  },[inputItems,cameras]);
+    const sortedCameras = filterCameras(inputItems, cameras);
+    setListCameras(sortedCameras);
+  }, [inputItems, cameras]);
 
-
-  return(
-    <div className={classOpened} data-testid='search'>
+  return (
+    <div className={classOpened} data-testid="search">
       <form>
         <label>
           <svg
@@ -60,7 +61,9 @@ function Search({ cameras }: SearchProps) {
             onChange={handleInput}
           />
         </label>
-        {cameras && inputItems.length >= 3 && <SearchList cameras={listCameras}/>}
+        {cameras && inputItems.length >= 3 && (
+          <SearchList cameras={listCameras} />
+        )}
       </form>
       <button
         className="form-search__reset"

@@ -6,7 +6,7 @@ describe('component: BannerOffer', () => {
   it('should render correctly', () => {
     const expectedTestId = 'promo';
 
-    const preparedComponent = <Promo onSubmit={vi.fn()}  />;
+    const preparedComponent = <Promo onSubmit={vi.fn()} />;
 
     renderWithRouter(preparedComponent);
 

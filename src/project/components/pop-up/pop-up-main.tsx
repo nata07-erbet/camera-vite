@@ -4,7 +4,7 @@ import { PropsWithChildren } from 'react';
 
 
 type PopUpMainProps = PropsWithChildren<{
-  isActive: boolean;
+  isActive?: boolean;
   onClose?: () => void;
 }>
 

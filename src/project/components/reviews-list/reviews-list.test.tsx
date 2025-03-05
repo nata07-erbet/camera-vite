@@ -7,10 +7,8 @@ describe('component: ', () => {
     const expectedText = 'Оставить свой отзыв';
 
     const preparedComponent = (
-    <ReviewsList
-      reviews={reviewMocks}
-      onClickAddReview={vi.fn()}
-    />);
+      <ReviewsList reviews={reviewMocks} onClickAddReview={vi.fn()} />
+    );
 
     render(preparedComponent);
 

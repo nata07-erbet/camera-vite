@@ -1,10 +1,11 @@
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../hooks';
-import { fetchCameras, fetchCamera, fetchSimilars, fetchReviews} from '../store/action'
+import { fetchCameras, fetchSimilars } from '../store/api-actions';
+import { fetchCamera } from '../store/action';
+import { fetchReviews } from '../store/api-actions';
 import { useParams, useNavigate } from 'react-router-dom';
 import { AppRoutes, TABS, TabsMap, DEFAULT_TAB } from '../const/const';
-import { localStoreBasket } from '../store/local-store-basket';
 import { TCamera, TTab } from '../types/types';
 import { Header } from '../components/header/header';
 import { Breadcrumbs } from '../components/breadcrumbs/breadcrumbs';
@@ -17,42 +18,38 @@ import { PopUpAddSuccess } from '../components/pop-up/pop-up-add-success';
 import { PopUpAddReview } from '../components/pop-up/pop-up-add-review';
 import { PopUpReviewThanks } from '../components/pop-up/pop-up-review-thanks';
 import { Footer } from '../components/footer/footer';
-import { addCamera } from '../store/local-store-basket';
 
 function Product() {
-const params = useParams();
-const cameraId = Number(params.id);
+  const params = useParams();
+  const cameraId = Number(params.id);
 
-const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
 
-const cameras = useAppSelector((state) => state.cameras);
-const similars = useAppSelector((state) => state.similars);
-const reviews = useAppSelector((state) => state.reviews)
-const currentCameraByProduct = useAppSelector((state) => state.camera);
+  const similars = useAppSelector((state) => state.similars);
+  const reviews = useAppSelector((state) => state.reviews);
+  const currentCameraByProduct = useAppSelector((state) => state.camera);
 
-useEffect(() => {
-  if(cameraId) {
-    dispatch(fetchCamera(cameraId));
-    dispatch(fetchSimilars(cameraId));
-    dispatch(fetchReviews(cameraId))
-  };
-    dispatch(fetchCameras())
-}, [dispatch, cameraId]);
-
-
-  const quantityArr = localStoreBasket.map((camera) => camera.quantity);
-  const totalQuantity =  quantityArr.length !== 0 && quantityArr.reduce((previousValue, currentValue) => previousValue + currentValue);
+  useEffect(() => {
+    if (cameraId) {
+      dispatch(fetchCamera(cameraId));
+      dispatch(fetchSimilars(cameraId));
+      dispatch(fetchReviews(cameraId));
+    }
+    dispatch(fetchCameras());
+  }, [dispatch, cameraId]);
 
   const navigate = useNavigate();
-  const [ currentTab, setCurrentTab ] = useState<TTab>(DEFAULT_TAB);
+  const [currentTab, setCurrentTab] = useState<TTab>(DEFAULT_TAB);
 
-  const [ cameraIdSimilar, setCameraIdSimilar ] = useState<TCamera['id'] | null>(null);
-  const [ currentCamera, setCurrentCamera ] = useState<TCamera | null>(null);
+  const [cameraIdSimilar, setCameraIdSimilar] = useState<TCamera['id'] | null>(
+    null,
+  );
+  const [currentCamera, setCurrentCamera] = useState<TCamera | null>(null);
 
-  const [ isShowPopUpAddBasket, setIsShowPopUpAddBasket ] = useState(false);
-  const [ isShowPopUpSuccess, setIsShowPopUpSuccess ] = useState(false);
-  const [ isShowPopUpReview, setIsShowPopUpReview ] = useState(false);
-  const [ isShowPopUpReviewThanks, setIsShowPopUpReviewThanks ] = useState(false);
+  const [isShowPopUpAddBasket, setIsShowPopUpAddBasket] = useState(false);
+  const [isShowPopUpSuccess, setIsShowPopUpSuccess] = useState(false);
+  const [isShowPopUpReview, setIsShowPopUpReview] = useState(false);
+  const [isShowPopUpReviewThanks, setIsShowPopUpReviewThanks] = useState(false);
 
   const isActive = currentTab === DEFAULT_TAB;
 
@@ -90,10 +87,9 @@ useEffect(() => {
     setIsShowPopUpReviewThanks(false);
   };
 
-  const handleClickAddSuccess = (id :TCamera['id'], camera: TCamera) => {
+  const handleClickAddSuccess = (id: TCamera['id']) => {
     setIsShowPopUpSuccess(true);
-    console.log(id);
-    addCamera(camera);
+    setCameraIdSimilar(id);
   };
 
   const handleContinue = () => {
@@ -114,17 +110,18 @@ useEffect(() => {
   const handleOpenPopUpAddBasketBySimilar = (id: TCamera['id']) => {
     setIsShowPopUpAddBasket(true);
     setCameraIdSimilar(id);
-    const currentCameraBySimilar = similars.find((similar) => similar.id === cameraIdSimilar);
+    const currentCameraBySimilar = similars.find(
+      (similar) => similar.id === cameraIdSimilar,
+    );
 
-    if(currentCameraBySimilar) {
+    if (currentCameraBySimilar) {
       return setCurrentCamera(currentCameraBySimilar);
     }
   };
 
-
   return (
     <div className="wrapper" data-testid="product-page">
-      <Header cameras={cameras} totalQuantity={totalQuantity} />
+      <Header />
       <main>
         {currentCameraByProduct && (
           <div className="page-content">
@@ -151,7 +148,9 @@ useEffect(() => {
                     </picture>
                   </div>
                   <div className="product__content">
-                    <h1 className="title title--h3">{currentCameraByProduct.name}</h1>
+                    <h1 className="title title--h3">
+                      {currentCameraByProduct.name}
+                    </h1>
                     <Rate camera={currentCameraByProduct} />
                     <p className="product__price">
                       <span className="visually-hidden">Цена:</span>
@@ -233,15 +232,16 @@ useEffect(() => {
               <SimilarProduct
                 similars={similars}
                 onOpen={(id) => handleOpenPopUpAddBasketBySimilar(id)}
-              />)}
-              <div className="page-content__section">
-                {reviews.length > 0 && (
-                  <ReviewsList
-                  cameraId={currentCamera?.id}
-                  onClickAddReview ={handleClickAddReview}
+              />
+            )}
+            <div className="page-content__section">
+              {reviews.length > 0 && (
+                <ReviewsList
+                  reviews={reviews}
+                  onClickAddReview={handleClickAddReview}
                 />
-                )}
-              </div>
+              )}
+            </div>
           </div>
         )}
       </main>

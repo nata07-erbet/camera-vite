@@ -1,5 +1,5 @@
-import {  useAppSelector } from '../hooks';
-import { useState} from 'react';
+import { useAppSelector } from '../hooks';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AppRoutes, RequestStatus } from '../const/const';
 import { Header } from '../components/header/header';
@@ -12,31 +12,41 @@ import { Spinner } from '../components/spinner/spinner';
 import { PopUpRemove } from '../components/pop-up/pop-up-remove';
 import { PopUpAddThanks } from '../components/pop-up/pop-up-add-thanks';
 import { PopUpError } from '../components/pop-up/pop-up-error';
-import { localStoreBasket, dropCamera, clearBasket} from '../store/local-store-basket';
+import {
+  localStoreBasket,
+  dropCamera,
+  clearBasket,
+} from '../store/local-store-basket';
 import { Summary } from '../components/summary/summary';
 
-
 function Basket() {
-
-  const baskets  = useAppSelector((state) => state.baskets);
+  const baskets = useAppSelector((state) => state.baskets);
   const navigate = useNavigate();
-  const [sendingStatus, setSendingStatus ] = useState();
+  const [sendingStatus, setSendingStatus] = useState();
   const isSending = sendingStatus === RequestStatus.Pending;
 
-  const [ isShowPopUpRemove, setIsShowPopUpRemove ] = useState(false);
-  const [ isShowPopUpThanks, setIsShowPopUpThanks ] = useState(false);
-  const [ isShowPopUpError, setIsShowPopUpError ] = useState(false);
+  const [isShowPopUpRemove, setIsShowPopUpRemove] = useState(false);
+  const [isShowPopUpThanks, setIsShowPopUpThanks] = useState(false);
+  const [isShowPopUpError, setIsShowPopUpError] = useState(false);
 
-  const [ selectedIdDelete, setSelectedIdDelete ] = useState<TCamera['id'] | null>(null);
-  const [ selectedIdRemove, setSelectedIdRemove ] = useState<TCamera['id'] | null>(null);
+  const [selectedIdDelete, setSelectedIdDelete] = useState<
+    TCamera['id'] | null
+  >(null);
+  const [selectedIdRemove, setSelectedIdRemove] = useState<
+    TCamera['id'] | null
+  >(null);
 
   const quantityArr = localStoreBasket.map((camera) => camera.quantity);
-  const totalQuantity = quantityArr.length !== 0 && quantityArr.reduce((previousValue, currentValue) => previousValue + currentValue);
-  const handlePromoSubmit = () => {
+  const totalQuantity =
+    quantityArr.length !== 0 &&
+    quantityArr.reduce(
+      (previousValue, currentValue) => previousValue + currentValue,
+    );
+  const handlePromoSubmit = () => {};
 
-  };
-
-  const cameraByDelete = baskets.find((camera) => camera.id === selectedIdDelete);
+  const cameraByDelete = baskets.find(
+    (camera) => camera.id === selectedIdDelete,
+  );
 
   const handleDeleteFromBasket = (id: TCamera['id']) => {
     setIsShowPopUpRemove(true);
@@ -70,11 +80,11 @@ function Basket() {
     setIsShowPopUpError(true);
   };
 
-  return(
+  return (
     <>
-      {isSending && (<Spinner />)}
+      {isSending && <Spinner />}
       <div className="wrapper">
-        <Header cameras={baskets} totalQuantity={totalQuantity}/>
+        <Header cameras={baskets} totalQuantity={totalQuantity} />
         <main>
           <div className="page-content">
             <Breadcrumbs isBasketPage />
@@ -106,16 +116,14 @@ function Basket() {
             camera={cameraByDelete}
             onClose={handleClosePopUp}
             onRemoveFromBasket={handleClickRemoveFromBasket}
-          />)}
+          />
+        )}
         <PopUpAddThanks
           isActive={isShowPopUpThanks}
           onClose={handleClosePopUp}
         />
-        <PopUpError
-          isActive={isShowPopUpError}
-          onClose={handleClosePopUp}
-        />
-        <Footer/>
+        <PopUpError isActive={isShowPopUpError} onClose={handleClosePopUp} />
+        <Footer />
       </div>
     </>
   );

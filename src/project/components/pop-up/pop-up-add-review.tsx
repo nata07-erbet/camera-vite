@@ -1,11 +1,13 @@
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { api } from '../../api/api';
 import { TReviewPost } from '../../types/types';
 import classNames from 'classnames';
 import { PopUpMain, PopUpMainProps } from './pop-up-main';
 import { RequestStatus, ReqRoutes } from '../../const/const';
-import { RateBarMap, SettingValidation} from '../../const/const';
+import { RateBarMap, SettingValidation } from '../../const/const';
+import { createAPI } from '../../api/api';
+
+const api = createAPI();
 
 type PopUpAddReviewProps = PopUpMainProps & {
   cameraId: number;
@@ -22,8 +24,8 @@ type FormInputs = {
   rate: string;
 };
 
-function PopUpAddReview ({cameraId, onSubmit, ...props}: PopUpAddReviewProps) {
-  const [ sendingStatus, setSendingStatus ] = useState();
+function PopUpAddReview({ cameraId, onSubmit, ...props }: PopUpAddReviewProps) {
+  const [sendingStatus, setSendingStatus] = useState();
 
   const isSending = sendingStatus === RequestStatus.Pending;
 
@@ -32,18 +34,29 @@ function PopUpAddReview ({cameraId, onSubmit, ...props}: PopUpAddReviewProps) {
     handleSubmit,
     watch,
     setError,
-    formState: { errors }
+    formState: { errors },
   } = useForm<FormInputs>({
     mode: 'all',
     defaultValues: {
-      rate: '0'
-    }});
+      rate: '0',
+    },
+  });
 
-  const classInValidRate = classNames('rate', 'form-review__item', {'is-invalid': !!errors.rate});
-  const classInValidName = classNames('custom-input', 'form-review__item', {'is-invalid': !!errors.userName});
-  const classInValidPlus = classNames('custom-input', 'form-review__item', {'is-invalid': !!errors.userPlus});
-  const classInValidMinus = classNames('custom-input', 'form-review__item', {'is-invalid': !!errors.userMinus});
-  const classInValidComment = classNames('custom-textarea form-review__item', {'is-invalid': !!errors.userComment});
+  const classInValidRate = classNames('rate', 'form-review__item', {
+    'is-invalid': !!errors.rate,
+  });
+  const classInValidName = classNames('custom-input', 'form-review__item', {
+    'is-invalid': !!errors.userName,
+  });
+  const classInValidPlus = classNames('custom-input', 'form-review__item', {
+    'is-invalid': !!errors.userPlus,
+  });
+  const classInValidMinus = classNames('custom-input', 'form-review__item', {
+    'is-invalid': !!errors.userMinus,
+  });
+  const classInValidComment = classNames('custom-textarea form-review__item', {
+    'is-invalid': !!errors.userComment,
+  });
 
   const rateInput = register('rate', {
     required: {
@@ -55,8 +68,8 @@ function PopUpAddReview ({cameraId, onSubmit, ...props}: PopUpAddReviewProps) {
       message: SettingValidation.UserMessageRateValidation,
     },
     validate: {
-      isInt: value => Number(value) % 1 === 0
-    }
+      isInt: (value) => Number(value) % 1 === 0,
+    },
   });
   const ratingValue = watch('rate');
 
@@ -67,40 +80,40 @@ function PopUpAddReview ({cameraId, onSubmit, ...props}: PopUpAddReviewProps) {
     },
     pattern: {
       value: /^[а-яА-ЯёЁa-zA-Z0-9]{2,15}$/,
-      message: SettingValidation.UserPlusMessageValidation
+      message: SettingValidation.UserPlusMessageValidation,
     },
   });
 
   const userPlusInput = register('userPlus', {
     required: {
       value: true,
-      message: SettingValidation.UserPlusMessageRequired
+      message: SettingValidation.UserPlusMessageRequired,
     },
     pattern: {
       value: /^[а-яА-ЯёЁa-zA-Z0-9]{10,160}$/,
-      message: SettingValidation.UserPlusMessageValidation
+      message: SettingValidation.UserPlusMessageValidation,
     },
   });
 
   const userMinus = register('userMinus', {
     required: {
       value: true,
-      message: SettingValidation.UserMinusMessageRequired
+      message: SettingValidation.UserMinusMessageRequired,
     },
     pattern: {
       value: /^[а-яА-ЯёЁa-zA-Z0-9]{10,160}$/,
-      message: SettingValidation.UserMinusMessageValidation
+      message: SettingValidation.UserMinusMessageValidation,
     },
   });
 
   const userComment = register('userComment', {
-    required:  {
+    required: {
       value: true,
-      message: SettingValidation.UserCommentMessageRequired
+      message: SettingValidation.UserCommentMessageRequired,
     },
     pattern: {
       value: /^[а-яА-ЯёЁa-zA-Z0-9]{10,160}$/,
-      message: SettingValidation.UserCommentMessageValidation
+      message: SettingValidation.UserCommentMessageValidation,
     },
   });
 
@@ -120,17 +133,14 @@ function PopUpAddReview ({cameraId, onSubmit, ...props}: PopUpAddReviewProps) {
         setSendingStatus(RequestStatus.Success);
         onSubmit;
       })
-      .catch((err: Error) => setError('root', { 'message': err.message}));
+      .catch((err: Error) => setError('root', { message: err.message }));
   };
 
   return (
-    <PopUpMain { ...props}>
+    <PopUpMain {...props}>
       <p className="title title--h4">Оставить отзыв</p>
       <div className="form-review">
-        <form
-          method="post"
-          onSubmit={handleSubmit(onSubmitForm)}
-        >
+        <form method="post" onSubmit={handleSubmit(onSubmitForm)}>
           <div className="form-review__rate">
             <fieldset className={classInValidRate}>
               <legend className="rate__caption">
@@ -141,8 +151,7 @@ function PopUpAddReview ({cameraId, onSubmit, ...props}: PopUpAddReviewProps) {
               </legend>
               <div className="rate__bar">
                 <div className="rate__group">
-                  {Object
-                    .entries(RateBarMap)
+                  {Object.entries(RateBarMap)
                     .reverse()
                     .map(([key, value]) => (
                       <>
@@ -164,11 +173,14 @@ function PopUpAddReview ({cameraId, onSubmit, ...props}: PopUpAddReviewProps) {
                 </div>
                 <div className="rate__progress">
                   <span className="rate__stars">{ratingValue}</span>
-                  <span>/</span>{''}
+                  <span>/</span>
+                  {''}
                   <span className="rate__all-stars">5</span>
                 </div>
               </div>
-              {errors.rate && <p className="rate__message">Нужно оценить товар</p> }
+              {errors.rate && (
+                <p className="rate__message">Нужно оценить товар</p>
+              )}
             </fieldset>
             <div className={classInValidName}>
               <label>
@@ -184,7 +196,9 @@ function PopUpAddReview ({cameraId, onSubmit, ...props}: PopUpAddReviewProps) {
                   {...userNameInput}
                 />
               </label>
-              {errors.userName && (<p className="custom-input__error">Нужно указать имя</p>)}
+              {errors.userName && (
+                <p className="custom-input__error">Нужно указать имя</p>
+              )}
             </div>
             <div className={classInValidPlus}>
               <label>
@@ -200,7 +214,9 @@ function PopUpAddReview ({cameraId, onSubmit, ...props}: PopUpAddReviewProps) {
                   {...userPlusInput}
                 />
               </label>
-              {errors.userPlus && (<p className="custom-input__error">Нужно указать достоинства</p>)}
+              {errors.userPlus && (
+                <p className="custom-input__error">Нужно указать достоинства</p>
+              )}
             </div>
             <div className={classInValidMinus}>
               <label>
@@ -216,7 +232,9 @@ function PopUpAddReview ({cameraId, onSubmit, ...props}: PopUpAddReviewProps) {
                   {...userMinus}
                 />
               </label>
-              {errors.userMinus && (<p className="custom-input__error">Нужно указать недостатки</p>)}
+              {errors.userMinus && (
+                <p className="custom-input__error">Нужно указать недостатки</p>
+              )}
             </div>
             <div className={classInValidComment}>
               <label>
@@ -238,10 +256,7 @@ function PopUpAddReview ({cameraId, onSubmit, ...props}: PopUpAddReviewProps) {
               )}
             </div>
           </div>
-          <button
-            className="btn btn--purple form-review__btn"
-            type="submit"
-          >
+          <button className="btn btn--purple form-review__btn" type="submit">
             Отправить отзыв
           </button>
         </form>
@@ -251,4 +266,3 @@ function PopUpAddReview ({cameraId, onSubmit, ...props}: PopUpAddReviewProps) {
 }
 
 export { PopUpAddReview };
-

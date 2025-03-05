@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { fetchPromos } from '../../store/action';
+import { fetchPromos } from '../../store/api-actions';
 
 
 import { Swiper, SwiperSlide } from 'swiper/react';
