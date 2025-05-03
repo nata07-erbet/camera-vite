@@ -14,7 +14,7 @@ function Header() {
 
   useEffect(() => {
     dispatch(fetchCameras());
-  }, []);
+  }, [dispatch]);
 
   // const quantityArr = baskets.map((camera) => camera.quantity);
   // console.log(quantityArr);
@@ -22,7 +22,7 @@ function Header() {
   // const totalQuantity = quantityArr.length > 0 ? quantityArr.reduce((previousValue, currentValue) => previousValue + currentValue) : 0;
   // const totalCount: TBasket['quantity'] = totalQuantity;
 
-  const isAdded = count >= 1 ? true : false;
+  const isAdded = count >= 1;
 
   const classHidden = classNames('header__basket-count', {
     'visually-hidden': !isAdded,

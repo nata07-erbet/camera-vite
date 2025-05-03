@@ -20,7 +20,7 @@ function Breadcrumbs({ cameraId, isBasketPage }: BreadcrumbsProps) {
     if (cameraId) {
       dispatch(fetchCamera(cameraId));
     }
-  }, []);
+  }, [cameraId]);
 
   return (
     <div className="breadcrumbs">

@@ -29,7 +29,7 @@ function BasketItem({
   const initialCount = cameraIntoBasket ? cameraIntoBasket.quantity : 1;
 
   const [initCount, setInitCount] = useState(initialCount);
-  const isRemoveItem = camera.id === selectedId ? true : false;
+  const isRemoveItem = camera.id === selectedId;
 
   const getValid = (count: number) => {
     if (count >= MIN_CAMERA && count <= MAX_CAMERA) {

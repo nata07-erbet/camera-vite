@@ -25,6 +25,7 @@ const DATE_FORMAT = 'DD MMMM';
 const KEY_LOCAL_STORAGE_OFFERS = 'my_basket';
 
 const ERROR_TIMEOUT = 2000;
+const REQUEST_TIMEOUT = 6000;
 
 const ReqRoutes = {
   Main: '/',
@@ -295,4 +296,5 @@ export {
   DiscountSummaryMap,
   PaginationButton,
   ERROR_TIMEOUT,
+  REQUEST_TIMEOUT,
 };

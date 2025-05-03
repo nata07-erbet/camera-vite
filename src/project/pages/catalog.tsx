@@ -1,5 +1,5 @@
-import { useState, useMemo, useCallback } from 'react';
-import { useAppSelector } from '../hooks';
+import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../hooks';
 
 import {
   TCamera,
@@ -35,17 +35,19 @@ import {
   getMinMaxPrices,
   getCamerasByPagination,
 } from '../utils/utils';
+import { fetchCameras } from '../store/api-actions';
+import { getCamerasWithNewProps } from '../store/action';
 
 function Catalog() {
-  // const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
   const cameras = useAppSelector((state) => state.cameras);
   const camera = useAppSelector((state) => state.camera);
   const page = useAppSelector((state) => state.currentPage);
 
-  // useEffect(() => {
-  //   dispatch(fetchCameras());
-  //   dispatch(getCamerasWithNewProps())
-  // }, []);
+  useEffect(() => {
+    dispatch(fetchCameras());
+    dispatch(getCamerasWithNewProps());
+  }, []);
 
   const [cameraId, setCameraId] = useState<TCamera['id'] | null>(null);
   const [idSuccess, setIdSuccess] = useState<TCamera['id']>();
