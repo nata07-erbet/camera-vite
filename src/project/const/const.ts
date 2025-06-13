@@ -35,6 +35,9 @@ const ReqRoutes = {
   Reviews: 'reviews',
   Orders: '/orders',
   Coupons: '/coupons',
+  AuthStatus: '/auth',
+  Login: '/login',
+  Logout: '/logout',
 } as const;
 
 const AppRoutes = {
@@ -214,7 +217,17 @@ const PaginationButton = {
   Next: 'Далее',
 };
 
+const AuthorizationStatus = {
+  Pending: 'Pending',
+  NotDetermined: 'NotDetermined',
+  Restricted: 'Restricted', // ограничен
+  Denied: 'Denied', // не получил доступ
+  Authorized: 'Authorized ',
+  Revoked: 'Revoked', // отозван
+};
+
 export enum NameSpace {
+  AuthStatus = 'AUTH_STATUS',
   Cameras = 'CAMERAS',
   CamerasWithProps = 'CAMERAS_WITH_NEW_PROPS',
   Camera = 'CAMERA',
@@ -244,6 +257,8 @@ export enum NameSpace {
   PostLogin = 'POST_LOGIN',
   SendedLogin = 'SENDED_LOGIN',
   Redirect = 'REDIRECT',
+  Status = 'STATUS',
+  User = 'USER',
 }
 
 export {
@@ -297,4 +312,5 @@ export {
   PaginationButton,
   ERROR_TIMEOUT,
   REQUEST_TIMEOUT,
+  AuthorizationStatus,
 };

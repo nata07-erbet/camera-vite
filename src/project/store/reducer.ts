@@ -14,6 +14,7 @@ import {
   setError,
   isLoadingCameras,
   setStatus,
+  requireStatus,
   // fetchPromos,
   // fetchReviews,
   // postReviews,
@@ -28,12 +29,14 @@ import {
   TOrder,
   TPromo,
   TPromoCoupon,
+  TAuthorizationStatus,
 } from '../types/types.ts';
 import { cameraMocks } from '../mocks/camera-mocks.ts';
 import { addProperty } from '../utils/utils.ts';
-import { CATALOG_SHOW } from '../const/const.ts';
+import { CATALOG_SHOW, AuthorizationStatus } from '../const/const.ts';
 
 const initialState: {
+  authStatus: TAuthorizationStatus;
   cameras: TCamera[];
   camerasWithNewProps: TBasket[];
   camera: TCamera | null;
@@ -54,6 +57,7 @@ const initialState: {
   isCamerasDataLoading: boolean;
   status: number;
 } = {
+  authStatus: AuthorizationStatus.Denied,
   cameras: [],
   camerasWithNewProps: [],
   camera: null,
@@ -83,9 +87,6 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(loadedSimilar, (state, action) => {
       state.similars = action.payload;
     })
-    // .addCase(loadedCamera, (state, action) => {
-    //   state.camera = action.payload;
-    // })
     .addCase(getCamerasWithNewProps, (state) => {
       state.camerasWithNewProps = addProperty(cameraMocks);
     })
@@ -110,6 +111,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(isLoadingCameras, (state, action) => {
       state.isCamerasDataLoading = action.payload;
+    })
+    .addCase(requireStatus, (state, action) => {
+      state.authStatus = action.payload;
     })
     // .addCase(fetchSimilars, (state) => {
     //   state.similars = cameraMocks.slice(2,7);

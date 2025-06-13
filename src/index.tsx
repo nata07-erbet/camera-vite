@@ -5,11 +5,14 @@ import { store } from './project/store/index';
 import { App } from './project/components/app/app';
 import { Error } from './project/components/error/error';
 import { fetchCameras } from './project/store/api-actions';
+import { saveToken } from './project/store/token';
+
+saveToken('gulua');
 
 store.dispatch(fetchCameras());
 
 const root = ReactDOM.createRoot(
-  document.getElementById('root') as HTMLElement
+  document.getElementById('root') as HTMLElement,
 );
 
 root.render(
@@ -18,5 +21,5 @@ root.render(
       <App />
       <Error />
     </Provider>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

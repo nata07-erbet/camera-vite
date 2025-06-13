@@ -1,7 +1,7 @@
 // import axios, { AxiosError, AxiosResponse } from 'axios';
 // import { StatusCodes } from 'http-status-codes';
 import { BASE_URL, REQUEST_TIMEOUT } from '../const/const';
-// import { getToken } from '../store/token';
+import { getToken } from '../store/token';
 // import { processErrorHandle } from '../servises/processErrorHandle';
 
 // type TDetailMessage = {
@@ -45,14 +45,21 @@ import { BASE_URL, REQUEST_TIMEOUT } from '../const/const';
 // };
 
 // export { createAPI };
-import axios from 'axios';
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
-const createAPI = () => {
+const createAPI = (): AxiosInstance => {
   const api = axios.create({
     baseURL: BASE_URL,
     timeout: REQUEST_TIMEOUT,
   });
 
+  api.interceptors.request.use((config: AxiosRequestConfig) => {
+    const token = getToken();
+    if (config.headers && token) {
+      config.headers['x-token'] = token;
+    }
+    return config;
+  });
   return api;
 };
 

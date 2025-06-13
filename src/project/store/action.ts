@@ -7,6 +7,7 @@ import {
   TReview,
   TOrder,
   TPromoCoupon,
+  TAuthorizationStatus,
 } from '../types/types';
 const fetchCamera = createAction<TCamera['id']>(
   `${NameSpace.Camera}/fetchCamera`,
@@ -33,6 +34,8 @@ const isLoadingCameras = createAction<boolean>(NameSpace.isLoadingCameras);
 const setStatus = createAction<number>(NameSpace.SendedLogin);
 const redirectToRoute = createAction<string>(NameSpace.Redirect);
 
+const requireStatus = createAction<TAuthorizationStatus>(NameSpace.Status);
+
 // const incrementAction = createAction(NameSpace.Inc);
 // const decrementAction = createAction(NameSpace.Dec);
 
@@ -58,4 +61,5 @@ export {
   isLoadingCameras,
   setStatus,
   redirectToRoute,
+  requireStatus,
 };

@@ -1,18 +1,16 @@
-
 type TToken = string;
 
 const getToken = (): TToken => {
-  const token = window.localStorage.getItem('token');
+  const token = window.localStorage.getItem('TOKEN');
   return token ?? '';
 };
 
-const setToken = (token: TToken) => {
-  window.localStorage.setItem('token', token);
+const saveToken = (token: TToken) => {
+  window.localStorage.setItem('TOKEN', token);
 };
 
 const dropToken = () => {
-  window.localStorage.removeItem('token');
+  window.localStorage.removeItem('TOKEN');
 };
 
-export { getToken, setToken, dropToken };
-
+export { getToken, saveToken, dropToken };

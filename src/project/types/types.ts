@@ -107,6 +107,7 @@ type TLocalStore = TCamera & {
 };
 
 type TCouponValue = 'camera-333' | 'camera-444' | 'camera-555';
+
 type TPromoCoupon = {
   coupon: string;
 };
@@ -119,6 +120,7 @@ type TLogin = {
 type TUserData = {
   login: string;
   password: string;
+  token: string;
 };
 
 type TAppRoutes = {
@@ -127,6 +129,9 @@ type TAppRoutes = {
   Basket: '/card';
   Loading: '/loading';
 };
+
+type TToken = string;
+type TAuthorizationStatus =;
 
 export type {
   TCamera,
@@ -156,4 +161,6 @@ export type {
   TLogin,
   TUserData,
   TAppRoutes,
+  TToken, 
+  TAuthorizationStatus,
 };

@@ -27,7 +27,7 @@ import { PopUpAddToBasket } from '../components/pop-up/pop-up-add-to-basket';
 import { PopUpAddSuccess } from '../components/pop-up/pop-up-add-success';
 import { Footer } from '../components/footer/footer';
 import { Spinner } from '../components/spinner/spinner';
-import { PopUpLogin } from '../components/pop-up/pop-up-login';
+
 import {
   compare,
   filterCameras,
@@ -199,7 +199,6 @@ function Catalog() {
             onClose={handlePopUpClose}
             onContinue={handleContinue}
           />
-          <PopUpLogin isActive={true} />
           <Footer />
         </div>
       )}

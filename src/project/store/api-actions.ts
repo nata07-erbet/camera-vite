@@ -1,7 +1,13 @@
 import { AxiosInstance } from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { TState, TAppDispatch } from './state';
-import { AppRoutes, ERROR_TIMEOUT, NameSpace, ReqRoutes } from '../const/const';
+import {
+  AppRoutes,
+  ERROR_TIMEOUT,
+  NameSpace,
+  ReqRoutes,
+  AuthorizationStatus,
+} from '../const/const';
 import {
   TCamera,
   TPromo,
@@ -22,8 +28,10 @@ import {
   isLoadingCameras,
   setStatus,
   redirectToRoute,
+  requireStatus,
 } from './action';
 import { store } from './index';
+import { dropToken, saveToken } from './token';
 
 type TAsyncThunkConfig = {
   state?: TState;
@@ -65,6 +73,18 @@ const fetchReviews = createAsyncThunk<void, TCamera['id'], TAsyncThunkConfig>(
   },
 );
 
+const checkAuthStatus = createAsyncThunk<void, undefined, TAsyncThunkConfig>(
+  NameSpace.AuthStatus,
+  async (_arg, { dispatch, extra: api }) => {
+    try {
+      await api.get(ReqRoutes.AuthStatus);
+      dispatch(requireStatus(AuthorizationStatus.Authorized));
+    } catch {
+      dispatch(requireStatus(AuthorizationStatus.Denied));
+    }
+  },
+);
+
 const postOrder = createAsyncThunk<void, TOrder, TAsyncThunkConfig>(
   `${NameSpace.Order}/postOrder`,
   async ({ camerasIds, coupon }, { dispatch, extra: api }) => {
@@ -81,30 +101,32 @@ const postCoupon = createAsyncThunk<void, TPromoCoupon, TAsyncThunkConfig>(
   },
 );
 
-const clearError = createAsyncThunk(NameSpace.ClearError, () => {
+const clearError = createAsyncThunk('error', () => {
   setTimeout(() => {
     store.dispatch(setError(null));
-  }, ERROR_TIMEOUT);
+  }, 2000);
 });
 
 const loginAction = createAsyncThunk<void, TLogin, TAsyncThunkConfig>(
-  NameSpace.PostLogin,
-  async ({ login: email, password: password }, { dispatch, extra: api }) => {
-    const { status } = await api.post<TUserData>('/coupons', {
-      email,
-      password,
-    });
-    dispatch(setStatus(status));
-    dispatch(redirectToRoute(AppRoutes.Main));
+  `${NameSpace.User}/login`,
+  async ({ login, password }, { dispatch, extra: api }) => {
+    const {
+      data: { token },
+    } = await api.post<TUserData>(ReqRoutes.Login, { login, password });
+    saveToken(token);
+
+    dispatch(requireStatus(AuthorizationStatus.Authorized));
   },
 );
 
-// const fetchCamera = createAsyncThunk<void, undefined, TAsyncThunkConfig>(
-//   `${NameSpace.Camera}/fetchCamera`,
-//   async (_arg, ({ dispatch, extra: api  })) => {
-//     const { data } =  await api.get(ReqRoutes.)
-//   }
-// );
+const logoutAction = createAsyncThunk<void, undefined, TAsyncThunkConfig>(
+  `${NameSpace.User}/logout`,
+  async (_arg, { dispatch, extra: api }) => {
+    await api.delete(ReqRoutes.Logout);
+    dropToken();
+    dispatch(requireStatus(AuthorizationStatus.Revoked));
+  },
+);
 
 export {
   fetchCameras,
@@ -115,4 +137,6 @@ export {
   postCoupon,
   clearError,
   loginAction,
+  logoutAction,
+  checkAuthStatus,
 };
